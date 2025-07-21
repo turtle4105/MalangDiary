@@ -1,11 +1,8 @@
-//#include "ProtocolHandler.h"
-//#include "DBManager.h"
-//#include <iostream>
 #include "ProtocolHandler.h"
 #include "DBManager.h"
+#include "FileUtils.h"        
 #include <iostream>
 #include <windows.h>  // toUTF8 함수에 필요
-//using namespace std;
 using namespace std;
 
 string toUTF8_safely(const string& cp949Str) {
@@ -23,83 +20,8 @@ string toUTF8_safely(const string& cp949Str) {
 
     return utf8;
 }
-//
-//wstring Utf8ToWstring(const string& str) {
-//    int len = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, nullptr, 0);
-//    if (len == 0) return L"";
-//    wstring result(len, L'\0');
-//    MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, &result[0], len);
-//    result.pop_back();  // null 제거
-//    return result;
-//}
-//
-//// =======================================================================
-//// [회원가입 handler]
-//// 클라이언트로부터 받은 회원가입 요청 JSON을 파싱하고,
-//// DBManager를 통해 부모 정보를 DB에 삽입한 뒤,
-//// 성공 여부에 따라 응답 JSON을 구성하여 반환하는 함수.
-//// =======================================================================
-//nlohmann::json ProtocolHandler::handle_RegisterParents(const nlohmann::json& json, DBManager& db) {
-//
-//    // 응답 JSON 객체 생성
-//    nlohmann::json response;
-//    response["PROTOCOL"] = "REGISTER_PARENTS";  // 요청 프로토콜 이름을 명시 
-//
-//    // DB 처리 결과를 저장할 변수들
-//    int uid = -1;               // 부모 UID (가입 성공 시 할당됨)
-//    string error_msg;      // 실패 시 전달할 에러 메시지
-//
-//    // DBManager를 통해 실제 회원가입 시도
-//    // json에서 ID, PW, NICKNAME, PHONE_NUMBER를 추출하여 넘김
-//    bool result = db.registerParents(
-//        json.value("ID", ""),
-//        json.value("PW", ""),
-//        json.value("NICKNAME", ""),
-//        json.value("PHONE_NUMBER", ""),
-//        uid, error_msg
-//    );
-//
-//    cout << "[DEBUG] 받은 JSON 구조:\n" << json.dump(2) << endl;
-//    cout << "ID: " << json.value("ID", "null") << endl;
-//    cout << "PW: " << json.value("PW", "null") << endl;
-//    cout << "NICKNAME: " << json.value("NICKNAME", "null") << endl;
-//    cout << "PHONE_NUMBER: " << json.value("PHONE_NUMBER", "null") << endl;
-//
-//
-//
-//    if (result) {
-//        // [성공] 회원가입이 성공적으로 이루어졌을 때 응답 구성
-//        response["RESP"] = "SUCCESS";           // 응답 상태
-//        response["MESSAGE"] = "가입 완료";      // 사용자에게 전달할 메시지
-//        response["PARENTS_UID"] = uid;          // DB에서 생성된 부모 UID
-//    }
-//    else {
-//        // [실패] DB 삽입 실패 또는 ID 중복 등의 이유
-//        response["RESP"] = "FAIL";              // 응답 상태
-//        response["MESSAGE"] = toUTF8_safely(error_msg);
-//        // 상세 실패 이유
-//
-//        wcout << Utf8ToWstring(response.dump(2)) << endl;
-//
-//
-//
-//    }
-//
-//    // 최종 응답 JSON 반환
-//    return response;
-//}
-//
-//
 
-
-
-
-// =======================================================================
 // [회원가입 handler]
-// 클라이언트로부터 받은 회원가입 요청 JSON을 파싱하고,
-// DBManager를 통해 부모 정보를 DB에 삽입한 뒤,
-// 성공 여부에 따라 응답 JSON을 구성하여 반환하는 함수.
-// =======================================================================
 nlohmann::json ProtocolHandler::handle_RegisterParents(const nlohmann::json& json, DBManager& db) {
     // 디버깅 출력 (CP949 기준 콘솔용 출력)
     cout << u8"[REGISTER_PARENTS] 요청:\n" << json.dump(2) << endl;
@@ -109,7 +31,7 @@ nlohmann::json ProtocolHandler::handle_RegisterParents(const nlohmann::json& jso
 
     int uid = -1;
     string error_msg;
-
+    //쿼리 실행시 알아야하는 정보는 파싱해서 주고 없는 값은 비워서 전달~
     bool result = db.registerParents(
         json.value("ID", ""),
         json.value("PW", ""),
@@ -132,7 +54,7 @@ nlohmann::json ProtocolHandler::handle_RegisterParents(const nlohmann::json& jso
 
     }
     else {
-        cout << u8"→ [REGISTER_PARENTS] 회원가입 실패 :" << endl;
+        cout << u8"→ [REGISTER_PARENTS] 회원가입 실패" << endl;
 
         response["RESP"] = "FAIL";
         response["MESSAGE"] = toUTF8_safely(error_msg);
@@ -141,14 +63,13 @@ nlohmann::json ProtocolHandler::handle_RegisterParents(const nlohmann::json& jso
     return response;
 }
 
+// [로그인 handler]
 nlohmann::json ProtocolHandler::handle_Login(const nlohmann::json& json, DBManager& db) {
     nlohmann::json response;
     response["PROTOCOL"] = "LOGIN";
 
     // [1] 받은 JSON 로그 출력
     cout << u8"[LOGIN] 요청:\n" << json.dump(2) << endl;
-    cout << u8"[LOGIN] ID: " << json.value("ID", "null") << endl;
-    cout << u8"[LOGIN] PW: " << json.value("PW", "null") << endl;
 
     // [2] 변수 선언
     int parents_uid = -1;
@@ -186,10 +107,58 @@ nlohmann::json ProtocolHandler::handle_Login(const nlohmann::json& json, DBManag
     }
 
     else {
-        cout << u8"→ [LOGIN] 로그인 실패: " << error_msg << endl;
+        cout << u8"→ [LOGIN] 로그인 실패: " << toUTF8_safely(error_msg) << endl;
         response["RESP"] = "FAIL";
         response["MESSAGE"] = toUTF8_safely(error_msg);
     }
 
+    return response;
+}
+
+//[자녀 등록 handler]
+nlohmann::json ProtocolHandler::handle_RegisterChild(const nlohmann::json& json, DBManager& db) {
+    nlohmann::json response;
+    response["PROTOCOL"] = "REGISTER_CHILD";
+
+    // [1] 받은 JSON 로그 출력
+    cout << u8"[REGISTER_CHILD] 요청:\n" << json.dump(2) << endl;
+
+    int out_child_uid = -1;
+    int parents_uid = json.value("PARENTS_UID", -1);
+    string babyname = json.value("NAME", "");
+    string birthdate = json.value("BIRTHDATE", "");
+    string gender = json.value("GENDER","");
+    string icon_color = json.value("ICON_COLOR", "");
+    string error_msg;
+
+    bool result = db.registerChild(parents_uid, babyname, birthdate, gender, icon_color, out_child_uid, error_msg);
+
+    if (result) {
+        response["RESP"] = "SUCCESS";
+        response["MESSAGE"] = u8"자녀 등록 성공";
+        response["CHILD_UID"] = out_child_uid;
+
+        cout << u8"→ [REGISTER_CHILD] 자녀 등록 성공 - UID: " << out_child_uid << endl;
+
+        // 부모 ID 추가 조회
+        std::string parentId;
+        if (db.getParentIdByUID(parents_uid, parentId)) {
+            if (CreateChildDirectory(parentId, parents_uid, babyname, out_child_uid)) {
+                cout << u8"→ [REGISTER_CHILD] 자녀 폴더 생성 완료" << endl;
+            }
+            else {
+                cerr << u8"→ [REGISTER_CHILD] 자녀 폴더 생성 실패!" << endl;
+            }
+        }
+        else {
+            cerr << u8"→ [REGISTER_CHILD] 부모 ID 조회 실패 - 자녀 폴더 생성 불가" << endl;
+        }
+    }
+    else {
+        response["RESP"] = "FAIL";
+        response["MESSAGE"] = toUTF8_safely(error_msg);
+        cout << u8"[REGISTER_CHILD] 자녀 등록 실패: "
+            << toUTF8_safely(error_msg) << std::endl;
+    }
     return response;
 }

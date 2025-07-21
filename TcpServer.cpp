@@ -31,14 +31,14 @@ TcpServer::~TcpServer() {
 bool TcpServer::start() {
     // Winsock 라이브러리 초기화
     if (WSAStartup(MAKEWORD(2, 2), &wsaData_) != 0) {
-        std::cerr << "WSAStartup 실패\n";
+        cerr << "WSAStartup 실패\n";
         return false;
     }
 
     // 서버 소켓 생성 (IPv4, TCP)
     listenSocket_ = socket(AF_INET, SOCK_STREAM, 0);
     if (listenSocket_ == INVALID_SOCKET) {
-        std::cerr << "소켓 생성 실패\n";
+        cerr << "소켓 생성 실패\n";
         return false;
     }
 
@@ -50,14 +50,14 @@ bool TcpServer::start() {
 
     // 소켓 바인딩 (주소와 연결)
     if (::bind(listenSocket_, (sockaddr*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) {
-        std::cerr << "바인딩 실패\n";
+        cerr << "바인딩 실패\n";
         closesocket(listenSocket_);
         return false;
     }
 
     // 리슨 상태 진입 (클라이언트 연결 대기)
     if (listen(listenSocket_, SOMAXCONN) == SOCKET_ERROR) {
-        std::cerr << "리스닝 실패\n";
+        cerr << "리스닝 실패\n";
         closesocket(listenSocket_);
         return false;
     }
@@ -78,9 +78,9 @@ SOCKET TcpServer::acceptClient() {
     // 클라이언트 수락 (연결 요청 받아들이기)
     SOCKET clientSocket = accept(listenSocket_, (sockaddr*)&clientAddr, &clientSize);
     if (clientSocket == INVALID_SOCKET) {
-        std::cerr << "클라이언트 수락 실패\n";
+        cerr << "클라이언트 수락 실패\n";
     }
-    //std::cout << "[클라이언트] 연결 성공\n";
+    //cout << "[클라이언트] 연결 성공\n";
 
     return clientSocket;
 }
@@ -96,7 +96,7 @@ bool TcpServer::readExact(SOCKET sock, char* buffer, int totalBytes) {
     int received = 0;
     while (received < totalBytes) {
         int len = recv(sock, buffer + received, totalBytes - received, 0);
-        std::cout << "[readExact] recv returned: " << len << "\n";
+        cout << "[readExact] recv returned: " << len << "\n";
         if (len <= 0) return false;  // 연결 끊김 or 오류
         received += len;
     }
@@ -112,13 +112,13 @@ bool TcpServer::readExact(SOCKET sock, char* buffer, int totalBytes) {
 //
 // - 받은 데이터를 out_json, out_payload로 분리해서 반환
 // =======================================================================
-bool TcpServer::receivePacket(SOCKET clientSocket, std::string& out_json, std::vector<char>& out_payload) {
-    //std::cout << u8"[DEBUG] receivePacket 진입\n";
+bool TcpServer::receivePacket(SOCKET clientSocket, string& out_json, vector<char>& out_payload) {
+    //cout << u8"[DEBUG] receivePacket 진입\n";
 
     // 1. 8바이트 헤더 수신
     char header[8];
     if (!readExact(clientSocket, header, 8)) {
-        std::cerr << u8"[ERROR] 헤더 수신 실패\n";
+        cerr << u8"[ERROR] 헤더 수신 실패\n";
         closesocket(clientSocket); //  반드시 소켓 닫아야 함
         return false;
     }
@@ -128,27 +128,27 @@ bool TcpServer::receivePacket(SOCKET clientSocket, std::string& out_json, std::v
     memcpy(&totalSize, header, 4);
     memcpy(&jsonSize, header + 4, 4);
 
-    std::cout << u8"[DEBUG] totalSize: " << totalSize << u8", jsonSize: " << jsonSize << "\n";
+    cout << u8"[DEBUG] totalSize: " << totalSize << u8", jsonSize: " << jsonSize << "\n";
 
     // 3. 헤더 유효성 검증
     if (jsonSize == 0 || jsonSize > totalSize || totalSize > 10 * 1024 * 1024) {
-        std::cerr << u8"[ERROR] 헤더 정보 비정상: jsonSize=" << jsonSize << u8", totalSize=" << totalSize << "\n";
+        cerr << u8"[ERROR] 헤더 정보 비정상: jsonSize=" << jsonSize << u8", totalSize=" << totalSize << "\n";
         return false;
     }
 
     // 4. 바디 수신
-    std::vector<char> buffer(totalSize);
+    vector<char> buffer(totalSize);
     if (!readExact(clientSocket, buffer.data(), totalSize)) {
-        std::cerr << "[ERROR] 바디 수신 실패\n";
+        cerr << "[ERROR] 바디 수신 실패\n";
         return false;
     }
 
 // 5. JSON 분리 및 BOM 제거
     try {
-        out_json = std::string(buffer.begin(), buffer.begin() + jsonSize);
+        out_json = string(buffer.begin(), buffer.begin() + jsonSize);
 
         //// 덤프 확인
-        //std::cout << u8"[DEBUG] JSON 첫 바이트 HEX: ";
+        //cout << u8"[DEBUG] JSON 첫 바이트 HEX: ";
         //for (int i = 0; i < 10 && i < out_json.size(); ++i)
         //    printf("%02X ", (unsigned char)out_json[i]);
         //printf("\n");
@@ -161,19 +161,19 @@ bool TcpServer::receivePacket(SOCKET clientSocket, std::string& out_json, std::v
         //    out_json = out_json.substr(3);
         //}
 
-        //std::cout << u8"[DEBUG] out_json 전체 HEX: ";
+        //cout << u8"[DEBUG] out_json 전체 HEX: ";
         //for (int i = 0; i < out_json.size(); ++i)
         //    printf("%02X ", (unsigned char)out_json[i]);
         //printf("\n");
 
         // 2. UTF-8 비정상 바이트 제거
         while (!out_json.empty() && ((unsigned char)out_json[0] == 0xC0 || (unsigned char)out_json[0] == 0xC1 || (unsigned char)out_json[0] < 0x20)) {
-            std::cerr << "[경고] JSON 앞에 비정상 바이트(0x" << std::hex << (int)(unsigned char)out_json[0] << ") 발견 → 제거\n";
+            cerr << "[경고] JSON 앞에 비정상 바이트(0x" << hex << (int)(unsigned char)out_json[0] << ") 발견 → 제거\n";
             out_json = out_json.substr(1);
         }
     }
-    catch (const std::exception& e) {
-        std::cerr << u8"[ERROR] JSON 문자열 처리 중 예외 발생: " << e.what() << "\n";
+    catch (const exception& e) {
+        cerr << u8"[ERROR] JSON 문자열 처리 중 예외 발생: " << e.what() << "\n";
         return false;
     }
 
@@ -191,7 +191,7 @@ bool TcpServer::receivePacket(SOCKET clientSocket, std::string& out_json, std::v
 // - 클라이언트에게 보낼 json 생성
 // =======================================================================
 
-void TcpServer::sendJsonResponse(SOCKET sock, const std::string& jsonStr) {
+void TcpServer::sendJsonResponse(SOCKET sock, const string& jsonStr) {
     uint32_t totalSize = static_cast<uint32_t>(jsonStr.size());
     uint32_t jsonSize = totalSize;
 

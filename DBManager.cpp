@@ -26,13 +26,12 @@ bool DBManager::connect() {
     }
 }
 
-//============ [회원가입] ============
+//    ============ [회원가입] ============
 /*    id, pw, name, phone number     */
 bool DBManager::registerParents(
     const string& id, const string& pw,
     const string& nickname, const string& phone,
-    int& out_parents_uid, string& out_error_msg) 
-{
+    int& out_parents_uid, string& out_error_msg) {
     if (!conn_) {
         out_error_msg = "→ [DB 오류] DB 연결 실패";
         return false;
@@ -40,13 +39,13 @@ bool DBManager::registerParents(
 
     try {
         //[1] ID 중복 확인 쿼리 준비 PreparedStatement -> ? 바인딩 파라미터 처리
-        std::unique_ptr<sql::PreparedStatement> checkID(
+        unique_ptr<sql::PreparedStatement> checkID(
             conn_->prepareStatement("SELECT COUNT(*) FROM parents WHERE id = ?")
         ); //unique_ptr을 사용하여 자원을 자동 해제 처리함, conn_은 이미 연결된 DB객체
         //바인딩 값 세팅함~ 쿼리문의 실제 값과 순서 일치하도록 값을 바인딩
 
         checkID->setString(1, id);
-        std::unique_ptr<sql::ResultSet> res(checkID->executeQuery()); //여기서 쿼리 실행합니다.
+        unique_ptr<sql::ResultSet> res(checkID->executeQuery()); //여기서 쿼리 실행합니다.
 
         if (res->next() && res->getInt(1) > 0) {
             out_error_msg = "이미 존재하는 아이디입니다.";
@@ -64,10 +63,10 @@ bool DBManager::registerParents(
         insert->executeUpdate();
 
         // [3] UID 가져오기
-        std::unique_ptr<sql::PreparedStatement> check_UID(
+        unique_ptr<sql::PreparedStatement> check_UID(
             conn_->prepareStatement("SELECT LAST_INSERT_ID()")
         );
-        std::unique_ptr<sql::ResultSet> uidRes(check_UID->executeQuery());
+        unique_ptr<sql::ResultSet> uidRes(check_UID->executeQuery());
 
         if (uidRes->next()) {
             out_parents_uid = uidRes->getInt(1);  // 첫 번째 컬럼
@@ -86,28 +85,27 @@ bool DBManager::registerParents(
     }
 }
 
-//============ [로그인] ============
+//    ============ [로그인] ============
 /*    id, pw -> out_parents_uid, out_nickname, out_lst_children    */
 bool DBManager::login(
     const string& id, const string& pw,  
     int& out_parents_uid,
     string& out_nickname,
     vector<std_child_info>& out_children,
-    string& out_error_msg)
-{
+    string& out_error_msg){
     if (!conn_) {
-        out_error_msg = "→[DB 오류] DB 연결 실패";
+        out_error_msg = u8"→[DB 오류] DB 연결 실패";
         return false;
     }
 
     try {
         // [1] ID + PW check_login
-        std::unique_ptr<sql::PreparedStatement> check_login(
+        unique_ptr<sql::PreparedStatement> check_login(
             conn_->prepareStatement("SELECT parents_uid, nickname FROM parents WHERE id = ? AND pw = ?")
         );
         check_login->setString(1, id);
         check_login->setString(2, pw);
-        std::unique_ptr<sql::ResultSet> res(check_login->executeQuery());
+        unique_ptr<sql::ResultSet> res(check_login->executeQuery());
 
         if (!res->next()) {
             out_error_msg = "아이디 또는 비밀번호가 일치하지 않습니다.";
@@ -123,7 +121,7 @@ bool DBManager::login(
             conn_->prepareStatement("SELECT child_uid, name, gender, birth_date, icon_color FROM child WHERE parents_id = ?")
         );
         childStmt->setInt(1, out_parents_uid);
-        std::unique_ptr<sql::ResultSet> childRes(childStmt->executeQuery());
+        unique_ptr<sql::ResultSet> childRes(childStmt->executeQuery());
 
         while (childRes->next()) {
             std_child_info child;
@@ -137,9 +135,84 @@ bool DBManager::login(
         return true;
     }
     catch (sql::SQLException& e) {
-        cerr << "→ [DB 오류] 로그인 실패: " << e.what() << endl;
+        cerr << u8"→ [DB 오류] 로그인 실패: " << e.what() << endl;
         out_error_msg = "{{{(>_<)}}} DB오류_예외적인 경우 .. 확인필요 ";
         return false; //결과 반환
     }
 }
 
+//    ============ [자녀 등록] ============
+/*    parents_uid, name, birthdate, gender,icon_color   -> child_uid   */
+bool DBManager::registerChild(const int& parents_uid, const string& name,
+    const string& birthdate, const string& gender,
+    const string& icon_color, int& out_child_uid, string& out_error_msg){
+    if (!conn_) {
+        out_error_msg = u8"→[DB 오류] DB 연결 실패";
+        return false;
+    }
+    try {
+        // [0] 부모 내 중복 이름 체크
+        unique_ptr<sql::PreparedStatement> checkDup(
+            conn_->prepareStatement("SELECT COUNT(*) FROM child WHERE parents_id = ? AND name = ?")
+        );
+        checkDup->setInt(1, parents_uid);
+        checkDup->setString(2, name);
+        unique_ptr<sql::ResultSet> dupRes(checkDup->executeQuery());
+
+        if (dupRes->next() && dupRes->getInt(1) > 0) {
+            out_error_msg = "같은 이름의 자녀가 이미 등록되어 있습니다.";
+            return false;
+        }
+
+        // [1] INSERT
+        unique_ptr<sql::PreparedStatement> insert(
+            conn_->prepareStatement("INSERT INTO child ( parents_id, name, birth_date, gender, icon_color) VALUES (?, ?, ?, ?, ?)")
+        );
+        insert->setInt(1, parents_uid);
+        insert->setString(2, name);
+        insert->setString(3, birthdate);
+        insert->setString(4, gender);
+        insert->setString(5, icon_color);
+        insert->executeUpdate();  
+
+ 
+        // [3] UID 가져오기
+        unique_ptr<sql::PreparedStatement> check_UID(
+            conn_->prepareStatement("SELECT LAST_INSERT_ID()")
+        );
+        unique_ptr<sql::ResultSet> uidRes(check_UID->executeQuery());
+
+        if (uidRes->next()) {
+            out_child_uid = uidRes->getInt(1);  // 첫 번째 컬럼
+            return true;
+        }
+        else {
+            out_error_msg = "UID 조회 실패";
+            return false;
+        }
+    }
+    catch (sql::SQLException& e) {
+        cerr << "→ [DB 오류] 자녀 등록 실패: " << e.what() << endl;
+        out_error_msg = "{{{(>_<)}}} DB오류_예외적인 경우 .. 확인필요 ";
+        return false; 
+    }
+}
+
+bool DBManager::getParentIdByUID(int uid, std::string& out_id) {
+    try {
+        unique_ptr<sql::PreparedStatement> stmt(
+            conn_->prepareStatement("SELECT id FROM parents WHERE uid = ?")
+        );
+        stmt->setInt(1, uid);
+        unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+
+        if (res->next()) {
+            out_id = res->getString("id");
+            return true;
+        }
+    }
+    catch (sql::SQLException& e) {
+        cerr << "→ [DB 오류] 부모 ID 조회 실패: " << e.what() << endl;
+    }
+    return false;
+}

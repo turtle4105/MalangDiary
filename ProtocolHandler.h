@@ -9,7 +9,7 @@ public:
     //로그인
     static nlohmann::json handle_Login(const nlohmann::json& json, DBManager& db);
     //아이등록
-    //static nlohmann::json handle_RegisterChild(const nlohmann::json& json, DBManager& db);
+    static nlohmann::json handle_RegisterChild(const nlohmann::json& json, DBManager& db);
 
 };
 
