@@ -17,5 +17,6 @@ public enum PageType {
     MdfDiary,
     ChkCld,
     ChkGallery,
-    ChkDiary
+    ChkDiary,
+    Goback
 }

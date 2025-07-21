@@ -91,6 +91,8 @@ namespace MalangDiary.Services {
             if (payloadLen > 0)
                 stream?.Write(payloadBytes, 0, payloadLen);
 
+            Console.WriteLine("item: " + item);
+
             // 한번에 담아서 보내는 법
             //List<byte> packet = new List<byte>();
             //packet.AddRange(header);

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using MalangDiary.Structs;
 using MalangDiary.Models;
+using MalangDiary.Helpers;
 
 namespace MalangDiary.Models {
     public class HomeModel {
@@ -32,29 +33,36 @@ namespace MalangDiary.Models {
             GetBabyInfo();
         }
 
+        public DiaryInfo GetDiaryInfo() {
+            return LatestDiary;
+        }
 
-        public void GetLatestDiary() {
+        public DiaryInfo GetLatestDiary() {
+
+            DiaryInfo ResultDiaryInfo = new();
+            ResultDiaryInfo.Uid = 0;    // Default uid = 0 (No Diary)
+
             if (_session.GetCurrentChildUid() == 0) {
                 Console.WriteLine("[HomeModel] 현재 선택된 아기가 없습니다.");
-                return;
+                return ResultDiaryInfo;
             }
+
             // 현재 선택된 아기의 UID를 가져옵니다.
-            int TmpCurrentChildUid = _session.GetCurrentChildUid();
-            string CurrentChildUid = TmpCurrentChildUid.ToString();
+            string CurrentChildUid = _session.GetCurrentChildUid().ToString();
 
             // json 생성
             JObject jsonData = new()
             {
                 {"PROTOCOL", "GET_LATEST_DIARY" },
-                {"CHILDUID", CurrentChildUid }
+                {"CHILDUID", CurrentChildUid.ToString() }
             };
 
             // 보내는 메세지작업
             WorkItem sendingItem = new WorkItem
             {
                 json = jsonData.ToString(),
-                payload = { },
-                path = { }
+                payload = [],
+                path = ""
             };
 
             _socket.Send(sendingItem);
@@ -66,18 +74,27 @@ namespace MalangDiary.Models {
             string response = jsonData["RESP"]!.ToString();   // null 아님
 
             if (protocol == "GET_LATEST_DIARY" && response == "SUCCESS") {
-                
-                LatestDiary.Title = jsonData["TITLE"]!.ToString();
-                LatestDiary.Weather = jsonData["WEATHER"]!.ToObject<int>();
-                LatestDiary.Date = jsonData["CREATE_AT"]!.ToString();
-                if (jsonData["EMOTIONS"] is not null ) {
-                    for (int i = 0; i < 5; i++) {
-                        LatestDiary.Emotions[i] = jsonData["EMOTIONS"]!["EMOTION"]!.ToString();
+
+                ResultDiaryInfo.Uid = jsonData["DIARY_UID"]!.ToObject<int>();
+                ResultDiaryInfo.IntWeather = jsonData["WEATHER"]!.ToObject<int>();
+                ResultDiaryInfo.Weather = WeatherConveter.ConvertWeatherCodeToText(ResultDiaryInfo.IntWeather);
+                ResultDiaryInfo.Date = jsonData["CREATE_AT"]!.ToString();
+                if (jsonData["EMOTIONS"] is not null) {
+                    JArray? ArrEmotions = jsonData["EMOTIONS"]!.ToObject<JArray>();
+
+                    // JArray의 열거자(반복가능객체) 생성
+                    var iterator = ArrEmotions?.GetEnumerator();
+
+                    while (iterator.MoveNext()) {
+                        var emotion = iterator.Current as JObject;
+                        if (emotion is not null) {
+                            ResultDiaryInfo.Emotions!.Append(emotion["EMOTION"]!.ToString());
+                        }
                     }
                 }
+                LatestDiary = ResultDiaryInfo;
             }
-
-            return;
+            return ResultDiaryInfo;
         }
 
         public static void GetBabyInfo() {

@@ -63,6 +63,9 @@ public class MainViewModel {
             case PageType.ChkDiary:
                 _mainFrame.Navigate(new ChkDiaryView { DataContext = App.Services!.GetService(typeof(ChkDiaryViewModel)) });
                 break;
+            case PageType.Goback:
+                _mainFrame.GoBack();
+                break;
         }
     }
 }

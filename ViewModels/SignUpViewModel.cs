@@ -23,16 +23,16 @@ namespace MalangDiary.ViewModels {
     public partial class SignUpViewModel(UserModel userModel, UserSession session) : ObservableObject {
 
         // [ObservableProperty]를 붙이면 자동으로 프로퍼티 + OnPropertyChanged 생성됨
-        [ObservableProperty] private string? name;      // Binding 대상이 Name이면, OP는 소문자로 작성
-        [ObservableProperty] private string? email;
-        [ObservableProperty] private string? password;
-        [ObservableProperty] private string? phone;
+        [ObservableProperty] private string name;      // Binding 대상이 Name이면, OP는 소문자로 작성
+        [ObservableProperty] private string email;
+        [ObservableProperty] private string password;
+        [ObservableProperty] private string phone;
 
         // 버튼 클릭 시 실행되는 명령 - 자동으로 ICommand 구현됨
         [RelayCommand]
         private void SignUp() {
 
-            var (isSuccess, message) = userModel.RegisterParents(this.name, this.email, this.password, this.phone);
+            var (isSuccess, message) = userModel.RegisterParents(Name, Email, Password, Phone);
 
             if (!isSuccess) {
                 MessageBox.Show(message, "회원가입 실패", MessageBoxButton.OK, MessageBoxImage.Error);

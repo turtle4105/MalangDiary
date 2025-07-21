@@ -1,4 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using MalangDiary.Enums;
+using MalangDiary.Messages;
+using MalangDiary.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -7,7 +11,7 @@ using System.Windows;
 using System.Windows.Input;
 
 namespace MalangDiary.ViewModels {
-    public class ChkCldViewModel : INotifyPropertyChanged {
+    public partial class ChkCldViewModel : INotifyPropertyChanged {
         public ObservableCollection<DayModel> Days { get; set; } = new ObservableCollection<DayModel>();
         public ICommand DayClickCommand { get; set; }
         public ICommand PreviousMonthCommand { get; set; }
@@ -16,8 +20,11 @@ namespace MalangDiary.ViewModels {
         private DateTime _currentDate;
         public string CurrentMonthText => $"{_currentDate:yyyy년 M월}";
 
-        public ChkCldViewModel() {
+        /* Constructor */
+        public ChkCldViewModel( ChkModel chkmodel ) {
             Console.WriteLine("ChkCldViewModel 생성됨");
+
+            _chkModel = chkmodel;
 
             _currentDate = DateTime.Now;
             GenerateCalendar(_currentDate);
@@ -37,6 +44,8 @@ namespace MalangDiary.ViewModels {
                 OnPropertyChanged(nameof(CurrentMonthText));
             });
         }
+
+        ChkModel _chkModel;
 
         private void GenerateCalendar(DateTime targetDate) {
             Days.Clear();
@@ -69,6 +78,11 @@ namespace MalangDiary.ViewModels {
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string name = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        [RelayCommand] private void GoBack() {
+            Console.WriteLine("[ChkCldViewModel] GoBack command executed.");
+            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Goback));
         }
     }
 

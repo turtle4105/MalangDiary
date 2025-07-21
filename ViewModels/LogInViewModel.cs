@@ -43,7 +43,7 @@ namespace MalangDiary.ViewModels {
 
         [RelayCommand]
         private static void GoBack() {
-            WeakReferenceMessenger.Default.Send((new PageChangeMessage(PageType.Start)));
+            WeakReferenceMessenger.Default.Send((new PageChangeMessage(PageType.Goback)));
         }
 
         [RelayCommand]

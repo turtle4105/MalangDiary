@@ -79,7 +79,7 @@
 
         <!-- 상단 바 -->
         <DockPanel Background="#FFACAC" Grid.Row="0" LastChildFill="True">
-            <Button Content="&lt;" Command="{Binding CancelDiaryCommand}"
+            <Button Content="&lt;" Command="{Binding GoToHomeCommand}"
                     Width="40" Background="Transparent" BorderThickness="0"
                     FontSize="18" Foreground="White" DockPanel.Dock="Left"/>
 

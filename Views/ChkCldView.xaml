@@ -28,6 +28,7 @@
         <!-- 뒤로가기 버튼 -->
         <DockPanel Grid.Row="0" Background="#FFACAC">
             <Button Content="&lt;" Width="40"
+                    Command="{Binding GoBackCommand}"
             Background="Transparent" BorderThickness="0"
             FontSize="16" Foreground="White"
             DockPanel.Dock="Left" HorizontalAlignment="Left"/>

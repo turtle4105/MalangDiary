@@ -16,7 +16,9 @@
 
         <!-- 상단 바 -->
         <DockPanel Background="#FFACAC" Height="50">
-            <Button Content="&lt;" Width="40" Background="Transparent" BorderThickness="0" FontSize="18" Foreground="White" />
+            <Button Content="&lt;" 
+                    Command="{Binding GoBackCommand}" 
+                    Width="40" Background="Transparent" BorderThickness="0" FontSize="18" Foreground="White" />
             <TextBlock Text="자녀등록" FontWeight="Bold" FontSize="18" Foreground="White"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,40,0"/>
         </DockPanel>

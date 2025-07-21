@@ -98,15 +98,14 @@
             <StackPanel>
 
                 <DockPanel>
-
                     <TextBlock 
-                        Text="20XX-XX-XX"
+                        Text="{Binding DateText}"
                         HorizontalAlignment="Left"
                         FontFamily="Noto Sans KR"
                         Foreground="#2A2A2A"
                         />
                     <TextBlock 
-                        Text="날씨: ??"
+                        Text="{Binding WeatherText, StringFormat='날씨: {0}'}"
                         HorizontalAlignment="Right" 
                         FontFamily="Noto Sans KR" 
                         Foreground="#2A2A2A"
