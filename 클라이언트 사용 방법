@@ -1,0 +1,26 @@
+cd cpp
+  g++ -o client main.cpp HttpClient.cpp -lcurl
+  ./client
+
+  출력 예시
+
+  === 음성 일기 생성 클라이언트 ===
+  설정된 아이 이름: 전인우
+  오디오 파일: ../output.wav
+  서버 URL: http://localhost:8000/transcribe
+  요청 URL: http://localhost:8000/transcribe?child_name=%EC%A0%84%EC%9D%B8%EC%9A%B0
+  아이 이름 '전인우'로 음성 분석을 시작합니다...
+
+  === 서버 응답 ===
+  {"transcript": "...", "child_voice_only": "..."}
+
+  === 결과 저장 완료 ===
+  결과가 result.json 파일에 저장되었습니다.
+
+  🎯 장점
+
+  1. 간단한 설정: 상단 10번째 줄에서 아이 이름만 수정
+  2. 명확한 구조: 설정 구역이 분리되어 관리 용이
+  3. 정보 투명성: 사용되는 설정값을 모두 출력
+  4. URL 인코딩: "전인우" → %EC%A0%84%EC%9D%B8%EC%9A%B0 자동 변환
+  5. 사용자 친화적: 단계별로 명확한 출력 메시지
