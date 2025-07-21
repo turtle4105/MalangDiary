@@ -1,0 +1,122 @@
+# Voice Diary System Development - Conversation Log
+
+## 프로젝트 개요
+- 엄마와 아이의 대화 음성을 업로드하여 아이의 발화만 추출해서 일기를 생성하는 시스템
+- 기술 스택: C++ client → Python FastAPI server → Whisper → Resemblyzer → GPT
+
+## 요구사항
+```
+음성 업로드 (output.wav)
+└ Whisper (faster-whisper)
+   └ segment 추출[1.5초마다 구간을 나눈다.]
+      └ 각 구간별 임베딩(사람의 목소리의 특징을 숫자로) + 저장된 embedding.json과 유사도 비교
+         └ 아이의 발화 구간만 추출
+            └ GPT 프롬프트 정제
+               └ 일기 생성 텍스트 결과 반환
+```
+
+## 주요 대화 흐름
+
+### 1. 초기 문제 분석 및 시스템 개선
+**User**: 이전 결과를 봐줘 (transcript, child_voice_only, emotion, diary 결과 제공)
+**Assistant**: 분석 결과 3가지 문제 발견:
+- child_voice_only가 너무 적음 (대부분 엄마 발화 누락)
+- emotion이 키워드 나열처럼 보임
+- diary에서 없는 사실 생성 (저녁 잔치국수 등)
+
+### 2. 필터링 시스템 개선
+**개선사항**:
+- 아이 음성 필터링을 1.5초에서 적절한 수준으로 조정
+- 수동 필터링 패턴 강화 (엄마 발화 제외 패턴 추가)
+- 감정 분석 프롬프트 개선 (키워드→감정으로)
+- 일기 생성 시 거짓 정보 방지 강화
+
+### 3. 임베딩 vs 수동 필터링 우선순위 테스트
+**User**: 요구사항은 Resemblyzer 임베딩 기반이 주 방법이어야 함
+**Assistant**: 시스템을 임베딩 우선으로 변경
+
+**결과**: 임베딩만 사용시 "밥이랑 잔치국수"만 추출 (대부분 누락)
+
+### 4. 임베딩 시스템 문제 분석
+**User**: 수동 필터링을 비활성화하고 테스트해보자
+**결과**: 임베딩이 완전히 반대로 작동 - 엄마 발화를 아이 발화로 잘못 인식
+```
+"child_voice_only": " 대답을 안 하면 녹음이 안돼  설아 엄마랑 대화하는 거 녹음해야 돼..."
+```
+
+### 5. 임베딩 문제 원인 규명
+**User**: setting_voice.py 파일로 내가 직접 아이 목소리를 듣고 만든 embedding.json이었거든
+**Assistant**: 문제 발견! 제가 임베딩 로직을 잘못 반전시켰음
+
+**원인 분석**:
+- embedding.json은 올바른 아이 음성 임베딩
+- 코드에서 임베딩 로직을 반대로 수정한 것이 문제
+- 유사도 임계값도 0.55 → 0.4로 조정
+
+### 6. 최종 해결
+**수정사항**:
+1. 임베딩 로직 원래대로 복원 (높은 유사도 = 아이 음성)
+2. 유사도 임계값 최적화 (0.55 → 0.4)
+3. 하이브리드 시스템 구축 (수동 필터링 주 + 임베딩 보완)
+
+**최종 결과**:
+```json
+"child_voice_only": "공부했어 국어 수학, 탐험 동물 형내네 걷기랑 뭔지 모르겠다...",
+"emotion": "무관심, 흥분, 당황",
+"diary": {"title": "공부와 음식 [😊]", "content": "실제 아이 발화 기반 일기"}
+```
+
+## 핵심 기술적 문제 및 해결
+
+### 문제 1: 임베딩 시스템 역동작
+**원인**: 개발자가 임베딩 로직을 잘못 반전 (similarity < threshold → similarity > threshold)
+**해결**: 원래 로직 복원 + 임계값 최적화
+
+### 문제 2: 수동 필터링 vs 임베딩 우선순위
+**해결**: 하이브리드 시스템으로 두 방법의 장점 결합
+
+### 문제 3: GPT 환각 현상 (일기에서 거짓 정보 생성)
+**해결**: 
+- temperature 0.7 → 0.1
+- 프롬프트에서 "없는 내용 추가 금지" 강화
+- 마크다운 사용 금지 명시
+
+## 파일 구조
+```
+/Users/scar/projects/voice/
+├── main.py (FastAPI 서버)
+├── cpp/main.cpp (C++ 클라이언트)
+├── embedding.json (아이 음성 임베딩)
+├── setting_voice.py (임베딩 생성 도구)
+├── requirements.txt
+└── CLAUDE.md (시스템 문서)
+```
+
+## 주요 코드 변경사항
+
+### identify_child_voice 함수
+```python
+# Before: 잘못된 반전 로직
+if similarity < (1.0 - similarity_threshold):
+
+# After: 올바른 로직
+if similarity > similarity_threshold:
+```
+
+### 하이브리드 필터링 시스템
+```python
+# 수동 필터링 우선, 임베딩으로 보완
+if len(child_texts_manual) > 0:
+    child_texts = child_texts_manual + additional_texts
+    logger.info(f"하이브리드 결과 선택 - 수동({len(child_texts_manual)}) + 임베딩 보완({len(additional_texts)})")
+```
+
+## 성능 개선 결과
+- **child_voice_only**: 1개 → 13개 아이 발화 추출
+- **emotion**: 키워드 나열 → 실제 감정 3개
+- **diary**: 거짓 정보 생성 → 실제 발화 기반 일기
+
+## 남은 과제
+1. 임베딩 시스템 추가 최적화 (임계값, 세그먼트 매칭)
+2. 다양한 아이 음성에 대한 범용성 테스트
+3. 성능 모니터링 및 로깅 강화

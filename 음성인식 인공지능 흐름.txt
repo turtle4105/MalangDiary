@@ -1,0 +1,50 @@
+1. 아이 등록 시 : 세팅 음성 임베딩 → 저장
+
+아이의 세팅 음성.wav
+   └── system("run_embed.py") 호출
+         └── Resemblyzer 임베딩 수행
+         └── 임베딩 결과 → JSON 저장 (ex: ./embeddings/아이_UID.json)
+
+2. 일기 생성을 위한 음성 업로드
+Whisper → segment → Resemblyzer → 아이 발화만 → GPT → 일기 생성
+
+사용자 음성 업로드 (output.wav)
+   └ Whisper (faster-whisper)
+      └ segment 추출[1초마다 구간을 나눈다.]
+         └ 각 구간별 임베딩(사람의 목소리의 특징을 숫자로 ) + 저장된 embedding.json과 유사도 비교
+            └ 아이의 발화 구간만 추출
+               └ GPT 프롬프트 정제
+                  └ 일기 생성 텍스트 결과 반환
+
+# 서버가 넘겨줘야 할 두 가지
+녹음 파일 (아이와 보호자의 실제 녹음)
+아이 임베딩 (등록된 아이의 음성 특징 벡터)
+
+📂 server/
+ ├── embed/
+ │   └── run_embed.py          ← system()으로 호출
+ │   └── embeddings/
+ │         └── child_uid_001.json
+ ├── inference/
+ │   └── whisper_and_gpt.py    ← FastAPI가 사용하는 주요 처리 로직
+ ├── main.py                         ← FastAPI 서버
+
+
+[1] POST 요청 수신 (녹음 + 임베딩)
+   ↓
+[2] output.wav 저장
+   ↓
+[3] embedding 리스트 → numpy array로 변환
+   ↓
+[4] whisper로 segment 자르기
+   ↓
+[5] 각 segment를 Resemblyzer로 임베딩
+     → cosine 유사도 비교
+     → 유사한 segment만 선택
+   ↓
+[6] 아이 발화만 정제 → GPT에 전달
+   ↓
+[7] 일기 생성 → JSON 응답 반환
+
+
+

@@ -1,0 +1,13 @@
+만약 제가 없는 상황에서 .env파일 내의 openapi key 가 없는 경우 
+
+1. https://platform.openai.com/api-keys 여기로 접속합니다.
+
+2. 로그인합니다.
+
+3. create new secret key 버튼을 클릭합니다.
+
+4. 생성된 키를 복사합니다. 
+5. .env 파일에 다음과 같이 작성합니다.
+OPENAI_API_KEY=여기에_복사한_키를_붙여넣기
+
+6. 저장합니다.
