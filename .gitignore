@@ -1,0 +1,38 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# VS files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ReSharper
+_ReSharper*/
+*.DotSettings.user
+
+# Rider
+.idea/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+*.nuspec
+
+# ASP.NET if ever added
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Local settings
+*.local.json
+
+# Other common
+*.log
+*.cache
+*.tmp
+*.db
+*.bak
