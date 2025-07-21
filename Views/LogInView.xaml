@@ -1,0 +1,151 @@
+﻿<Page x:Class="MalangDiary.Views.LogInView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewmodels="clr-namespace:MalangDiary.ViewModels"
+      xmlns:helpers="clr-namespace:MalangDiary.Helpers"
+      mc:Ignorable="d"
+      Background="#FFFEFD"
+      Width="400" Height="800"
+      d:DataContext="{d:DesignInstance Type=viewmodels:LogInViewModel}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="7*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 뒤로 가기 버튼 -->
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Top"
+                    Margin="0,0,0,0"
+                    Grid.Row="0">
+            <Button Content="＜"
+                Command="{Binding GoBackCommand}"
+                Margin="0,0,0,0"
+                Height="40" Width="40"
+                FontSize="18"
+                Foreground="Black"
+                Background="Transparent"
+                BorderBrush="Transparent" />
+        </StackPanel>
+
+        <!-- 로고 -->
+        <Image Grid.Row="1"
+               Source="/Resources/Images/logo/malang_logo.png"
+               Width="256"
+               HorizontalAlignment="Center"
+               Grid.ColumnSpan="2" 
+               VerticalAlignment="Bottom" />
+
+        <!-- 설명 -->
+        <TextBlock Grid.Row="2"
+                   Grid.ColumnSpan="2" 
+                   Text="아이의 목소리로 완성되는 특별한 하루"
+                   FontSize="14"
+                   FontWeight="Bold"
+                   Foreground="#2A2A2A"
+                   HorizontalAlignment="Center"
+                   FontFamily="Noto Sans KR" 
+                   VerticalAlignment="Center" />
+
+        <!-- 입력란 + 버튼 -->
+        <StackPanel Grid.Row="3"
+                    Margin="20,0,20,0">
+
+            <!-- 아이디 -->
+            <Border CornerRadius="26" 
+                    Background="#FFF9F0" 
+                    BorderBrush="#FFE6E6" 
+                    BorderThickness="1"  
+                    Margin="0,0,0,10">
+                <TextBox Text="{Binding Email}" 
+                         Height="52" 
+                         VerticalAlignment="Center" 
+                         Tag="아이디"
+                         Margin="4,0,0,0"
+                         
+                         Style="{StaticResource PinkWatermarkTextBoxStyle}"
+                         FontSize="14"
+                         FontFamily="Noto Sans KR"
+                         Background="Transparent"
+                         Foreground="#2A2A2A"
+                         Padding="10,0,0,0"
+                         VerticalContentAlignment="Center"
+                         BorderBrush="Transparent"
+                         />
+            </Border>
+
+            <!-- 비밀번호 -->
+            <Border CornerRadius="28" Margin="0,0,0,25"
+                    Background="#FFF9F0"
+                    BorderBrush="#FFE6E6" 
+                    BorderThickness="1">
+                <Grid>
+                    <PasswordBox helpers:PasswordBoxHelper.BoundPassword="{Binding Password, Mode=TwoWay}"
+                                 Background="Transparent"
+                                 BorderBrush="Transparent"
+                                 BorderThickness="0"
+                                 
+                                 FontSize="14"
+                                 Padding="13,0,0,0"
+                                 Foreground="#2A2A2A"
+                                 
+                                 VerticalContentAlignment="Center"
+                                 
+                                 Height="56" Grid.ColumnSpan="2"
+                                 FocusVisualStyle="{x:Null}"
+                                 PasswordChar="●"
+                                 PasswordChanged="PasswordBox_PasswordChanged"/>
+                    <TextBlock Text="비밀번호"
+                               Foreground="#FFACAC"
+                               FontSize="14"
+                               FontFamily="Noto Sans KR"
+                               Margin="13,0,0,0"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False"
+                               Visibility="{Binding Password, Converter={StaticResource EmptyStringToVisibilityConverter}}" Grid.ColumnSpan="2"/>
+                </Grid>
+            </Border>
+
+            <!-- 로그인 버튼 -->
+            <Button Content="로그인"
+                    Command="{Binding LogInCommand}"
+                    Foreground="White"
+                    Background="#FFACAC"
+                    FontSize="15"
+                    FontFamily="Noto Sans KR Medium"
+                    BorderThickness="0"
+                    MinHeight="52"
+                    Height="52"
+                    Margin="0,0,0,30">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="26">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!-- 회원가입 유도 -->
+            <Button Command="{Binding GoToSignUpCommand}"
+                    Background="Transparent"
+                    BorderBrush="Transparent">
+                <TextBlock HorizontalAlignment="Center" 
+                           FontSize="13" 
+                           FontFamily="Noto Sans KR">
+                    <Run Text="계정이 없나요? " 
+                         Foreground="#A7A7A7"/>
+                    <Run Text="회원가입" 
+                         Foreground="#FFACAC" 
+                         TextDecorations="Underline" 
+                         Cursor="Hand"/>
+                </TextBlock>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page>

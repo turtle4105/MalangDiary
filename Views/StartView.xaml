@@ -1,0 +1,105 @@
+﻿<Page x:Name="StartView1" x:Class="MalangDiary.Views.StartView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:viewmodels="clr-namespace:MalangDiary.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:StartViewModel}"
+      mc:Ignorable="d"
+      Background="#FFFEFD" Width="400" Height="800">
+
+    <Grid x:Name="StartViewGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="17*" />
+            <RowDefinition Height="3.0*" />
+            <RowDefinition Height="2.6*" />
+            <RowDefinition Height="2.6*" />
+            <RowDefinition Height="9*" />
+        </Grid.RowDefinitions>
+
+        <!-- 로고 -->
+        <Image Grid.Row="0"
+               Width="300"
+               Source="/Resources/Images/logo/malang_logo.png"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Margin="0,100,0,0"
+               />
+
+        <!-- 슬로건 -->
+        <TextBlock Grid.Row="1"
+                   Text="아이의 말, 사랑으로 꾹! 하루에 톡!"
+                   FontFamily="Noto Sans KR"
+                   FontSize="15"
+                   FontWeight="Bold"
+                   Foreground="#2A2A2A"
+                   
+                   HorizontalAlignment="Center"
+                   />
+
+        <!-- 로그인 버튼 -->
+        <Button Grid.Row="2"
+                Height="0"
+                MinHeight="52"
+                Margin="20,0,20,0"
+                
+                Content="로그인"
+                FontSize="15"
+                Foreground="White"
+                Background="#FFACAC"
+
+                FontFamily="Noto Sans KR Medium" 
+                
+                Command="{Binding GoToLoginCommand}">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="26">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <!-- 회원가입 버튼 -->
+        <Button Grid.Row="3"
+                Height="0"
+                MinHeight="52"
+                BorderThickness="2"
+                Margin="20,0,20,0"
+                
+                Content="회원가입"
+                FontSize="15"
+                FontFamily="Noto Sans KR Medium" 
+
+                Foreground="#FFACAC"
+                Background="#FFF9F0"
+                BorderBrush="#FFACAC"
+
+                Command="{Binding GoToSignUpCommand}">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="26">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <!-- Copyright -->
+        <TextBlock Text="Copyright 2025. HeeraHyeonjaeSangTaeBuiBeom All Rights Reserved."
+                   FontSize="10"
+                   Foreground="Gray"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Bottom"
+                   Grid.Row="4" FontFamily="Noto Sans KR" Margin="0,0,0,50" />
+    </Grid>
+</Page>

@@ -1,0 +1,97 @@
+﻿<Page x:Class="MalangDiary.Views.RgsChdView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      Title="Page1"
+      Background="#FFFEFD"
+      d:DesignHeight="800" d:DesignWidth="400">
+
+    <Grid Width="400">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 상단 바 -->
+        <DockPanel Background="#FFACAC" Height="50">
+            <Button Content="&lt;" Width="40" Background="Transparent" BorderThickness="0" FontSize="18" Foreground="White" />
+            <TextBlock Text="자녀등록" FontWeight="Bold" FontSize="18" Foreground="White"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,40,0"/>
+        </DockPanel>
+
+        <!-- 내용 -->
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="380" Margin="0,20,0,0">
+
+            <!-- 프로필 + 색상 -->
+            <StackPanel Orientation="Horizontal" Margin="10,0,0,20">
+                <!-- 아이콘 이미지 -->
+                <Image Source="/Resources/Images/Icons/baby_icon_resized_70.png"
+                       Width="70" Height="70"
+                       Stretch="Uniform"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+
+                <!-- 색상 선택 -->
+                <StackPanel Orientation="Horizontal" Margin="18,0,0,0">
+                    <Ellipse Width="25" Height="25" Fill="#FFACAC" Margin="14"/>
+                    <Ellipse Width="25" Height="25" Fill="#FFF2DC" Margin="14"/>
+                    <Ellipse Width="25" Height="25" Fill="#B0FFA9" Margin="14"/>
+                    <Ellipse Width="25" Height="25" Fill="#7EA6ED" Margin="14"/>
+                    <Ellipse Width="25" Height="25" Fill="#EADDF7" Margin="14"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- 이름 입력 -->
+            <TextBlock Text="이름을 입력해주세요." Foreground="#FFACAC" Margin="10,0,0,5" FontSize="14"/>
+            <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Height="50" Margin="0,0,0,10" Width="364">
+                <TextBox Background="Transparent" BorderThickness="0" Padding="10" Foreground="#FFACAC"
+                         FontWeight="Bold" Text="이름" FontSize="14"
+                         HorizontalContentAlignment="Center"
+                         VerticalContentAlignment="Center" />
+            </Border>
+
+            <!-- 생일 입력 -->
+            <TextBlock Text="생일을 입력해주세요." Foreground="#FFACAC" Margin="10,10,0,5" FontSize="14"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10" Height="54">
+                <Border CornerRadius="10" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="151" Height="50" Margin="0,0,10,0">
+                    <TextBox Background="Transparent" BorderThickness="0" Padding="10" Foreground="#FFACAC" Text="출생년도" FontSize="14"
+                             HorizontalContentAlignment="Center"
+                             VerticalContentAlignment="Center" />
+                </Border>
+                <Border CornerRadius="10" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="85" Height="50" Margin="0,0,10,0">
+                    <TextBox Background="Transparent" BorderThickness="0" Padding="10" Foreground="#FFACAC" Text="월" FontSize="14"
+                             HorizontalContentAlignment="Center"
+                             VerticalContentAlignment="Center" />
+                </Border>
+                <Border CornerRadius="10" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="85" Height="50">
+                    <TextBox Background="Transparent" BorderThickness="0" Padding="10" Foreground="#FFACAC" Text="일" FontSize="14"
+                             HorizontalContentAlignment="Center"
+                             VerticalContentAlignment="Center" />
+                </Border>
+            </StackPanel>
+
+            <!-- 성별 선택 -->
+            <TextBlock Text="성별을 선택해주세요." Foreground="#FFACAC" Margin="10,10,0,7" FontSize="14"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                <Border CornerRadius="25" Background="#FFACAC" Width="175" Height="50" Margin="0,0,10,0">
+                    <ToggleButton Content="남" Background="Transparent" BorderThickness="0" Foreground="White" FontWeight="Bold" FontSize="16"/>
+                </Border>
+                <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="175" Height="50">
+                    <ToggleButton Content="여" Background="Transparent" BorderThickness="0" Foreground="#FFACAC" FontWeight="Bold" FontSize="16"/>
+                </Border>
+            </StackPanel>
+
+            <!-- 녹음 버튼 -->
+            <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="#FFF6E5" Width="363" Height="50" Margin="0,10,0,180">
+                <Button Content="목소리 녹음하기" Background="Transparent" BorderThickness="0" Foreground="#FFACAC" FontWeight="Bold" FontSize="15"/>
+            </Border>
+
+            <!-- 등록 완료 버튼 -->
+            <Border CornerRadius="25" Background="#FFACAC" Width="374" Height="50" Margin="0,10,0,30">
+                <Button Content="등록 완료" Background="Transparent" BorderThickness="0" Foreground="White" FontWeight="Bold" FontSize="16"/>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Page>

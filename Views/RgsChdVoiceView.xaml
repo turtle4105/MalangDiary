@@ -1,0 +1,102 @@
+﻿<Page x:Class="MalangDiary.Views.RgsChdVoiceView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      Background="#FFFEFD"
+      d:DesignHeight="800" d:DesignWidth="400">
+
+    <Page.Resources>
+        <!-- 🔵 파란 테두리 제거 전용 버튼 스타일 -->
+        <Style x:Key="NoHighlightButtonStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid Width="400" Height="800">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 상단 바 -->
+        <DockPanel Background="#FFACAC" Grid.Row="0">
+            <!-- 뒤로가기 버튼 -->
+            <Button Content="&lt;"
+                    Width="40"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    FontSize="18"
+                    Foreground="White"
+                    FocusVisualStyle="{x:Null}"/>
+
+            <!-- 가운데 타이틀 -->
+            <TextBlock Text="말랑일기"
+                       FontWeight="Bold"
+                       FontSize="18"
+                       Foreground="White"
+                       FontFamily="Noto Sans KR"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,40,0"/>
+        </DockPanel>
+
+        <!-- 본문 -->
+        <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,108,0,0" Height="632" Width="380">
+
+            <!-- 동그라미 세트 -->
+            <Grid Width="250" Height="302">
+                <!-- 바깥 세트 -->
+                <Ellipse Width="230" Height="230" Stroke="#FFD7D7" StrokeThickness="1.2" Opacity="0.8"/>
+                <Ellipse Width="215" Height="215" Stroke="#FFD7D7" StrokeThickness="1.2" Opacity="0.8"/>
+
+                <!-- 중간 세트 -->
+                <Ellipse Width="170" Height="170" Stroke="#FFC1C1" StrokeThickness="1.2" Opacity="0.9" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Ellipse Width="158" Height="158" Stroke="#FFC1C1" StrokeThickness="1.2" Opacity="0.9" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                <!-- 안쪽 세트 -->
+                <Ellipse Width="110" Height="110" Stroke="#FFADAD" StrokeThickness="1.4" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Ellipse Width="100" Height="100" Stroke="#FFADAD" StrokeThickness="1.4" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                <!-- 중심 원 -->
+                <Ellipse Width="60" Height="60" Stroke="#FF9B9B" StrokeThickness="2" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+
+            <!-- 상태 텍스트 -->
+            <TextBlock Text="듣는 중" FontSize="14" Foreground="#FF9B9B" Margin="0,20,0,90" HorizontalAlignment="Center" FontFamily="Noto Sans KR"/>
+
+            <!-- 다시 녹음 버튼 -->
+            <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="#FFF6E5"
+                    Width="375" Height="50" Margin="0,40,0,10">
+                <Button Content="다시 녹음"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="#FFACAC"
+                        FontFamily="Noto Sans KR"
+                        Style="{StaticResource NoHighlightButtonStyle}"/>
+            </Border>
+
+            <!-- 녹음 종료 버튼 -->
+            <Border CornerRadius="25" Background="#FFACAC" Width="375" Height="50">
+                <Button Content="녹음 종료"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="White"
+                        FontFamily="Noto Sans KR"
+                        Style="{StaticResource NoHighlightButtonStyle}"/>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Page>
