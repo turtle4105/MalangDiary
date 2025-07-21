@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using MalangDiary.Structs;
+using System.Text.Json;
 
 namespace MalangDiary.Services {
     public interface ISocketManager {
@@ -69,6 +70,12 @@ namespace MalangDiary.Services {
         /// </summary>
         /// <param name="item"></param>
         public void Send(WorkItem item) {
+
+            Console.WriteLine("Item:" + item.ToString());
+            string jsonstring = JsonSerializer.Serialize(item.json);
+            Console.WriteLine(item.json);
+
+
             // JSON → 바이트
             byte[] jsonBytes = Encoding.UTF8.GetBytes(item.json);
             int jsonLen = jsonBytes.Length;
@@ -90,6 +97,8 @@ namespace MalangDiary.Services {
             stream?.Write(jsonBytes, 0, jsonLen);
             if (payloadLen > 0)
                 stream?.Write(payloadBytes, 0, payloadLen);
+
+            Console.WriteLine("Item전송완료");
 
             // 한번에 담아서 보내는 법
             //List<byte> packet = new List<byte>();

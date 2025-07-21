@@ -3,10 +3,102 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       Title="Page1"
       Background="#FFFEFD"
       d:DesignHeight="800" d:DesignWidth="400">
+
+    <Page.Resources>
+
+        <!-- Placeholder TextBox 스타일 -->
+        <Style x:Key="PlaceholderTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Foreground" Value="#FFACAC"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid>
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                            <TextBlock Text="{TemplateBinding Tag}"
+                                       Foreground="#FFACAC"
+                                       FontWeight="Bold"
+                                       FontSize="14"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       IsHitTestVisible="False"
+                                       Opacity="0.5"
+                                       Visibility="Collapsed"
+                                       x:Name="Placeholder"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="Placeholder" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter TargetName="Placeholder" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 남/여 ToggleButton 스타일 -->
+        <Style x:Key="GenderToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FFACAC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#FFACAC"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="25">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              TextElement.Foreground="{TemplateBinding Foreground}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFACAC"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 일반 Button Flat 스타일 -->
+        <Style x:Key="FlatButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Page.Resources>
 
     <Grid Width="400">
         <Grid.RowDefinitions>
@@ -16,7 +108,8 @@
 
         <!-- 상단 바 -->
         <DockPanel Background="#FFACAC" Height="50">
-            <Button Content="&lt;" Width="40" Background="Transparent" BorderThickness="0" FontSize="18" Foreground="White" />
+            <Button Content="&lt;" Width="40" FontSize="18" Foreground="White"
+                    Style="{StaticResource FlatButtonStyle}" />
             <TextBlock Text="자녀등록" FontWeight="Bold" FontSize="18" Foreground="White"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,40,0"/>
         </DockPanel>
@@ -26,71 +119,89 @@
 
             <!-- 프로필 + 색상 -->
             <StackPanel Orientation="Horizontal" Margin="10,0,0,20">
-                <!-- 아이콘 이미지 -->
-                <Image Source="/Resources/Images/Icons/baby_icon_resized_70.png"
-                       Width="70" Height="70"
-                       Stretch="Uniform"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center" />
+                <Border Width="70" Height="70" CornerRadius="35" Background="{Binding SelectedProfileColor}" Margin="0,0,10,0">
+                    <Image Source="pack://application:,,,/Resources/Images/Icons/baby_70.png"
+                           Width="70" Height="70"
+                           Stretch="Uniform"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+                </Border>
 
                 <!-- 색상 선택 -->
                 <StackPanel Orientation="Horizontal" Margin="18,0,0,0">
-                    <Ellipse Width="25" Height="25" Fill="#FFACAC" Margin="14"/>
-                    <Ellipse Width="25" Height="25" Fill="#FFF2DC" Margin="14"/>
-                    <Ellipse Width="25" Height="25" Fill="#B0FFA9" Margin="14"/>
-                    <Ellipse Width="25" Height="25" Fill="#7EA6ED" Margin="14"/>
-                    <Ellipse Width="25" Height="25" Fill="#EADDF7" Margin="14"/>
+                    <Ellipse Width="25" Height="25" Fill="#FFACAC" Margin="14">
+                        <Ellipse.InputBindings>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding SetColorCommand}" CommandParameter="#FFACAC"/>
+                        </Ellipse.InputBindings>
+                    </Ellipse>
+                    <Ellipse Width="25" Height="25" Fill="#FFF2DC" Margin="14">
+                        <Ellipse.InputBindings>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding SetColorCommand}" CommandParameter="#FFF2DC"/>
+                        </Ellipse.InputBindings>
+                    </Ellipse>
+                    <Ellipse Width="25" Height="25" Fill="#B0FFA9" Margin="14">
+                        <Ellipse.InputBindings>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding SetColorCommand}" CommandParameter="#B0FFA9"/>
+                        </Ellipse.InputBindings>
+                    </Ellipse>
+                    <Ellipse Width="25" Height="25" Fill="#7EA6ED" Margin="14">
+                        <Ellipse.InputBindings>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding SetColorCommand}" CommandParameter="#7EA6ED"/>
+                        </Ellipse.InputBindings>
+                    </Ellipse>
+                    <Ellipse Width="25" Height="25" Fill="#EADDF7" Margin="14">
+                        <Ellipse.InputBindings>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding SetColorCommand}" CommandParameter="#EADDF7"/>
+                        </Ellipse.InputBindings>
+                    </Ellipse>
                 </StackPanel>
             </StackPanel>
 
             <!-- 이름 입력 -->
             <TextBlock Text="이름을 입력해주세요." Foreground="#FFACAC" Margin="10,0,0,5" FontSize="14"/>
             <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Height="50" Margin="0,0,0,10" Width="364">
-                <TextBox Background="Transparent" BorderThickness="0" Padding="10" Foreground="#FFACAC"
-                         FontWeight="Bold" Text="이름" FontSize="14"
-                         HorizontalContentAlignment="Center"
-                         VerticalContentAlignment="Center" />
+                <TextBox Style="{StaticResource PlaceholderTextBoxStyle}" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Tag="이름"/>
             </Border>
 
             <!-- 생일 입력 -->
             <TextBlock Text="생일을 입력해주세요." Foreground="#FFACAC" Margin="10,10,0,5" FontSize="14"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10" Height="54">
                 <Border CornerRadius="10" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="151" Height="50" Margin="0,0,10,0">
-                    <TextBox Background="Transparent" BorderThickness="0" Padding="10" Foreground="#FFACAC" Text="출생년도" FontSize="14"
-                             HorizontalContentAlignment="Center"
-                             VerticalContentAlignment="Center" />
+                    <TextBox Style="{StaticResource PlaceholderTextBoxStyle}" Text="{Binding BirthYear, UpdateSourceTrigger=PropertyChanged}" Tag="출생년도"/>
                 </Border>
                 <Border CornerRadius="10" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="85" Height="50" Margin="0,0,10,0">
-                    <TextBox Background="Transparent" BorderThickness="0" Padding="10" Foreground="#FFACAC" Text="월" FontSize="14"
-                             HorizontalContentAlignment="Center"
-                             VerticalContentAlignment="Center" />
+                    <TextBox Style="{StaticResource PlaceholderTextBoxStyle}" Text="{Binding BirthMonth, UpdateSourceTrigger=PropertyChanged}" Tag="월"/>
                 </Border>
                 <Border CornerRadius="10" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="85" Height="50">
-                    <TextBox Background="Transparent" BorderThickness="0" Padding="10" Foreground="#FFACAC" Text="일" FontSize="14"
-                             HorizontalContentAlignment="Center"
-                             VerticalContentAlignment="Center" />
+                    <TextBox Style="{StaticResource PlaceholderTextBoxStyle}" Text="{Binding BirthDay, UpdateSourceTrigger=PropertyChanged}" Tag="일"/>
                 </Border>
             </StackPanel>
 
             <!-- 성별 선택 -->
             <TextBlock Text="성별을 선택해주세요." Foreground="#FFACAC" Margin="10,10,0,7" FontSize="14"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
-                <Border CornerRadius="25" Background="#FFACAC" Width="175" Height="50" Margin="0,0,10,0">
-                    <ToggleButton Content="남" Background="Transparent" BorderThickness="0" Foreground="White" FontWeight="Bold" FontSize="16"/>
-                </Border>
-                <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="175" Height="50">
-                    <ToggleButton Content="여" Background="Transparent" BorderThickness="0" Foreground="#FFACAC" FontWeight="Bold" FontSize="16"/>
-                </Border>
+                <ToggleButton Content="남"
+                              Style="{StaticResource GenderToggleButtonStyle}"
+                              Width="175" Height="50" Margin="0,0,10,0"
+                              IsChecked="{Binding IsMale}"/>
+                <ToggleButton Content="여"
+                              Style="{StaticResource GenderToggleButtonStyle}"
+                              Width="175" Height="50"
+                              IsChecked="{Binding IsFemale}"/>
             </StackPanel>
 
             <!-- 녹음 버튼 -->
             <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="#FFF6E5" Width="363" Height="50" Margin="0,10,0,180">
-                <Button Content="목소리 녹음하기" Background="Transparent" BorderThickness="0" Foreground="#FFACAC" FontWeight="Bold" FontSize="15"/>
+                <Button Content="목소리 녹음하기" FontSize="15" Foreground="#FFACAC"
+                        Command="{Binding RecordVoiceCommand}" 
+                        Style="{StaticResource FlatButtonStyle}"/>
             </Border>
 
             <!-- 등록 완료 버튼 -->
             <Border CornerRadius="25" Background="#FFACAC" Width="374" Height="50" Margin="0,10,0,30">
-                <Button Content="등록 완료" Background="Transparent" BorderThickness="0" Foreground="White" FontWeight="Bold" FontSize="16"/>
+                <Button Content="등록 완료" FontSize="16" Foreground="White"
+                        Command="{Binding RgsChdCommand}" 
+                        Style="{StaticResource FlatButtonStyle}"/>
             </Border>
         </StackPanel>
     </Grid>

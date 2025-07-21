@@ -1,28 +1,74 @@
 ﻿using MalangDiary.Services;
+using MalangDiary.Structs;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MalangDiary.Models {
-    public class RgsModel {
-        public RgsModel(SocketManager socket, UserSession session) {
-            // 생성자에서 필요한 초기화 작업을 수행할 수 있습니다.
+namespace MalangDiary.Models
+{
+    public class RgsModel
+    {
+        public RgsModel(SocketManager socket, UserSession session)
+        {
             Console.WriteLine("[RgsModel] RgsModel 인스턴스가 생성되었습니다.");
-
             _socket = socket;
             _session = session;
         }
+
         private readonly SocketManager _socket;
         private readonly UserSession _session;
 
-        public void RegisterChild() {
+        public (bool isSuccess, string message) RegisterChild(string name, string birthdate, string gender, string iconColor)
+        {
+            int parentUid = _session.GetCurrentParentUid();
 
+            if (string.IsNullOrWhiteSpace(name) ||
+                string.IsNullOrWhiteSpace(birthdate) ||
+                string.IsNullOrWhiteSpace(gender) ||
+                string.IsNullOrWhiteSpace(iconColor))
+            {
+                return (false, "입력값이 누락되었습니다.");
+            }
+
+            JObject jsonData = new()
+            {
+                { "PROTOCOL", "REGISTER_CHILD" },
+                { "PARENTS_UID", parentUid },
+                { "NAME", name },
+                { "BIRTHDATE", birthdate },
+                { "GENDER", gender },
+                { "ICON_COLOR", iconColor }
+            };
+
+            string json = JsonConvert.SerializeObject(jsonData);
+            WorkItem sendItem = new()
+            {
+                json = json,
+                payload = new byte[0],
+                path = string.Empty
+            };
+
+            _socket.Send(sendItem);
+            WorkItem response = _socket.Receive();
+
+            JObject resJson = JObject.Parse(response.json);
+            string protocol = resJson["PROTOCOL"]?.ToString() ?? "";
+            string resp = resJson["RESP"]?.ToString() ?? "";
+            string message = resJson["MESSAGE"]?.ToString() ?? "";
+
+            if (protocol == "REGISTER_CHILD" && resp == "SUCCESS")
+            {
+                int childUid = resJson["CHILD_UID"]?.ToObject<int>() ?? -1;
+                Console.WriteLine($"[RgsModel] 자녀 등록 성공: UID={childUid}");
+                return (true, message);
+            }
+            else
+            {
+                Console.WriteLine($"[RgsModel] 자녀 등록 실패: {message}");
+                return (false, message);
+            }
         }
 
-        public void SetBabyVoice() {
-
-        }
+        public void SetBabyVoice() { }
     }
 }
