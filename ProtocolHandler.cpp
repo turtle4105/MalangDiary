@@ -29,9 +29,11 @@ nlohmann::json ProtocolHandler::handle_RegisterParents(const nlohmann::json& jso
     nlohmann::json response;
     response["PROTOCOL"] = "REGISTER_PARENTS";
 
+    //내가 줄 값 공간 할당
     int uid = -1;
     string error_msg;
     //쿼리 실행시 알아야하는 정보는 파싱해서 주고 없는 값은 비워서 전달~
+    //클라가 준 값 꺼내서 파싱
     bool result = db.registerParents(
         json.value("ID", ""),
         json.value("PW", ""),
@@ -122,8 +124,9 @@ nlohmann::json ProtocolHandler::handle_RegisterChild(const nlohmann::json& json,
 
     // [1] 받은 JSON 로그 출력
     cout << u8"[REGISTER_CHILD] 요청:\n" << json.dump(2) << endl;
-
-    int out_child_uid = -1;
+    // 내가 줄 값
+    int out_child_uid = -1; 
+    // 파싱한 값을 여기서 꺼냄 클라가 준 값
     int parents_uid = json.value("PARENTS_UID", -1);
     string babyname = json.value("NAME", "");
     string birthdate = json.value("BIRTHDATE", "");
@@ -141,7 +144,7 @@ nlohmann::json ProtocolHandler::handle_RegisterChild(const nlohmann::json& json,
         cout << u8"→ [REGISTER_CHILD] 자녀 등록 성공 - UID: " << out_child_uid << endl;
 
         // 부모 ID 추가 조회
-        std::string parentId;
+        string parentId;
         if (db.getParentIdByUID(parents_uid, parentId)) {
             if (CreateChildDirectory(parentId, parents_uid, babyname, out_child_uid)) {
                 cout << u8"→ [REGISTER_CHILD] 자녀 폴더 생성 완료" << endl;
@@ -158,7 +161,47 @@ nlohmann::json ProtocolHandler::handle_RegisterChild(const nlohmann::json& json,
         response["RESP"] = "FAIL";
         response["MESSAGE"] = toUTF8_safely(error_msg);
         cout << u8"[REGISTER_CHILD] 자녀 등록 실패: "
-            << toUTF8_safely(error_msg) << std::endl;
+             << toUTF8_safely(error_msg) << endl;
     }
     return response;
 }
+
+nlohmann::json ProtocolHandler::handle_LatestDiary(const nlohmann::json& json, DBManager& db) {
+    nlohmann::json response;
+    response["PROTOCOL"] = "GET_LATEST_DIARY";
+    cout << u8"[GET_LATEST_DIARY] 요청:\n" << json.dump(2) << endl;
+
+    string title;
+    int weather;
+    string create_at;
+    vector <string> emotions;
+    string error_msg;
+
+    int child_uid = json.value("CHILD_UID", -1);
+    if (child_uid == -1) {
+        response["RESP"] = "FAIL";
+        response["MESSAGE"] = "CHILD_UID 누락됨";
+        return response;
+    }
+
+    bool success = db.getLatestDiary(child_uid, title, weather, create_at, emotions, error_msg);
+    if (!success) {
+        response["RESP"] = "FAIL";
+        response["MESSAGE"] = toUTF8_safely(error_msg);
+        return response;
+    }
+
+    // 성공 시 응답 구성
+    response["RESP"] = "SUCCESS";
+    response["TITLE"] = title;
+    response["WEATHER"] = weather;
+    response["CREATE_AT"] = create_at;
+
+    nlohmann::json emotion_array = nlohmann::json::array();
+    for (const auto& emo : emotions) {
+        emotion_array.push_back({ {"EMOTION", emo} });
+    }
+    response["EMOTIONS"] = emotion_array;
+    return response;
+}
+

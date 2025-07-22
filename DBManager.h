@@ -2,6 +2,8 @@
 #include <mariadb/conncpp.hpp>
 #include <memory>
 #include <string>
+#include <vector>            
+
 using namespace std;
 
 struct std_child_info {
@@ -35,7 +37,17 @@ public:
         const string& birthdate, const string& gender,
         const string& icon_color, int& out_child_uid, string& out_error_msg);
 
+    // 부모 아이디 조회
     bool getParentIdByUID(int uid, string& out_id);
+
+    // 초기화면 일기조회
+    bool getLatestDiary(const int& child_uid,
+        string& title,
+        int& weather,
+        string& date,
+        vector<string>& emotions, string& out_error_msg);
+
+
 
 private:
     unique_ptr<sql::Connection> conn_;

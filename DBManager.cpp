@@ -1,5 +1,6 @@
 ﻿#include "DBManager.h"
 #include <iostream>
+
 using namespace std;
 
 DBManager::DBManager() {}
@@ -94,7 +95,7 @@ bool DBManager::login(
     vector<std_child_info>& out_children,
     string& out_error_msg){
     if (!conn_) {
-        out_error_msg = u8"→[DB 오류] DB 연결 실패";
+        out_error_msg = "→[DB 오류] DB 연결 실패";
         return false;
     }
 
@@ -117,7 +118,7 @@ bool DBManager::login(
         out_nickname = res->getString("nickname");
 
         // [3] 해당 부모의 자녀 정보 가져오기
-        std::unique_ptr<sql::PreparedStatement> childStmt(
+        unique_ptr<sql::PreparedStatement> childStmt(
             conn_->prepareStatement("SELECT child_uid, name, gender, birth_date, icon_color FROM child WHERE parents_id = ?")
         );
         childStmt->setInt(1, out_parents_uid);
@@ -193,12 +194,12 @@ bool DBManager::registerChild(const int& parents_uid, const string& name,
     }
     catch (sql::SQLException& e) {
         cerr << "→ [DB 오류] 자녀 등록 실패: " << e.what() << endl;
-        out_error_msg = "{{{(>_<)}}} DB오류_예외적인 경우 .. 확인필요 ";
+        out_error_msg = u8"{{{(>_<)}}} DB오류_예외적인 경우 .. 확인필요 ";
         return false; 
     }
 }
 
-bool DBManager::getParentIdByUID(int uid, std::string& out_id) {
+bool DBManager::getParentIdByUID(int uid, string& out_id) {
     try {
         unique_ptr<sql::PreparedStatement> stmt(
             conn_->prepareStatement("SELECT id FROM parents WHERE uid = ?")
@@ -215,4 +216,76 @@ bool DBManager::getParentIdByUID(int uid, std::string& out_id) {
         cerr << "→ [DB 오류] 부모 ID 조회 실패: " << e.what() << endl;
     }
     return false;
+}
+
+bool DBManager::getLatestDiary(const int& child_uid, std::string& title,
+    int& weather, std::string& date, std::vector<std::string>& emotions, std::string& out_error_msg) {
+
+    if (!conn_) {
+        out_error_msg = "→ [DB 오류] DB 연결 실패";
+        return false;
+    }
+
+    try {
+        // [1] 오늘 날짜를 "YYYYMMDD" 형식으로 얻기
+        time_t now = time(nullptr);
+        struct tm t;
+        localtime_s(&t, &now);
+
+        char buf[9];
+        strftime(buf, sizeof(buf), "%Y%m%d", &t);
+        std::string today = buf;
+
+        // [2] 오늘 날짜의 일기 중 최신 1개 조회
+        std::unique_ptr<sql::PreparedStatement> check_diary(
+            conn_->prepareStatement(R"(
+                SELECT diary_uid, title, weather, create_at
+                FROM diary
+                WHERE child_id = ? AND is_deleted = 0 
+                  AND DATE_FORMAT(create_at, '%Y%m%d') = ?
+                ORDER BY create_at DESC
+                LIMIT 1
+            )")
+        );
+
+        check_diary->setInt(1, child_uid);
+        check_diary->setString(2, today);
+
+        std::unique_ptr<sql::ResultSet> res(check_diary->executeQuery());
+
+        if (!res->next()) {
+            out_error_msg = "오늘 날짜의 일기가 존재하지 않습니다.";
+            return false;
+        }
+
+        int diary_uid = res->getInt("diary_uid");
+        title = res->getString("title");
+        weather = res->getInt("weather");
+        date = res->getString("create_at");
+
+        // [3] 감정(emotions) 테이블에서 감정 정보 조회
+        std::unique_ptr<sql::PreparedStatement> emo_stmt(
+            conn_->prepareStatement(R"(
+                SELECT emotion_1, emotion_2, emotion_3, emotion_4, emotion_5
+                FROM emotions WHERE diary_uid = ?
+            )")
+        );
+        emo_stmt->setInt(1, diary_uid);
+        std::unique_ptr<sql::ResultSet> emo_res(emo_stmt->executeQuery());
+
+        std::string fields[5] = { "emotion_1", "emotion_2", "emotion_3", "emotion_4", "emotion_5" };
+        if (emo_res->next()) {
+            for (const auto& field : fields) {
+                std::string emotion = emo_res->getString(field).c_str();
+                if (!emotion.empty()) {
+                    emotions.push_back(emotion);
+                }
+            }
+        }
+        return true;
+    }
+    catch (sql::SQLException& e) {
+        out_error_msg = "[DB 예외] " + std::string(e.what());
+        return false;
+    }
 }

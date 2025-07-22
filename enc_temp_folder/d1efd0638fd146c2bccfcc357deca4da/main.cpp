@@ -155,6 +155,57 @@ void handleClient(SOCKET clientSocket) {
     }
 }
 
+
+//// =======================================================================
+//// [계정 디렉토리 생성 함수] 
+//// - C:\Users\seonseo\source\repos\MalangDiary\
+////└── user_data\         ← 없으면 자동 생성
+////    └──[보호자ID + uid]\     ← 회원가입 시 생성됨
+//// =======================================================================
+//// 1) 부모 디렉토리 존재 확인
+//bool IsDirectoryExists(const string& path) {
+//    if (CreateDirectoryA(path.c_str(), NULL)) {
+//        cout << u8"[REGISTER_PARENTS] 사용자 폴더 생성 : " << path << endl;
+//        return true;
+//    }
+//    else {
+//        DWORD err = GetLastError();
+//        if (err == ERROR_ALREADY_EXISTS) {
+//            return true;  // 이미 존재
+//        }
+//        else {
+//            cerr << u8"[에러] 폴더 생성 실패: " << path << " (코드: " << err << ")\n";
+//            return false;
+//        }
+//    }
+//}
+//
+//// 2) 부모 폴더명 생성  
+//string GetUserFolderPath(const string& parentId, int uid) {
+//    return BASE_DIR + "\\" + parentId + "_" + to_string(uid);
+//}
+//
+//// 3) 부모 계정 폴더 생성
+//bool CreateUserDirectory(const string& parentId, const int& uid) {
+//    // 1. user_data 폴더 존재 보장
+//    if (!IsDirectoryExists(BASE_DIR)) return false;
+//
+//    string fullPath = GetUserFolderPath(parentId, uid);
+//    return IsDirectoryExists(fullPath);
+//}
+//
+////4) 아이 디렉토리 존재 확인
+//string GetChildFolderPath(const string& parentId, int parentUid, const string& childName, int childUid) {
+//    return GetUserFolderPath(parentId, parentUid) + "\\" + childName + "_" + to_string(childUid);
+//}
+//
+////5) 아이 계정 폴더 생성
+////bool CreateChildDirectory(const string& parentId, int parentUid, const string& childName, int childUid) {
+////    string parentFolder = GetUserFolderPath(parentId, parentUid);  // 부모 폴더
+////    string childPath = parentFolder + "\\" + childName + "_" + to_string(childUid);
+////    return IsDirectoryExists(childPath);
+////}
+
 // =======================================================================
 // [main 함수] 
 // - TcpServer 객체를 생성하고, 다중 클라이언트를 비동기적으로 처리

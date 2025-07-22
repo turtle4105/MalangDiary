@@ -10,6 +10,8 @@ public:
     static nlohmann::json handle_Login(const nlohmann::json& json, DBManager& db);
     //아이등록
     static nlohmann::json handle_RegisterChild(const nlohmann::json& json, DBManager& db);
+    //오늘 일기 조회
+    static nlohmann::json handle_LatestDiary(const nlohmann::json& json, DBManager& db);
 
 };
 
