@@ -7,13 +7,13 @@
 
 // ================== 설정 구역 ==================
 // 아이 이름 설정 - 필요시 여기서 수정하세요
-const std::string CHILD_NAME = "전지호";
+const std::string CHILD_NAME = "전인우";
 
 // 서버 URL 설정
 const std::string SERVER_URL = "http://localhost:8000/transcribe";
 
 // 오디오 파일 경로 설정
-const std::string AUDIO_FILE_PATH = "C:/workspace/python/MalangDiary/data/jiho_diary.wav";
+const std::string AUDIO_FILE_PATH = "C:/workspace/python/MalangDiary/data/inwoo_diary.wav";
 // ==============================================
 
 // URL 인코딩 함수 (한글 이름 처리용)

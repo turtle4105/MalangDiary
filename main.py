@@ -65,7 +65,7 @@ except Exception as e:
 
 # 5. 아이 음성 임베딩 로딩
 try:
-    with open("./data/embedding_jiho.json", "r") as f:
+    with open("./data/embedding_inwoo.json", "r") as f:
         embedding_data = json.load(f)
         child_embedding = np.array(embedding_data["embedding"])
     logger.info("아이 음성 임베딩 로딩 완료")
@@ -337,7 +337,8 @@ def simple_text_cleanup(text: str) -> str:
     logger.info(f"단순 텍스트 정리 완료 - 출력 길이: {len(result)} 문자")
     return result
 
-# 7. 통합 일기 + 감정 생성 함수 (GPT 1회 호출)
+# 7. 통합 일기 + 감정 생성 함수 (GPT 1회 호출)#- child_text: 아이가 실제로 발화한 문장들 (단답일 수 있음)
+
 def generate_diary_with_emotions(child_text: str, full_context: str, child_name: str) -> dict:
     """
     아이 발화를 중심으로 GPT를 통해 자연스러운 일기와 감정 키워드를 생성하는 함수
@@ -359,24 +360,9 @@ def generate_diary_with_emotions(child_text: str, full_context: str, child_name:
 
     # GPT에게 보낼 프롬프트 구성
     prompt = f"""
-너는 유아 또는 초등학생 어린이의 시점에서 일기를 써주는 AI야.
+    "이 대화는 아이와 보호자의  대화입니다. 등장 인물, 주요 사건, 대화 맥락{full_context}
+, 아이의 감정{child_text}과 행동을 포함해 일기 형태로 작성해줘."
 
-입력으로는 보호자와 아이의 전체 대화 내용, 아이가 실제 발화한 텍스트, 아이 이름이 주어져.
-일기의 내용은 반드시 '아이의 발화'를 중심으로 작성하지만, 아이의 말이 단답형이거나 의미 전달이 부족한 경우에는 전체 대화 맥락을 참고해서 자연스럽게 보완해줘.
-
-단, 보완할 때에도 아래 기준을 반드시 지켜야 해.
-
-❗ 절대 하지 말아야 할 것들:
-- 보호자의 말을 직접 인용하거나, 보호자의 관점에서 쓰지 마
-- 시간대, 장소, 활동 등을 창작하지 마
-- 아이가 말하지 않은 감정이나 사건을 지어내지 마
-- {child_name}이라는 이름이 보호자 발화에서 나왔더라도 그 발화는 인용하거나 포함하지 마
-
-✅ 작성 방식:
-- 아이가 실제로 말한 내용을 중심으로, 단답형이라도 의미를 정리해 부드럽게 이어줘
-- 어휘나 문장은 유아~초등학생 수준으로 단순하고 따뜻하게 표현해
-- 전체 문장은 하나의 단락(4~9문장)으로 구성해
-- 부족하더라도 지어내지 말고, 주어진 정보만으로 자연스럽게 정돈해줘
 
 [전체 대화 맥락]
 {full_context}
@@ -389,8 +375,8 @@ def generate_diary_with_emotions(child_text: str, full_context: str, child_name:
 
 --- 출력 형식 ---
 제목: (아이의 말에 기반한 짧은 제목, 이모지 가능)  
-내용: (아이의 말 중심으로 정돈된 일기 형식의 문단, 4~9문장)  
-감정: (일기 내용에 기반해 유추 가능한 감정 키워드 최소 1개~최대 5개, 쉼표로 구분)
+내용: (아이의 말 중심으로 정돈된 일기 형식의 문단, 10문장 내외)  
+감정: (일기 내용에 기반해 유추 가능한 감정 키워드 최소 3개~5개, 쉼표로 구분)
 """
 
     try:
