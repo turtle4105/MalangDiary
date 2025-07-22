@@ -10,9 +10,7 @@ using System.Threading.Tasks;
 
 namespace MalangDiary.Models {
     /// <summary>
-    /// [Variables]: 
-    /// 사용자 정보
-    /// [Methods]:
+    /// '사용자 모델: 부모와 아기 정보를 관리하고 서버와 통신하는 역할을 합니다.'
     /// </summary>
     /// <param name="socket"></param>
     /// <param name="session"></param>
@@ -38,17 +36,17 @@ namespace MalangDiary.Models {
         private readonly UserSession _session;
 
         Structs.ParentInfo ParentInfo;           // 부모 정보
-        Structs.ChildInfo[] AllChildInfo = [];   // 전체 아기 정보
+        Structs.ChildInfo[] ChildrenInfo = [];   // 전체 아기 정보
         Structs.ChildInfo SelectedChildInfo;     // 선택된 아기 정보
 
 
         /* Member Methods */
         public void SetAllChildInfo(Structs.ChildInfo[] childInfos) {
-            AllChildInfo = childInfos;
+            ChildrenInfo = childInfos;
         }
 
         public Structs.ChildInfo[] GetAllChildInfo() {
-            return AllChildInfo;
+            return ChildrenInfo;
         }
 
         public void SetSelectedChildInfo(Structs.ChildInfo childInfo) {
@@ -122,56 +120,82 @@ namespace MalangDiary.Models {
         }
 
         public /*async Task<*/bool/*>*/ LogIn(string email, string password) {
-            // json 생성
-            JObject jsonData = new()
-            {
+
+
+            /* [1] new json */
+            JObject jsonData = new() {
                 { "PROTOCOL", "LOGIN" },
                 { "ID", email },
                 { "PW", password }
             };
 
-            string json = JsonConvert.SerializeObject(jsonData);
-            WorkItem sendItem = new ()
-            {
-                json = json,
-                payload = new byte[0], // 파일 데이터가 없으므로 빈 배열
-                path = string.Empty    // 파일 경로가 없으므로 빈 문자열
+            string sendingJson = JsonConvert.SerializeObject(jsonData); // change type: json -> string
+            
+
+            /* [2] Put json in WorkItem */
+            WorkItem sendItem = new () {
+                json = sendingJson,  // sending json
+                payload = [],        // no file data
+                path = ""            // no used
             };
-           
-            /* 전송 */
+
+
+            /* [3] Send the created WorkItem */
             _socket.Send(sendItem);
 
-            // -recv 관련 메서드 호출( 임시 )-
+
+            /* [4] Create WorkItem rsponse(response) and receive data from the socket. */
             WorkItem response = /*await*/ _socket.Receive();
 
-            // 받은 json 파싱
+
+            /* [5] Parse the data. */
             jsonData = JObject.Parse(response.json);
 
+            // parse the protocol and result
             string protocol = jsonData["PROTOCOL"]!.ToString();
-            string result = jsonData["RESP"]!.ToString();
+            string result   = jsonData["RESP"]!.ToString();
 
-            if (protocol == "LOGIN" && result == "SUCCESS") {    // 성공일때
-                Structs.ParentInfo parent_info = new() {
+            if (protocol == "LOGIN" && result == "SUCCESS") {
+                
+                ParentInfo parent_info = new() {
                     Name = jsonData["NICKNAME"]!.ToString(),
-                    Uid = jsonData["PARENTS_UID"]!.ToObject<int>()
+                    Uid  = jsonData["PARENTS_UID"]!.ToObject<int>()
                 };
-                // Structs.ChildInfo[] children = jsonData["CHILDREN"]!.ToObject<Structs.ChildInfo[]>()!;
 
-                // ParentInfo = parent_info;   // 부모 정보 저장
-                // AllChildInfo = children;    // 전체 아기 정보 저장
-                // SelectedChildInfo = children.FirstOrDefault(); // 첫번째 아기를 선택
+                JArray childrenArray = (JArray)jsonData["CHILDREN"]!;
 
-                Console.WriteLine($"[UserModel] 로그인 성공: {parent_info.Name} ({parent_info.Uid})");
-                Console.WriteLine($"[UserModel] 선택된 아기: {SelectedChildInfo.Name} ({SelectedChildInfo.Uid})");
-                Console.WriteLine($"[UserModel] 전체 아기 수: {AllChildInfo.Length}");
-                Console.WriteLine($"[UserModel] 전체 아기 정보: {JsonConvert.SerializeObject(AllChildInfo, Formatting.Indented)}");
+                foreach (JObject child in childrenArray.Cast<JObject>()) {  // added cast<JObject>() to ensure child is JObject
+                    int uid = (int)child["CHILDUID"]!;
+                    string name = (string)child["NAME"]!;
+                    string birth = (string)child["BIRTH"]!;
+                    string gender = (string)child["GENDER"]!;
+                    string iconColor = (string)child["ICON_COLOR"]!;
 
+                    if( birth.Length == 0 ) {   // default birth = 0000-00-00
+                        birth = "00000000";
+                    }
+
+                    ChildInfo childinfo = new() {
+                        Uid = uid,
+                        Name = name,
+                        BirthDate = birth,
+                        Age = (int)DateTime.Now.Year - Convert.ToInt32(birth[..4]), // Calculate Age using'..' which means '(0, 4)'
+                        Gender = gender,
+                        IconColor = iconColor
+                    };
+                    ChildrenInfo.Append(childinfo).ToArray();
+                }
+
+                Console.WriteLine($"[UserModel] LogIn Completed");
+                
                 _session.SetCurrentParentUid(parent_info.Uid);  // 현재 부모 UID 설정
                 return true;
             }
+
             else if (protocol == "LOGIN" && result == "FAIL") {  // 실패일때
                 return false;
             }
+
             else {
                 Console.WriteLine($"[UserModel] 로그인 응답 오류: {result}");
                 return false;

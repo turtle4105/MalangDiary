@@ -35,6 +35,7 @@
         <DockPanel Background="#FFACAC" Grid.Row="0">
             <!-- 뒤로가기 버튼 -->
             <Button Content="&lt;"
+                    Command="{Binding GoBackCommand}"
                     Width="40"
                     Background="Transparent"
                     BorderThickness="0"

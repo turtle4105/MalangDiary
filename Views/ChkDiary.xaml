@@ -82,7 +82,7 @@
         <!-- 상단 바 -->
         <DockPanel Background="#FFACAC" Grid.Row="0" LastChildFill="True">
             <!-- 좌측 뒤로가기 버튼 -->
-            <Button Content="&lt;" Command="{Binding CancelDiaryCommand}"
+            <Button Content="&lt;" Command="{Binding GoBackCommand}"
             Width="40" Background="Transparent" BorderThickness="0"
             FontSize="18" Foreground="White" DockPanel.Dock="Left"/>
 

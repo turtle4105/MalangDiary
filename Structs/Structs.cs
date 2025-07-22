@@ -29,6 +29,8 @@ public struct ParentInfo {
     public string Email; // id(email)
 }
 
+
+// Uid, Name, BirthDate, Age, Gender, IconColor
 public struct ChildInfo {
     /*
     * child_uid        [v]
@@ -41,13 +43,13 @@ public struct ChildInfo {
     */
     public int Uid;             // child_uid
     public string Name;         // name
-    public string BirthDate;  // birth_date
+    public string BirthDate;    // birth_date
     public int Age;             // 나이 (계산된 값)
     public string Gender;       // gender
-    public int IconColor;       // icon_color
+    public string IconColor;    // icon_color
 }
 
- 
+
 public struct DiaryInfo {
     /*
     * diary_uid    [v]
@@ -63,9 +65,10 @@ public struct DiaryInfo {
     public int Uid;              // diary_uid
     public string Title;         // title
     public string Text;          // refined_text
-    public int Weather;          // weather
+    public int IntWeather;       // weather
+    public string Weather;       // weather (문자열로 변환된 값)
     public bool IsLiked;         // is_liked
     public string PhotoFileName; // photo_path
-    public string Date;        // create_at
+    public string Date;          // create_at
     public string[] Emotions;    // 감정 태그 배열
 }

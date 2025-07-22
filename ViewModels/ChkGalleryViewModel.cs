@@ -1,4 +1,8 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using MalangDiary.Models;
+using Microsoft.Xaml.Behaviors.Core;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -7,12 +11,16 @@ namespace MalangDiary.ViewModels {
         public string ImagePath { get; set; }
     }
 
-    public class ChkGalleryViewModel {
+    public partial class ChkGalleryViewModel : ObservableObject {
+
         public ObservableCollection<PhotoItem> PhotoList { get; set; }
 
         public ICommand PhotoClickCommand { get; set; }
 
-        public ChkGalleryViewModel() {
+        /* Constructor */
+        public ChkGalleryViewModel(ChkModel chkmodel) {
+
+            _chkmodel = chkmodel;
             PhotoList = new ObservableCollection<PhotoItem>();
 
             // 기본 틀 21칸 확보 (7행 x 3열)
@@ -23,6 +31,11 @@ namespace MalangDiary.ViewModels {
             PhotoClickCommand = new RelayCommand<PhotoItem>(OnPhotoClick);
         }
 
+        /* Member Variables */
+        private readonly ChkModel _chkmodel;
+
+
+        /* Member Methods */
         private void OnPhotoClick(PhotoItem photo) {
             // 이미지 없는 칸은 클릭 무시
             if (string.IsNullOrEmpty(photo?.ImagePath))
@@ -45,6 +58,11 @@ namespace MalangDiary.ViewModels {
                 // 다 찼으면 새로 추가해서 스크롤 확장
                 PhotoList.Add(new PhotoItem { ImagePath = imagePath });
             }
+        }
+
+        [RelayCommand] private void GoBack() {
+            Console.WriteLine("[ChkGalleryViewModel] GoBack command executed.");
+            WeakReferenceMessenger.Default.Send(new NavigateBackAction());
         }
     }
 }
