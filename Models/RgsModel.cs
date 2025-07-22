@@ -3,6 +3,8 @@ using MalangDiary.Structs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.IO;
+
 
 namespace MalangDiary.Models
 {
@@ -17,11 +19,11 @@ namespace MalangDiary.Models
 
         private readonly SocketManager _socket;
         private readonly UserSession _session;
+        public bool IsVoiceSet { get; private set; } = false;
 
         public (bool isSuccess, string message) RegisterChild(string name, string birthdate, string gender, string iconColor)
         {
-            //int parentUid = _session.GetCurrentParentUid();
-            int parentUid = 38;
+            int parentUid = _session.GetCurrentParentUid();
 
             if (string.IsNullOrWhiteSpace(name) ||
                 string.IsNullOrWhiteSpace(birthdate) ||
@@ -70,6 +72,43 @@ namespace MalangDiary.Models
             }
         }
 
-        public void SetBabyVoice() { }
+        public (bool isSuccess, string message) SetBabyVoice(string filePath)
+        {
+            //int childUid = _session.GetCurrentChildUid();
+            int childUid = 1;
+
+            string fileName = $"{childUid}_setvoice.wav";
+
+            JObject json = new JObject {
+                { "PROTOCOL", "SETTING_VOICE" },
+                { "CHILD_UID", childUid },
+                { "FILENAME", fileName }
+            };
+
+            WorkItem item = new WorkItem
+            {
+                json = json.ToString(),
+                payload = File.ReadAllBytes(filePath),
+                path = filePath
+            };
+
+            _socket.Send(item);
+            WorkItem response = _socket.Receive();
+
+            JObject resJson = JObject.Parse(response.json);
+            string result = resJson["RESP"]?.ToString() ?? "";
+            string message = resJson["MESSAGE"]?.ToString() ?? "";
+
+            if (result == "SUCCESS")
+            {
+                IsVoiceSet = true;
+                return (true, message);
+            }
+            else
+            {
+                return (false, message);
+            }
+        }
+
     }
 }

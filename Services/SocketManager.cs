@@ -73,8 +73,6 @@ namespace MalangDiary.Services {
 
             Console.WriteLine("Item:" + item.ToString());
             string jsonstring = JsonSerializer.Serialize(item.json);
-            Console.WriteLine(item.json);
-
 
             // JSON → 바이트
             byte[] jsonBytes = Encoding.UTF8.GetBytes(item.json);
@@ -98,7 +96,10 @@ namespace MalangDiary.Services {
             if (payloadLen > 0)
                 stream?.Write(payloadBytes, 0, payloadLen);
 
-            Console.WriteLine("item: " + item);
+            Console.WriteLine("json: " + item.json);
+            Console.WriteLine("payload: " + (payloadBytes.Length > 0 ? "있음" : "없음"));
+            Console.WriteLine("payload 길이: " + payloadBytes.Length);
+            Console.WriteLine("전체 길이: " + totalLen);
 
             // 한번에 담아서 보내는 법
             //List<byte> packet = new List<byte>();

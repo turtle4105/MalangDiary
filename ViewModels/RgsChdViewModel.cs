@@ -23,7 +23,7 @@ namespace MalangDiary.ViewModels
         [ObservableProperty] private string birthMonth;
         [ObservableProperty] private string birthDay;
         [ObservableProperty] private string selectedProfileColor;
-
+        [ObservableProperty] private bool isVoiceRecorded;
 
         /* Member Variables */
         private readonly RgsModel _rgsModel;
@@ -83,6 +83,12 @@ namespace MalangDiary.ViewModels
                 return;
             }
 
+            if (!_rgsModel.IsVoiceSet)
+            {
+                Console.WriteLine(" 목소리 등록이 완료되지 않았습니다.");
+                return;
+            }
+
             var (isSuccess, message) = _rgsModel.RegisterChild(Name, birthdate, gender, SelectedProfileColor);
 
             if (isSuccess)
@@ -91,10 +97,12 @@ namespace MalangDiary.ViewModels
                 Console.WriteLine($" 자녀 등록 실패: {message}");
         }
 
+
         [RelayCommand]
         public void RecordVoice()
-        {
-            Console.WriteLine(" [RecordVoice] 녹음 기능 호출됨 (아직 구현 안 됨)");
+        {   
+            // 아이 목소리 등록하기 View로 이동
+            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.RgsChdVoice));
         }
     }
 }

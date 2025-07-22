@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MalangDiary.Models;
+using MalangDiary.Services;
+using MalangDiary.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

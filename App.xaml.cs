@@ -38,7 +38,7 @@ namespace MalangDiary {
             services.AddTransient<SignUpViewModel>();
             services.AddTransient<HomeViewModel>();
             services.AddTransient<RgsChdViewModel>();
-            services.AddTransient<RgsChdVoiceView>();
+            services.AddTransient<RgsChdVoiceViewModel>();
             services.AddTransient<RcdDiaryViewModel>();
         }
     }
