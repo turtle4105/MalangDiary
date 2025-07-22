@@ -71,19 +71,16 @@ namespace MalangDiary.Models
                 return (false, message);
             }
         }
-
         public (bool isSuccess, string message) SetBabyVoice(string filePath)
         {
-            //int childUid = _session.GetCurrentChildUid();
-            int childUid = 1;
-
+            int childUid = 2; // ← 실제 자녀 UID로 교체 필요
             string fileName = $"{childUid}_setvoice.wav";
 
             JObject json = new JObject {
-                { "PROTOCOL", "SETTING_VOICE" },
-                { "CHILD_UID", childUid },
-                { "FILENAME", fileName }
-            };
+        { "PROTOCOL", "SETTING_VOICE" },
+        { "CHILD_UID", childUid },
+        { "FILENAME", fileName }
+    };
 
             WorkItem item = new WorkItem
             {
@@ -93,19 +90,25 @@ namespace MalangDiary.Models
             };
 
             _socket.Send(item);
-            WorkItem response = _socket.Receive();
+            Console.WriteLine("[SetBabyVoice] 전송 완료");
 
+            // 🟡 여기서 서버 응답 수신
+            WorkItem response = _socket.Receive();
             JObject resJson = JObject.Parse(response.json);
-            string result = resJson["RESP"]?.ToString() ?? "";
+
+            string protocol = resJson["PROTOCOL"]?.ToString() ?? "";
+            string resp = resJson["RESP"]?.ToString() ?? "";
             string message = resJson["MESSAGE"]?.ToString() ?? "";
 
-            if (result == "SUCCESS")
+            if (protocol == "SETTING_VOICE" && resp == "SUCCESS")
             {
+                Console.WriteLine("[SetBabyVoice] 등록 성공");
                 IsVoiceSet = true;
                 return (true, message);
             }
             else
             {
+                Console.WriteLine($"[SetBabyVoice] 등록 실패: {message}");
                 return (false, message);
             }
         }

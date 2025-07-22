@@ -31,7 +31,10 @@ namespace MalangDiary.ViewModels
 
         private WaveInEvent? waveIn;
         private WaveFileWriter? writer;
-        private readonly string recordingPath = "C:\\Users\\yhr\\Downloads\\setting_voice.wav";
+        //private readonly string recordingPath = "C:\\Users\\yhr\\Downloads\\setting_voice.wav";
+        // 1. 실제 녹음 저장 경로 (recordings 폴더에 날짜 기반으로 생성되도록 변경도 가능)
+        private readonly string recordingPath = Path.Combine("recordings", "setting_voice.wav");
+
 
         /* Member Methods */
         [RelayCommand] private static void GoBack() {
