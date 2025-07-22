@@ -19,11 +19,13 @@ namespace MalangDiary.ViewModels
             SelectedProfileColor = "#FFACAC"; // 기본값
         }
 
-        [ObservableProperty] private string? name;
-        [ObservableProperty] private string? birthYear;
-        [ObservableProperty] private string? birthMonth;
-        [ObservableProperty] private string? birthDay;
-        [ObservableProperty] private string? selectedProfileColor;
+        [ObservableProperty] private string name;
+        [ObservableProperty] private string birthYear;
+        [ObservableProperty] private string birthMonth;
+        [ObservableProperty] private string birthDay;
+        [ObservableProperty] private string selectedProfileColor;
+        [ObservableProperty]  private bool isVoiceRecorded;
+
 
 
         /* Member Variables */
@@ -94,8 +96,9 @@ namespace MalangDiary.ViewModels
 
         [RelayCommand]
         public void RecordVoice()
-        {
-            Console.WriteLine(" [RecordVoice] 녹음 기능 호출됨 (아직 구현 안 됨)");
+        {   
+            // 아이 목소리 등록하기 View로 이동
+            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.RgsChdVoice));
         }
     }
 }

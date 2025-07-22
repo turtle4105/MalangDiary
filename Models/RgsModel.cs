@@ -3,6 +3,8 @@ using MalangDiary.Structs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.IO;
+
 
 namespace MalangDiary.Models
 {
@@ -17,6 +19,7 @@ namespace MalangDiary.Models
 
         private readonly SocketManager _socket;
         private readonly UserSession _session;
+        public bool IsVoiceSet { get; private set; } = false;
 
         public (bool isSuccess, string message) RegisterChild(string name, string birthdate, string gender, string iconColor)
         {
@@ -69,7 +72,47 @@ namespace MalangDiary.Models
                 return (false, message);
             }
         }
+        public (bool isSuccess, string message) SetBabyVoice(string filePath)
+        {
+            int childUid = 2; // ← 실제 자녀 UID로 교체 필요
+            string fileName = $"{childUid}_setvoice.wav";
 
-        public void SetBabyVoice() { }
+            JObject json = new JObject {
+                { "PROTOCOL", "SETTING_VOICE" },
+                { "CHILD_UID", childUid },
+                { "FILENAME", fileName }
+            };
+
+            WorkItem item = new WorkItem
+            {
+                json = json.ToString(),
+                payload = File.ReadAllBytes(filePath),
+                path = filePath
+            };
+
+            _socket.Send(item);
+            Console.WriteLine("[SetBabyVoice] 전송 완료");
+
+            // 여기서 서버 응답 수신
+            WorkItem response = _socket.Receive();
+            JObject resJson = JObject.Parse(response.json);
+
+            string protocol = resJson["PROTOCOL"]?.ToString() ?? "";
+            string resp = resJson["RESP"]?.ToString() ?? "";
+            string message = resJson["MESSAGE"]?.ToString() ?? "";
+
+            if (protocol == "SETTING_VOICE" && resp == "SUCCESS")
+            {
+                Console.WriteLine("[SetBabyVoice] 등록 성공");
+                IsVoiceSet = true;
+                return (true, message);
+            }
+            else
+            {
+                Console.WriteLine($"[SetBabyVoice] 등록 실패: {message}");
+                return (false, message);
+            }
+        }
+
     }
 }

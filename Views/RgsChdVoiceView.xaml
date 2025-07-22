@@ -3,11 +3,13 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:helpers="clr-namespace:MalangDiary.Helpers"
       mc:Ignorable="d"
       Background="#FFFEFD"
       d:DesignHeight="800" d:DesignWidth="400">
 
     <Page.Resources>
+        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <!-- 🔵 파란 테두리 제거 전용 버튼 스타일 -->
         <Style x:Key="NoHighlightButtonStyle" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -57,6 +59,15 @@
         <!-- 본문 -->
         <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,108,0,0" Height="632" Width="380">
 
+            <!-- 안내 문구 -->
+            <TextBlock Text="아이의 목소리를 10초 정도 녹음해 주세요." 
+               FontSize="16" 
+               FontWeight="Bold"
+               Foreground="#FF9B9B" 
+               FontFamily="Noto Sans KR"
+               HorizontalAlignment="Center" 
+               Margin="0,0,0,10"/>
+            
             <!-- 동그라미 세트 -->
             <Grid Width="250" Height="302">
                 <!-- 바깥 세트 -->
@@ -76,12 +87,13 @@
             </Grid>
 
             <!-- 상태 텍스트 -->
-            <TextBlock Text="듣는 중" FontSize="14" Foreground="#FF9B9B" Margin="0,20,0,90" HorizontalAlignment="Center" FontFamily="Noto Sans KR"/>
+            <TextBlock Text="{Binding RecordingStatus}" FontSize="14" Foreground="#FF9B9B" Margin="0,20,0,90" HorizontalAlignment="Center" FontFamily="Noto Sans KR"/>
 
             <!-- 다시 녹음 버튼 -->
             <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="#FFF6E5"
                     Width="375" Height="50" Margin="0,40,0,10">
                 <Button Content="다시 녹음"
+                        Command="{Binding RestartRecordingCommand}"
                         FontSize="16"
                         FontWeight="Bold"
                         Foreground="#FFACAC"
@@ -89,15 +101,17 @@
                         Style="{StaticResource NoHighlightButtonStyle}"/>
             </Border>
 
-            <!-- 녹음 종료 버튼 -->
+            <!-- 녹음 종료 or 저장하기 버튼 -->
             <Border CornerRadius="25" Background="#FFACAC" Width="375" Height="50">
-                <Button Content="녹음 종료"
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Foreground="White"
-                        FontFamily="Noto Sans KR"
-                        Style="{StaticResource NoHighlightButtonStyle}"/>
+                <Button Content="{Binding SaveButtonText}"
+                Command="{Binding SaveVoiceCommand}"
+                FontSize="16"
+                FontWeight="Bold"
+                Foreground="White"
+                FontFamily="Noto Sans KR"
+                Style="{StaticResource NoHighlightButtonStyle}"/>
             </Border>
+
         </StackPanel>
     </Grid>
 </Page>
