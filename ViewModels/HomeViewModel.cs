@@ -14,15 +14,23 @@ using System.Windows.Media.Imaging;
 namespace MalangDiary.ViewModels {
     public partial class HomeViewModel : ObservableObject {
         /* Constructor */
-        public HomeViewModel(HomeModel homemodel) {
+        public HomeViewModel(HomeModel homemodel, UserSession user_session) {
             _homemodel = homemodel;
+            _userSession = user_session;
             Console.WriteLine("[HomeModel] UpdateLatestDiary() executed");
             UpdateLatestDiary();
         }
 
-        /* Member Variables */
+        /** Member Variables **/
         private readonly HomeModel _homemodel;
+        private readonly UserSession _userSession;
 
+        /* For Children StackPanel */
+        [ObservableProperty] private ObservableCollection<ChildInfo> children;  //자녀 목록 (동적 생성용)
+        [ObservableProperty] private int selectedChildUid;          // 	현재 선택된 자녀의 UID
+        [ObservableProperty] private int selectedChildIndex;
+
+        /* For Today's Diary */
         [ObservableProperty] private string dateText = DateTime.Now.ToString("yyyy-MM-dd");
         [ObservableProperty] private string weatherText = "none";
         [ObservableProperty] private ObservableCollection<ChildInfo> childrenInfo = new();
@@ -32,20 +40,12 @@ namespace MalangDiary.ViewModels {
 
         public ObservableCollection<string> EmotionTags => new(LatestDiary.Emotions?.ToList() ?? []);
 
+
+        /** Member Methods **/
+
         /* Methods Related to UI */
         public void UpdateLatestDiary() {
             DiaryInfo result = _homemodel.GetLatestDiary();
-
-            // 테스트용 데이터 덮어쓰기
-            result = new DiaryInfo
-            {
-                Uid = 1,
-                IntWeather = 1,
-                Weather = Helpers.WeatherConveter.ConvertWeatherCodeToText(1),
-                Date = "2025-07-22",
-                Emotions = [EmotionTagger("기쁨"), EmotionTagger("웃음")],
-                PhotoFileName = "./Resources/Images/Test/main.png"
-            };
 
             LatestDiary = result;
             HasDiary = result.Uid != 0;
@@ -53,16 +53,14 @@ namespace MalangDiary.ViewModels {
             DateText = LatestDiary.Date ?? DateTime.Now.ToString("yyyy-MM-dd");
             WeatherText = LatestDiary.Weather ?? "날씨 정보 없음";
 
-            Console.WriteLine("Before LoadImageFromPath Executed");
             DiaryImageSource = LoadImageFromPath(result.PhotoFileName);
-            Console.WriteLine("After LoadImageFromPath Executed");
 
             OnPropertyChanged(nameof(EmotionTags));
 
             return;
         }
 
-        private string EmotionTagger(string emotion) {
+        private static string EmotionTagger(string emotion) {
             string tagged_emotion;
             tagged_emotion = "# " + emotion;
 

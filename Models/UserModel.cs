@@ -9,18 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MalangDiary.Models {
-    /// <summary>
-    /// '사용자 모델: 부모와 아기 정보를 관리하고 서버와 통신하는 역할을 합니다.'
-    /// </summary>
-    /// <param name="socket"></param>
-    /// <param name="session"></param>
     public class UserModel {
 
-        /// <summary>
-        /// '생성자: UserModel'
-        /// </summary>
-        /// <param name="socket"></param>
-        /// <param name="session"></param>
+        /** Constructor **/
         public UserModel(SocketManager socket, UserSession session) {
             // 생성자의 Parameter로 SocketManager와 UserSession을 주입
             Console.WriteLine("[UserModel] UserModel 인스턴스가 생성되었습니다.");
@@ -31,37 +22,48 @@ namespace MalangDiary.Models {
         }
 
 
-        /* Member Variables */
+
+        /** Member Variables **/
+
+        /* Services, Models */
         private readonly SocketManager _socket;
         private readonly UserSession _session;
 
+        /* Parent, Children Informations */
         ParentInfo ParentInfo;           // 부모 정보
         public List<ChildInfo> ChildrenInfo { get; set; } = new();
         ChildInfo SelectedChildInfo;     // 선택된 아기 정보
 
 
-        /* Member Methods */
+
+        /** Member Methods **/
+        
+        /* SetAllChildInfo */
         public void SetAllChildInfo(List<ChildInfo> childInfos) {
             ChildrenInfo = childInfos;
         }
 
+        /* AddChildInfo */
         public void AddChildInfo(ChildInfo childinfo) {
             ChildrenInfo.Add(childinfo);
         }
 
+        /* GetAllChildInfo */
         public List<ChildInfo> GetAllChildInfo() {
             return ChildrenInfo;
         }
 
+        /* SetSelectedChildInfo */
         public void SetSelectedChildInfo(Structs.ChildInfo childInfo) {
             SelectedChildInfo = childInfo;
         }
 
+        /* GetSelectedChildInfo */
         public Structs.ChildInfo GetSelectedChildInfo() {
             return SelectedChildInfo;
         }
 
-
+        /* Method for Protocol-SignUp */
         public (bool isSuccess, string message) RegisterParents(string name, string email, string password, string phone) {
 
             if (string.IsNullOrWhiteSpace(name) ||
@@ -123,6 +125,7 @@ namespace MalangDiary.Models {
             return (false, "서버 응답이 올바르지 않습니다.");
         }
 
+        /* Method for Protocol-LogIn */
         public /*async Task<*/bool/*>*/ LogIn(string email, string password) {
 
 

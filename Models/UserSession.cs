@@ -13,11 +13,12 @@ namespace MalangDiary.Models {
         public Stack<string> NavigationHistory { get; set; } = new Stack<string>(); // 탐색 기록 스택, 기본값은 빈 스택
 
         int CurrentParentUid  = 0;   // UID of the currently logged-in parent
-        int CurrentChildUid = 0;      // UID of the currently selected Child
-        int CurrentDiaryUid   = 0;   // UID of the currently selected diary
         
+        int CurrentChildUid = 0;     // UID of the currently selected Child
+        int CurrentChildIndex = 0;   // Index of the currently selected Child in the AllChildInfo array
+
+        int CurrentDiaryUid   = 0;   // UID of the currently selected diary
         int CurrentDiaryIndex = 0;   // Index of the currently selected diary in the CurrentChildInfo's diary list
-        int CurrentChildIndex  = 0;   // Index of the currently selected Child in the AllChildInfo array
 
         public void SetCurrentParentUid(int uid) { CurrentParentUid = uid; }
         public int GetCurrentParentUid() { return CurrentParentUid; }
