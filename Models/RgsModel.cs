@@ -77,10 +77,10 @@ namespace MalangDiary.Models
             string fileName = $"{childUid}_setvoice.wav";
 
             JObject json = new JObject {
-        { "PROTOCOL", "SETTING_VOICE" },
-        { "CHILD_UID", childUid },
-        { "FILENAME", fileName }
-    };
+                { "PROTOCOL", "SETTING_VOICE" },
+                { "CHILD_UID", childUid },
+                { "FILENAME", fileName }
+            };
 
             WorkItem item = new WorkItem
             {
@@ -92,7 +92,7 @@ namespace MalangDiary.Models
             _socket.Send(item);
             Console.WriteLine("[SetBabyVoice] 전송 완료");
 
-            // 🟡 여기서 서버 응답 수신
+            // 여기서 서버 응답 수신
             WorkItem response = _socket.Receive();
             JObject resJson = JObject.Parse(response.json);
 

@@ -170,13 +170,13 @@
             <!-- 생일 입력 -->
             <TextBlock Text="생일을 입력해주세요." Foreground="#FFACAC" Margin="10,10,0,5" FontSize="14"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10" Height="54">
-                <Border CornerRadius="10" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="151" Height="50" Margin="0,0,10,0">
+                <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="151" Height="50" Margin="0,0,10,0">
                     <TextBox Style="{StaticResource PlaceholderTextBoxStyle}" Text="{Binding BirthYear, UpdateSourceTrigger=PropertyChanged}" Tag="출생년도"/>
                 </Border>
-                <Border CornerRadius="10" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="85" Height="50" Margin="0,0,10,0">
+                <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="85" Height="50" Margin="0,0,10,0">
                     <TextBox Style="{StaticResource PlaceholderTextBoxStyle}" Text="{Binding BirthMonth, UpdateSourceTrigger=PropertyChanged}" Tag="월"/>
                 </Border>
-                <Border CornerRadius="10" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="85" Height="50">
+                <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="White" Width="85" Height="50">
                     <TextBox Style="{StaticResource PlaceholderTextBoxStyle}" Text="{Binding BirthDay, UpdateSourceTrigger=PropertyChanged}" Tag="일"/>
                 </Border>
             </StackPanel>

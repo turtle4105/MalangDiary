@@ -74,10 +74,17 @@ namespace MalangDiary.ViewModels
             var (success, message) = _rgsmodel.SetBabyVoice(recordingPath);
 
             if (success)
+            {
                 Console.WriteLine("서버 전송 성공!");
+                // 🔁 저장 후 자녀 등록 화면으로 이동
+                WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.RgsChd));
+            }
             else
+            {
                 Console.WriteLine($"전송 실패: {message}");
+            }
         }
+
 
 
         [RelayCommand]

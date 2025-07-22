@@ -59,6 +59,15 @@
         <!-- 본문 -->
         <StackPanel Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,108,0,0" Height="632" Width="380">
 
+            <!-- 안내 문구 -->
+            <TextBlock Text="아이의 목소리를 10초 정도 녹음해 주세요." 
+               FontSize="16" 
+               FontWeight="Bold"
+               Foreground="#FF9B9B" 
+               FontFamily="Noto Sans KR"
+               HorizontalAlignment="Center" 
+               Margin="0,0,0,10"/>
+            
             <!-- 동그라미 세트 -->
             <Grid Width="250" Height="302">
                 <!-- 바깥 세트 -->
