@@ -48,7 +48,7 @@ logger.info("OpenAI 클라이언트 초기화 완료")
 # 3. Whisper 모델 로딩
 try:
     logger.info("Whisper 모델 로딩 시작 (small, cuda, float32)")
-    whisper_model = WhisperModel("small", device="cuda", compute_type="int8_float32")
+    whisper_model = WhisperModel("small", device="cuda", compute_type="int8_float32") #int8_float32
     logger.info("Whisper 모델 로딩 완료")
 except Exception as e:
     logger.error(f"Whisper 모델 로딩 실패: {e}")
@@ -65,7 +65,7 @@ except Exception as e:
 
 # 5. 아이 음성 임베딩 로딩
 try:
-    with open("./data/embedding_inwoo.json", "r") as f:
+    with open("./data/embedding_jiho.json", "r") as f:
         embedding_data = json.load(f)
         child_embedding = np.array(embedding_data["embedding"])
     logger.info("아이 음성 임베딩 로딩 완료")
@@ -338,25 +338,45 @@ def simple_text_cleanup(text: str) -> str:
     return result
 
 # 7. 통합 일기 + 감정 생성 함수 (GPT 1회 호출)
-def generate_diary_with_emotions(child_text: str, full_context: str) -> dict:
-    logger.info(f"일기+감정 통합 생성 시작 - 아이 발화 길이: {len(child_text)} / 전체 맥락 길이: {len(full_context)}")
+def generate_diary_with_emotions(child_text: str, full_context: str, child_name: str) -> dict:
+    """
+    아이 발화를 중심으로 GPT를 통해 자연스러운 일기와 감정 키워드를 생성하는 함수
+
+    Parameters:
+    - child_text: 아이가 실제로 발화한 문장들 (단답일 수 있음)
+    - full_context: 보호자와 아이가 나눈 전체 대화 내용 (맥락 파악용)
+    - child_name: 아이의 이름 (보호자의 발화에서 이름이 언급될 수 있음)
+
+    Returns:
+    - dict: {
+        "title": 일기 제목,
+        "content": 일기 본문,
+        "emotions": 감정 키워드 리스트
+      }
+    """
     
+    logger.info(f"일기+감정 통합 생성 시작 - 아이 발화 길이: {len(child_text)} / 전체 맥락 길이: {len(full_context)} / 아이 이름: {child_name}")
+
+    # GPT에게 보낼 프롬프트 구성
     prompt = f"""
- 전체 발화 내용을 GPT가 일기 작성 시 맥락 이해에 활용해야 한다.하지만 실제 일기 텍스트 내용은 아이의 발화만이 아닌 전체맥락을 배경으로 아이의 발화내용의 텍스트를 이용해 아이 입장에서 자연스러운 일기가 생성되어야 한다.
-1. 일기 제목 (아이 시선에서 간단히)
-2. 일기 내용 (전체적인 맥락에서 아이의 시점으로  서술)
-3. 감정 키워드 (최소 1개, 최대 5개, 쉼표로 구분)
+너는 유아 또는 초등학생 어린이의 시점에서 일기를 써주는 AI야.
 
-**절대 금지사항:**
-- 없는 내용을 추가하거나 추측하지 마세요
-- 시간대를 임의로 정하지 마세요 (점심/저녁 등)
-- 장소나 상황을 만들어내지 마세요
-- 아이가 말하지 않은 감정이나 생각을 쓰지 마세요
+입력으로는 보호자와 아이의 전체 대화 내용, 아이가 실제 발화한 텍스트, 아이 이름이 주어져.
+일기의 내용은 반드시 '아이의 발화'를 중심으로 작성하지만, 아이의 말이 단답형이거나 의미 전달이 부족한 경우에는 전체 대화 맥락을 참고해서 자연스럽게 보완해줘.
 
-**작성 방법:**
-- 아이가 실제 말한 내용만 그대로 활용
-- 간단한 문장으로 나열식 작성
-- 부족해도 추가하지 말고 그대로 작성
+단, 보완할 때에도 아래 기준을 반드시 지켜야 해.
+
+❗ 절대 하지 말아야 할 것들:
+- 보호자의 말을 직접 인용하거나, 보호자의 관점에서 쓰지 마
+- 시간대, 장소, 활동 등을 창작하지 마
+- 아이가 말하지 않은 감정이나 사건을 지어내지 마
+- {child_name}이라는 이름이 보호자 발화에서 나왔더라도 그 발화는 인용하거나 포함하지 마
+
+✅ 작성 방식:
+- 아이가 실제로 말한 내용을 중심으로, 단답형이라도 의미를 정리해 부드럽게 이어줘
+- 어휘나 문장은 유아~초등학생 수준으로 단순하고 따뜻하게 표현해
+- 전체 문장은 하나의 단락(4~9문장)으로 구성해
+- 부족하더라도 지어내지 말고, 주어진 정보만으로 자연스럽게 정돈해줘
 
 [전체 대화 맥락]
 {full_context}
@@ -364,11 +384,15 @@ def generate_diary_with_emotions(child_text: str, full_context: str) -> dict:
 [아이 발화 내용]
 {child_text}
 
---- 출력 형식 예시 ---
-제목: 친구랑 놀아서 즐거운 날 😊  
-내용: 오늘은 친구랑 놀이터에서 놀았다...  
-감정: 기쁨, 신남, 피곤함"""
-    
+[아이 이름]
+{child_name}
+
+--- 출력 형식 ---
+제목: (아이의 말에 기반한 짧은 제목, 이모지 가능)  
+내용: (아이의 말 중심으로 정돈된 일기 형식의 문단, 4~9문장)  
+감정: (일기 내용에 기반해 유추 가능한 감정 키워드 최소 1개~최대 5개, 쉼표로 구분)
+"""
+
     try:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -376,8 +400,8 @@ def generate_diary_with_emotions(child_text: str, full_context: str) -> dict:
             temperature=0.5,
         )
         response_text = response.choices[0].message.content.strip()
-        
-        # 안전한 토큰 로깅
+
+        # 토큰 사용량 로그
         try:
             if hasattr(response, 'usage') and response.usage:
                 tokens = response.usage.total_tokens
@@ -386,34 +410,30 @@ def generate_diary_with_emotions(child_text: str, full_context: str) -> dict:
                 logger.info(f"통합 생성 완료 - 길이: {len(response_text)} 문자")
         except Exception as log_error:
             logger.info(f"통합 생성 완료 - 길이: {len(response_text)} 문자 (토큰 로깅 실패: {log_error})")
-        
-        # 응답 파싱
+
+        # 응답에서 제목, 본문, 감정 추출
         import re
-        
-        # 정규식으로 제목, 내용, 감정 추출
         title_match = re.search(r"제목:\s*(.*)", response_text)
         content_match = re.search(r"내용:\s*(.*?)(?=\n감정:|$)", response_text, re.DOTALL)
         emotion_match = re.search(r"감정:\s*(.*)", response_text)
-        
+
         title = title_match.group(1).strip() if title_match else "일기 제목"
         content = content_match.group(1).strip() if content_match else response_text
         emotions_str = emotion_match.group(1).strip() if emotion_match else "기쁨"
-        
-        # 감정을 리스트로 변환
+
         emotions = [e.strip() for e in emotions_str.split(",") if e.strip()]
-        
+
         result = {
             "title": title,
             "content": content,
             "emotions": emotions
         }
-        
+
         logger.info(f"일기+감정 통합 생성 완료 - 제목: {title}, 감정: {emotions}")
         return result
-        
+
     except Exception as e:
         logger.error(f"일기+감정 통합 생성 실패: {e}")
-        # 폴백으로 기본값 반환
         return {
             "title": "일기 생성 실패",
             "content": child_text if child_text else "내용이 없습니다.",
@@ -500,9 +520,14 @@ async def transcribe(file: UploadFile = File(...), child_name: str = Query(None)
         refined_text = simple_text_cleanup(whisper_text)
 
         # STEP 5: 통합 일기+감정 생성 (GPT 1회 호출)
-        logger.info(f"[{request_id}] STEP 5: 일기+감정 통합 생성 단계")
-        step_logger.info(f"REQUEST {request_id}: STEP 5 - 일기+감정 통합 생성 시작")
-        diary_result = generate_diary_with_emotions(child_only_text, full_context)
+        if child_name:
+            logger.info(f"[{request_id}] STEP 5: 일기+감정 통합 생성 단계")
+            step_logger.info(f"REQUEST {request_id}: STEP 5 - 일기+감정 통합 생성 시작")
+            diary_result = generate_diary_with_emotions(child_only_text, full_context,child_name)
+        else:
+            logger.info(f"[{request_id}] STEP 5: 일기+감정 통합 생성 단계")
+            step_logger.info(f"REQUEST {request_id}: STEP 5 - 일기+감정 통합 생성 시작")
+            diary_result = generate_diary_with_emotions(child_only_text, full_context)
 
         # STEP 6: 결과 반환 (기존 포맷 호환)
         result = {
