@@ -47,8 +47,8 @@ logger.info("OpenAI 클라이언트 초기화 완료")
 
 # 3. Whisper 모델 로딩
 try:
-    logger.info("Whisper 모델 로딩 시작 (small, cuda, float32)")
-    whisper_model = WhisperModel("small", device="cuda", compute_type="int8_float32")
+    logger.info("Whisper 모델 로딩 시작 (base, cuda, float16)")
+    whisper_model = WhisperModel("base", device="cuda", compute_type="float32")
     logger.info("Whisper 모델 로딩 완료")
 except Exception as e:
     logger.error(f"Whisper 모델 로딩 실패: {e}")
@@ -57,7 +57,7 @@ except Exception as e:
 # 4. VoiceEncoder 모델 로딩
 try:
     logger.info("VoiceEncoder 모델 로딩 시작")
-    voice_encoder = VoiceEncoder('cpu')
+    voice_encoder = VoiceEncoder('cuda')
     logger.info("VoiceEncoder 모델 로딩 완료")
 except Exception as e:
     logger.error(f"VoiceEncoder 모델 로딩 실패: {e}")
@@ -449,7 +449,7 @@ async def transcribe(file: UploadFile = File(...), child_name: str = Query(None)
         logger.info(f"[{request_id}] STEP 1: Whisper 전사 시작")
         step_logger.info(f"REQUEST {request_id}: STEP 1 - Whisper 전사 시작")
         
-        segments, _ = whisper_model.transcribe(tmp_path, beam_size=3,vad_filter=True, language="ko")
+        segments, _ = whisper_model.transcribe(tmp_path, beam_size=5,vad_filter=True)
         segments_list = list(segments)
 
         

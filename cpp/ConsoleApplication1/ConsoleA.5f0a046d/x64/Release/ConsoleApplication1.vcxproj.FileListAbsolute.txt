@@ -1,0 +1,3 @@
+C:\workspace\python\MalangDiary\cpp\ConsoleApplication1\x64\Release\libcurl.dll
+C:\workspace\python\MalangDiary\cpp\ConsoleApplication1\x64\Release\zlib1.dll
+C:\workspace\python\MalangDiary\cpp\ConsoleApplication1\ConsoleA.5f0a046d\x64\Release\ConsoleA.6FF751E1.Up2Date

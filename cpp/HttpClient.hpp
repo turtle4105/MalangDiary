@@ -5,7 +5,7 @@
 
 class HttpClient {
 public:
-    HttpClient();  // ±âº» »ý¼ºÀÚ ¼±¾ð
+    HttpClient();  // ï¿½âº» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     ~HttpClient();
 
     std::string sendFile(const std::string& filePath, const std::string& url);

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sstream>
 
-// libcurl ÀÀ´ä µ¥ÀÌÅÍ¸¦ ¹Þ±â À§ÇÑ ÄÝ¹é ÇÔ¼ö
+
 static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
     size_t totalSize = size * nmemb;
     std::string* response = reinterpret_cast<std::string*>(userp);
@@ -11,17 +11,17 @@ static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* use
     return totalSize;
 }
 
-// HttpClient »ý¼ºÀÚ: libcurl Àü¿ª ÃÊ±âÈ­ ¼öÇà
+
 HttpClient::HttpClient() {
     curl_global_init(CURL_GLOBAL_DEFAULT);
 }
 
-// HttpClient ¼Ò¸êÀÚ: libcurl Àü¿ª Á¤¸® ¼öÇà
+
 HttpClient::~HttpClient() {
     curl_global_cleanup();
 }
 
-// ÆÄÀÏÀ» multipart/form-data·Î POST Àü¼ÛÇÏ´Â ÇÔ¼ö
+
 std::string HttpClient::sendFile(const std::string& filePath, const std::string& url) {
     CURL* curl = curl_easy_init();
     std::string response;
@@ -30,12 +30,12 @@ std::string HttpClient::sendFile(const std::string& filePath, const std::string&
         struct curl_httppost* formpost = NULL;
         struct curl_httppost* lastptr = NULL;
 
-        // ÆÄÀÏ ÇÊµå Ãß°¡: MIME Å¸ÀÔ ¹Ýµå½Ã ÁöÁ¤!!
+        
         curl_formadd(&formpost, &lastptr,
             CURLFORM_COPYNAME, "file",
             CURLFORM_FILE, filePath.c_str(),
-            CURLFORM_FILENAME, "output.wav",           // ¼­¹ö¿¡ Àü´ÞÇÒ ÆÄÀÏ¸í (¿øÇÏ´Â ÀÌ¸§À¸·Î)
-            CURLFORM_CONTENTTYPE, "audio/wav",          // Áß¿ä: MIME Å¸ÀÔ ¸í½Ã
+            CURLFORM_FILENAME, "output.wav",           // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ (ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½)
+            CURLFORM_CONTENTTYPE, "audio/wav",          // ï¿½ß¿ï¿½: MIME Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             CURLFORM_END);
 
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());

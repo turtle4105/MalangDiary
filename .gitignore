@@ -1,0 +1,10 @@
+.vs/
+*.ipch
+*.pch
+*.obj
+*.exe
+*.dll
+*.log
+__pycache__/
+.env
+./cpp/Release/
