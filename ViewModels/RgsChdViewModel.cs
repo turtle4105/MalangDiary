@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-<<<<<<< HEAD
+using CommunityToolkit.Mvvm.Messaging;
+using MalangDiary.Enums;
+using MalangDiary.Messages;
 using MalangDiary.Models;
 using System;
 
@@ -8,8 +10,7 @@ namespace MalangDiary.ViewModels
 {
     public partial class RgsChdViewModel : ObservableObject
     {
-        private readonly RgsModel _rgsModel;
-
+        /* Constructor */
         public RgsChdViewModel(RgsModel rgsModel)
         {
             Console.WriteLine("✅ RgsChdViewModel has Created");
@@ -22,6 +23,10 @@ namespace MalangDiary.ViewModels
         [ObservableProperty] private string birthMonth;
         [ObservableProperty] private string birthDay;
         [ObservableProperty] private string selectedProfileColor;
+
+
+        /* Member Variables */
+        private readonly RgsModel _rgsModel;
 
         private bool isMale;
         public bool IsMale
@@ -47,6 +52,14 @@ namespace MalangDiary.ViewModels
                     IsMale = false;
                 }
             }
+        }
+
+
+        /* Member Methods */
+        [RelayCommand]
+        private static void GoBack() {
+            Console.WriteLine("[RgsChdViewModel] GoBack command executed.");
+            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Goback));
         }
 
         [RelayCommand]
@@ -84,38 +97,4 @@ namespace MalangDiary.ViewModels
             Console.WriteLine(" [RecordVoice] 녹음 기능 호출됨 (아직 구현 안 됨)");
         }
     }
-=======
-using CommunityToolkit.Mvvm.Messaging;
-using MalangDiary.Messages;
-using MalangDiary.Models;
-using MalangDiary.Services;
-using Microsoft.Xaml.Behaviors.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MalangDiary.Enums;
-
-namespace MalangDiary.ViewModels
-{
-    public partial class RgsChdViewModel : ObservableObject {
-
-        /* Constructor */
-        RgsChdViewModel(RgsModel rgsmodel) {
-            _rgsmodel = rgsmodel;
-        }
-
-
-        /* Member Variables */
-        private readonly RgsModel _rgsmodel;
-
-
-        /* Member Methods */
-        [RelayCommand] private static void GoBack() {
-            Console.WriteLine("[RgsChdViewModel] GoBack command executed.");
-            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Goback));
-        }
-    }   
->>>>>>> YubeomKim
 }
