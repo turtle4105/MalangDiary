@@ -2,6 +2,7 @@
 #include <curl/curl.h>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 
 static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
@@ -84,11 +85,11 @@ std::string HttpClient::sendMultipleFiles(const std::string& childName,
             CURLFORM_CONTENTTYPE, "audio/wav",
             CURLFORM_END);
 
-        // 임베딩 파일 추가
+        // 임베딩 데이터를 무조건 문자열로 전송
         curl_formadd(&formpost, &lastptr,
             CURLFORM_COPYNAME, "embedding_file",
-            CURLFORM_FILE, embeddingFilePath.c_str(),
-            CURLFORM_FILENAME, "embedding.json",
+            CURLFORM_COPYCONTENTS, embeddingFilePath.c_str(),
+            CURLFORM_FILENAME, "embedding.txt",
             CURLFORM_CONTENTTYPE, "application/json",
             CURLFORM_END);
 

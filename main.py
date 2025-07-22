@@ -10,6 +10,7 @@ from typing import List, Dict, Any
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from fastapi import FastAPI, File, UploadFile, HTTPException, Query, Form
 from fastapi.responses import JSONResponse
+from typing import Union
 from openai import OpenAI
 from dotenv import load_dotenv
 from faster_whisper import WhisperModel
@@ -420,10 +421,11 @@ def generate_diary_with_emotions(child_text: str, full_context: str, child_name:
         }
 
 # 9. /transcribe POST API
+
 @app.post("/transcribe")
 async def transcribe(
     file: UploadFile = File(...), 
-    embedding_file: UploadFile = File(...),
+    embedding_file: Union[UploadFile, str] = Form(...),
     child_name: str = Form(...)
 ):
     request_id = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
@@ -434,17 +436,23 @@ async def transcribe(
     
     # 파일 검증
     logger.info(f"업로드된 오디오 파일: {file.filename}, 크기: {file.size} bytes, 타입: {file.content_type}")
-    logger.info(f"업로드된 임베딩 파일: {embedding_file.filename}, 크기: {embedding_file.size} bytes, 타입: {embedding_file.content_type}")
+    
+    if isinstance(embedding_file, str):
+        logger.info(f"업로드된 임베딩 데이터: 문자열 형태, 길이: {len(embedding_file)} 문자")
+    else:
+        logger.info(f"업로드된 임베딩 파일: {embedding_file.filename}, 크기: {embedding_file.size} bytes, 타입: {embedding_file.content_type}")
     
     if not file.content_type or not file.content_type.startswith('audio/'):
         logger.warning(f"잘못된 오디오 파일 타입: {file.content_type}")
         step_logger.error(f"REQUEST {request_id}: 잘못된 오디오 파일 타입 - {file.content_type}")
         raise HTTPException(status_code=400, detail="Audio file required")
     
-    if not embedding_file.content_type or not embedding_file.content_type.startswith('application/json'):
-        logger.warning(f"잘못된 임베딩 파일 타입: {embedding_file.content_type}")
-        step_logger.error(f"REQUEST {request_id}: 잘못된 임베딩 파일 타입 - {embedding_file.content_type}")
-        raise HTTPException(status_code=400, detail="JSON embedding file required")
+    # 임베딩 파일 타입 검증 (문자열인 경우 스킵)
+    if not isinstance(embedding_file, str):
+        if not embedding_file.content_type or not embedding_file.content_type.startswith('application/json'):
+            logger.warning(f"잘못된 임베딩 파일 타입: {embedding_file.content_type}")
+            step_logger.error(f"REQUEST {request_id}: 잘못된 임베딩 파일 타입 - {embedding_file.content_type}")
+            raise HTTPException(status_code=400, detail="JSON embedding file required")
 
     # 임시 파일 생성 (오디오)
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp_audio:
@@ -454,24 +462,29 @@ async def transcribe(
         logger.info(f"임시 오디오 파일 생성: {tmp_audio_path}")
         step_logger.info(f"REQUEST {request_id}: 임시 오디오 파일 생성 - {tmp_audio_path}")
 
-    # 임시 파일 생성 (임베딩)
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as tmp_embedding:
-        embedding_data = await embedding_file.read()
-        tmp_embedding.write(embedding_data)
-        tmp_embedding_path = tmp_embedding.name
-        logger.info(f"임시 임베딩 파일 생성: {tmp_embedding_path}")
-        step_logger.info(f"REQUEST {request_id}: 임시 임베딩 파일 생성 - {tmp_embedding_path}")
-
-    # 임베딩 파일 로딩
+    # 임베딩 데이터 로딩 (무조건 문자열 배열로 처리)
     try:
-        with open(tmp_embedding_path, "r", encoding="utf-8") as f:
-            embedding_json_data = json.load(f)
-            request_child_embedding = np.array(embedding_json_data["embedding"])
-        logger.info(f"[{request_id}] 클라이언트 임베딩 파일 로딩 완료")
-        step_logger.info(f"REQUEST {request_id}: 임베딩 파일 로딩 성공")
+        if isinstance(embedding_file, str):
+            # 문자열로 직접 전송된 경우
+            embedding_str = embedding_file.strip()
+            logger.info(f"[{request_id}] 문자열 임베딩 데이터 직접 수신")
+        else:
+            # UploadFile로 전송된 경우
+            embedding_content = await embedding_file.read()
+            embedding_str = embedding_content.decode('utf-8').strip()
+            logger.info(f"[{request_id}] 파일 형태 임베딩 데이터 수신")
+        
+        # 문자열 배열 형태로 파싱
+        # 대괄호 제거 후 쉼표로 분할
+        embedding_str = embedding_str.strip('[]')
+        embedding_values = [float(x.strip()) for x in embedding_str.split(',') if x.strip()]
+        request_child_embedding = np.array(embedding_values)
+        
+        logger.info(f"[{request_id}] 문자열 배열 임베딩 데이터 로딩 완료 - 차원: {request_child_embedding.shape}")
+        step_logger.info(f"REQUEST {request_id}: 임베딩 데이터 로딩 성공")
     except Exception as e:
-        logger.error(f"[{request_id}] 임베딩 파일 로딩 실패: {e}")
-        step_logger.error(f"REQUEST {request_id}: 임베딩 파일 로딩 실패 - {e}")
+        logger.error(f"[{request_id}] 임베딩 데이터 로딩 실패: {e}")
+        step_logger.error(f"REQUEST {request_id}: 임베딩 데이터 로딩 실패 - {e}")
         request_child_embedding = None
 
     try:
@@ -575,7 +588,8 @@ async def transcribe(
         if os.path.exists(tmp_audio_path):
             os.remove(tmp_audio_path)
             logger.debug(f"[{request_id}] 임시 오디오 파일 삭제: {tmp_audio_path}")
-        if os.path.exists(tmp_embedding_path):
+        # 임베딩 파일이 실제 파일인 경우에만 삭제 (문자열인 경우에는 임시 파일이 없음)
+        if not isinstance(embedding_file, str) and 'tmp_embedding_path' in locals() and os.path.exists(tmp_embedding_path):
             os.remove(tmp_embedding_path)
             logger.debug(f"[{request_id}] 임시 임베딩 파일 삭제: {tmp_embedding_path}")
         step_logger.info(f"REQUEST {request_id}: 임시 파일들 정리 완료")

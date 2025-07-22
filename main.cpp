@@ -39,16 +39,16 @@ std::string url_encode(const std::string& value) {
 // 음성 일기 생성 함수
 std::string generateVoiceDiary(const std::string& childName, 
                               const std::string& audioFilePath, 
-                              const std::string& embeddingFilePath) {
+                              const std::string& embedding_json) {
     std::cout << "=== 음성 일기 생성 클라이언트 ===" << std::endl;
     std::cout << "설정된 아이 이름: " << childName << std::endl;
     std::cout << "오디오 파일: " << audioFilePath << std::endl;
-    std::cout << "임베딩 파일: " << embeddingFilePath << std::endl;
+    std::cout << "임베딩 파일: " << embedding_json << std::endl;
     std::cout << "서버 URL: " << SERVER_URL << std::endl;
     
     HttpClient client;
     std::cout << "아이 이름 '" << childName << "'로 음성 분석을 시작합니다..." << std::endl;
-    std::string response = client.sendMultipleFiles(childName, audioFilePath, embeddingFilePath, SERVER_URL);
+    std::string response = client.sendMultipleFiles(childName, audioFilePath, embedding_json, SERVER_URL);
     
     return response;
 }
@@ -56,10 +56,11 @@ std::string generateVoiceDiary(const std::string& childName,
 int main() {
     // 기본값으로 테스트
     std::string childName = "전인우";
-    std::string audioFilePath = "../output.wav";
-    std::string embeddingFilePath = "./data/embedding_inwoo.json";
+    std::string audioFilePath = "./data/inwoo_diary.wav";
+    //std::string embedding_json = "./test_embedding.txt"; 
+    std::string embedding_json = "[0.11101, 0, 0, 0, 0.111]"; // 문자열 데이터 직접 사용
     
-    std::string response = generateVoiceDiary(childName, audioFilePath, embeddingFilePath);
+    std::string response = generateVoiceDiary(childName, audioFilePath, embedding_json);
 
     // 1) 콘솔 출력
     std::cout << "\n=== 서버 응답 ===" << std::endl;
