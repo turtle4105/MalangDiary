@@ -24,8 +24,8 @@ namespace MalangDiary.ViewModels
 
         HomeModel _homemodel;
 
-        [ObservableProperty] private string dateText = "2024-07-21";
-        [ObservableProperty] private string weatherText = "12:34:56";
+        [ObservableProperty] private string dateText = DateTime.Now.ToString("yyyy-MM-dd");
+        [ObservableProperty] private string weatherText = "none";
 
         public void GetLatestDiary() {
             // 여기에 최신 일기를 가져오는 로직을 추가합니다.
@@ -49,8 +49,7 @@ namespace MalangDiary.ViewModels
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.ChkCld));
         }
 
-        [RelayCommand]
-        public static void GoToRgsChd() {
+        [RelayCommand] public static void GoToRgsChd() {
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.RgsChd));
         }
     }
