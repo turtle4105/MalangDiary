@@ -8,7 +8,7 @@ import soundfile as sf
 from datetime import datetime
 from typing import List, Dict, Any
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from fastapi import FastAPI, File, UploadFile, HTTPException, Query
+from fastapi import FastAPI, File, UploadFile, HTTPException, Query, Form
 from fastapi.responses import JSONResponse
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -48,7 +48,7 @@ logger.info("OpenAI 클라이언트 초기화 완료")
 # 3. Whisper 모델 로딩
 try:
     logger.info("Whisper 모델 로딩 시작 (small, cuda, float32)")
-    whisper_model = WhisperModel("small", device="cuda", compute_type="int8_float32") #int8_float32
+    whisper_model = WhisperModel("small", device="cpu", compute_type="int8_float32") #int8_float32
     logger.info("Whisper 모델 로딩 완료")
 except Exception as e:
     logger.error(f"Whisper 모델 로딩 실패: {e}")
@@ -63,15 +63,8 @@ except Exception as e:
     logger.error(f"VoiceEncoder 모델 로딩 실패: {e}")
     raise
 
-# 5. 아이 음성 임베딩 로딩
-try:
-    with open("./data/embedding_inwoo.json", "r") as f:
-        embedding_data = json.load(f)
-        child_embedding = np.array(embedding_data["embedding"])
-    logger.info("아이 음성 임베딩 로딩 완료")
-except Exception as e:
-    logger.error(f"아이 음성 임베딩 로딩 실패: {e}")
-    child_embedding = None
+# 5. 아이 음성 임베딩 로딩 (기본값, 클라이언트에서 파일을 보낼 수도 있음)
+child_embedding = None  # 클라이언트에서 받을 때까지 None으로 설정
 
 # 6. FastAPI 앱 초기화
 app = FastAPI(title="음성인식, 정제, API")
@@ -150,9 +143,9 @@ def has_child_name_calling_pattern(text: str, child_name: str) -> bool:
     
     return False
 
-def identify_child_voice_optimized(audio_path: str, segments_list: List, child_name: str = None, similarity_threshold: float = 0.68) -> List[str]:
+def identify_child_voice_optimized(audio_path: str, segments_list: List, child_name: str = None, child_embedding_param: np.ndarray = None, similarity_threshold: float = 0.68) -> List[str]:
     """아이의 음성 식별 (메모리 기반 + 병렬 처리 + 이름 호명 패턴 감지)"""
-    if child_embedding is None:
+    if child_embedding_param is None:
         logger.warning("아이 음성 임베딩이 없어서 전체 텍스트 사용")
         return [seg.text for seg in segments_list]
     
@@ -176,7 +169,7 @@ def identify_child_voice_optimized(audio_path: str, segments_list: List, child_n
                 
                 # 임베딩 처리
                 similarity = process_segment_embedding(
-                    segment_audio, sample_rate, child_embedding, voice_encoder, similarity_threshold
+                    segment_audio, sample_rate, child_embedding_param, voice_encoder, similarity_threshold
                 )
                 
                 # 아이 이름 호명 패턴 체크 (부모 음성 감지)
@@ -428,7 +421,11 @@ def generate_diary_with_emotions(child_text: str, full_context: str, child_name:
 
 # 9. /transcribe POST API
 @app.post("/transcribe")
-async def transcribe(file: UploadFile = File(...), child_name: str = Query(None)):
+async def transcribe(
+    file: UploadFile = File(...), 
+    embedding_file: UploadFile = File(...),
+    child_name: str = Form(...)
+):
     request_id = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
     logger.info(f"=== 새로운 요청 시작 [{request_id}] ===")
     if child_name:
@@ -436,26 +433,53 @@ async def transcribe(file: UploadFile = File(...), child_name: str = Query(None)
     step_logger.info(f"REQUEST {request_id}: 새로운 transcribe 요청 (아이 이름: {child_name})")
     
     # 파일 검증
-    logger.info(f"업로드된 파일: {file.filename}, 크기: {file.size} bytes, 타입: {file.content_type}")
+    logger.info(f"업로드된 오디오 파일: {file.filename}, 크기: {file.size} bytes, 타입: {file.content_type}")
+    logger.info(f"업로드된 임베딩 파일: {embedding_file.filename}, 크기: {embedding_file.size} bytes, 타입: {embedding_file.content_type}")
+    
     if not file.content_type or not file.content_type.startswith('audio/'):
-        logger.warning(f"잘못된 파일 타입: {file.content_type}")
-        step_logger.error(f"REQUEST {request_id}: 잘못된 파일 타입 - {file.content_type}")
+        logger.warning(f"잘못된 오디오 파일 타입: {file.content_type}")
+        step_logger.error(f"REQUEST {request_id}: 잘못된 오디오 파일 타입 - {file.content_type}")
         raise HTTPException(status_code=400, detail="Audio file required")
+    
+    if not embedding_file.content_type or not embedding_file.content_type.startswith('application/json'):
+        logger.warning(f"잘못된 임베딩 파일 타입: {embedding_file.content_type}")
+        step_logger.error(f"REQUEST {request_id}: 잘못된 임베딩 파일 타입 - {embedding_file.content_type}")
+        raise HTTPException(status_code=400, detail="JSON embedding file required")
 
-    # 임시 파일 생성
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+    # 임시 파일 생성 (오디오)
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp_audio:
         audio_data = await file.read()
-        tmp.write(audio_data)
-        tmp_path = tmp.name
-        logger.info(f"임시 오디오 파일 생성: {tmp_path}")
-        step_logger.info(f"REQUEST {request_id}: 임시 파일 생성 - {tmp_path}")
+        tmp_audio.write(audio_data)
+        tmp_audio_path = tmp_audio.name
+        logger.info(f"임시 오디오 파일 생성: {tmp_audio_path}")
+        step_logger.info(f"REQUEST {request_id}: 임시 오디오 파일 생성 - {tmp_audio_path}")
+
+    # 임시 파일 생성 (임베딩)
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as tmp_embedding:
+        embedding_data = await embedding_file.read()
+        tmp_embedding.write(embedding_data)
+        tmp_embedding_path = tmp_embedding.name
+        logger.info(f"임시 임베딩 파일 생성: {tmp_embedding_path}")
+        step_logger.info(f"REQUEST {request_id}: 임시 임베딩 파일 생성 - {tmp_embedding_path}")
+
+    # 임베딩 파일 로딩
+    try:
+        with open(tmp_embedding_path, "r", encoding="utf-8") as f:
+            embedding_json_data = json.load(f)
+            request_child_embedding = np.array(embedding_json_data["embedding"])
+        logger.info(f"[{request_id}] 클라이언트 임베딩 파일 로딩 완료")
+        step_logger.info(f"REQUEST {request_id}: 임베딩 파일 로딩 성공")
+    except Exception as e:
+        logger.error(f"[{request_id}] 임베딩 파일 로딩 실패: {e}")
+        step_logger.error(f"REQUEST {request_id}: 임베딩 파일 로딩 실패 - {e}")
+        request_child_embedding = None
 
     try:
         # STEP 1: Whisper 전사
         logger.info(f"[{request_id}] STEP 1: Whisper 전사 시작")
         step_logger.info(f"REQUEST {request_id}: STEP 1 - Whisper 전사 시작")
         
-        segments, _ = whisper_model.transcribe(tmp_path, beam_size=3,vad_filter=True, language="ko")
+        segments, _ = whisper_model.transcribe(tmp_audio_path, beam_size=3,vad_filter=True, language="ko")
         segments_list = list(segments)
 
         
@@ -493,7 +517,7 @@ async def transcribe(file: UploadFile = File(...), child_name: str = Query(None)
         # 아이의 음성만 식별 (최적화된 메모리 기반 방식 + 이름 호명 패턴 감지)
         if child_name:
             logger.info(f"[{request_id}] 아이 이름 설정: '{child_name}' - 호명 패턴 감지 활성화")
-        child_texts = identify_child_voice_optimized(tmp_path, segments_list, child_name, similarity_threshold=0.68)
+        child_texts = identify_child_voice_optimized(tmp_audio_path, segments_list, child_name, request_child_embedding, similarity_threshold=0.68)
         child_only_text = " ".join(child_texts)
         
         logger.info(f"[{request_id}] 아이 음성 식별 완료 - 추출된 텍스트 수: {len(child_texts)}")
@@ -548,10 +572,13 @@ async def transcribe(file: UploadFile = File(...), child_name: str = Query(None)
     
     finally:
         # 임시 파일 정리
-        if os.path.exists(tmp_path):
-            os.remove(tmp_path)
-            logger.debug(f"[{request_id}] 임시 파일 삭제: {tmp_path}")
-            step_logger.info(f"REQUEST {request_id}: 임시 파일 정리 완료")
+        if os.path.exists(tmp_audio_path):
+            os.remove(tmp_audio_path)
+            logger.debug(f"[{request_id}] 임시 오디오 파일 삭제: {tmp_audio_path}")
+        if os.path.exists(tmp_embedding_path):
+            os.remove(tmp_embedding_path)
+            logger.debug(f"[{request_id}] 임시 임베딩 파일 삭제: {tmp_embedding_path}")
+        step_logger.info(f"REQUEST {request_id}: 임시 파일들 정리 완료")
 
 # 서버 시작 시 로깅
 if __name__ == "__main__":

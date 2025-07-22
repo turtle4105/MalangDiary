@@ -6,14 +6,10 @@
 #include "HttpClient.hpp"
 
 // ================== 설정 구역 ==================
-// 아이 이름 설정 - 필요시 여기서 수정하세요
-const std::string CHILD_NAME = "전인우";
 
 // 서버 URL 설정
 const std::string SERVER_URL = "http://localhost:8000/transcribe";
 
-// 오디오 파일 경로 설정
-const std::string AUDIO_FILE_PATH = "../output.wav";
 // ==============================================
 
 // URL 인코딩 함수 (한글 이름 처리용)
@@ -40,27 +36,30 @@ std::string url_encode(const std::string& value) {
     return escaped.str();
 }
 
-int main() {
+// 음성 일기 생성 함수
+std::string generateVoiceDiary(const std::string& childName, 
+                              const std::string& audioFilePath, 
+                              const std::string& embeddingFilePath) {
     std::cout << "=== 음성 일기 생성 클라이언트 ===" << std::endl;
-    std::cout << "설정된 아이 이름: " << CHILD_NAME << std::endl;
-    std::cout << "오디오 파일: " << AUDIO_FILE_PATH << std::endl;
+    std::cout << "설정된 아이 이름: " << childName << std::endl;
+    std::cout << "오디오 파일: " << audioFilePath << std::endl;
+    std::cout << "임베딩 파일: " << embeddingFilePath << std::endl;
     std::cout << "서버 URL: " << SERVER_URL << std::endl;
     
-    // URL에 아이 이름을 Query Parameter로 추가 (URL 인코딩 적용)
-    std::string url_with_params;
-    
-    if (!CHILD_NAME.empty()) {
-        std::string encoded_name = url_encode(CHILD_NAME);
-        url_with_params = SERVER_URL + "?child_name=" + encoded_name;
-        std::cout << "요청 URL: " << url_with_params << std::endl;
-        std::cout << "아이 이름 '" << CHILD_NAME << "'로 음성 분석을 시작합니다..." << std::endl;
-    } else {
-        url_with_params = SERVER_URL;
-        std::cout << "아이 이름 없이 요청합니다." << std::endl;
-    }
-    
     HttpClient client;
-    std::string response = client.sendFile(AUDIO_FILE_PATH, url_with_params);
+    std::cout << "아이 이름 '" << childName << "'로 음성 분석을 시작합니다..." << std::endl;
+    std::string response = client.sendMultipleFiles(childName, audioFilePath, embeddingFilePath, SERVER_URL);
+    
+    return response;
+}
+
+int main() {
+    // 기본값으로 테스트
+    std::string childName = "전인우";
+    std::string audioFilePath = "../output.wav";
+    std::string embeddingFilePath = "./data/embedding_inwoo.json";
+    
+    std::string response = generateVoiceDiary(childName, audioFilePath, embeddingFilePath);
 
     // 1) 콘솔 출력
     std::cout << "\n=== 서버 응답 ===" << std::endl;
