@@ -35,17 +35,21 @@ namespace MalangDiary.Models {
         private readonly SocketManager _socket;
         private readonly UserSession _session;
 
-        Structs.ParentInfo ParentInfo;           // 부모 정보
-        Structs.ChildInfo[] ChildrenInfo = [];   // 전체 아기 정보
-        Structs.ChildInfo SelectedChildInfo;     // 선택된 아기 정보
+        ParentInfo ParentInfo;           // 부모 정보
+        public List<ChildInfo> ChildrenInfo { get; set; } = new();
+        ChildInfo SelectedChildInfo;     // 선택된 아기 정보
 
 
         /* Member Methods */
-        public void SetAllChildInfo(Structs.ChildInfo[] childInfos) {
+        public void SetAllChildInfo(List<ChildInfo> childInfos) {
             ChildrenInfo = childInfos;
         }
 
-        public Structs.ChildInfo[] GetAllChildInfo() {
+        public void AddChildInfo(ChildInfo childinfo) {
+            ChildrenInfo.Add(childinfo);
+        }
+
+        public List<ChildInfo> GetAllChildInfo() {
             return ChildrenInfo;
         }
 
@@ -183,8 +187,19 @@ namespace MalangDiary.Models {
                         Gender = gender,
                         IconColor = iconColor
                     };
-                    ChildrenInfo.Append(childinfo).ToArray();
+
+                    Console.WriteLine("Uid: " + childinfo.Uid);
+                    Console.WriteLine("Name: " + childinfo.Name);
+                    Console.WriteLine("Birthdate: " + childinfo.BirthDate);
+                    Console.WriteLine("Age: " + childinfo.Age);
+                    Console.WriteLine("Gender: " + childinfo.Gender);
+                    Console.WriteLine("IconColor: " + childinfo.IconColor);
+
+                    AddChildInfo(childinfo);
                 }
+
+                Console.WriteLine("ChildrenInfo[0].Uid: " + ChildrenInfo[0].Uid);
+                _session.SetCurrentChildUid( ChildrenInfo[0].Uid );
 
                 Console.WriteLine($"[UserModel] LogIn Completed");
                 

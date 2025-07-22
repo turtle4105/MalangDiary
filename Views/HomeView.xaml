@@ -5,6 +5,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:viewmodels="clr-namespace:MalangDiary.ViewModels;assembly=MalangDiary"
+      xmlns:local="clr-namespace:MalangDiary.Helpers"
       d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
       mc:Ignorable="d"
       Background="#FFFEFD" Width="400" Height="800">
@@ -85,53 +86,145 @@
             </Grid>
         </StackPanel>
 
-        <!-- 일기 카드 -->
-        <Border 
-            Grid.Row="2" 
-            Margin="20,10,20,20" 
-            Background="#FFFFFF" 
+        <Grid Grid.Row="2" Margin="20,10,20,20">
+            <Grid.Resources>
+                <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+            </Grid.Resources>
+
+            <!-- [1] Shadow Background Layer -->
+            <Border Background="White"
             CornerRadius="20"
-            Padding="16"
-            BorderBrush="Transparent"
-            Effect="{StaticResource ShadowEffect}">
+            Effect="{StaticResource ShadowEffect}" />
 
-            <StackPanel>
+            <!-- [2] Content Layer -->
+            <Border CornerRadius="20"
+            ClipToBounds="True"
+            Background="Transparent">
 
-                <DockPanel>
-                    <TextBlock 
-                        Text="{Binding DateText}"
-                        HorizontalAlignment="Left"
-                        FontFamily="Noto Sans KR"
-                        Foreground="#2A2A2A"
-                        />
-                    <TextBlock 
-                        Text="{Binding WeatherText, StringFormat='날씨: {0}'}"
-                        HorizontalAlignment="Right" 
-                        FontFamily="Noto Sans KR" 
-                        Foreground="#2A2A2A"
-                        />
-                </DockPanel>
+                <Grid>
+                    <!-- [2-1] When NO Diary -->
+                    <Border Background="#FFFFFF"
+                    CornerRadius="20"
+                    Padding="16"
+                    BorderBrush="Transparent"
+                    Visibility="{Binding HasDiary, Converter={StaticResource InverseBoolToVis}}">
+                        <StackPanel>
+                            <!-- Date and Weather -->
+                            <DockPanel>
+                                <TextBlock Text="{Binding DateText}"
+                                   HorizontalAlignment="Left"
+                                   FontFamily="Noto Sans KR"
+                                   Foreground="#2A2A2A"/>
+                                <TextBlock Text="{Binding WeatherText, StringFormat='날씨: {0}'}"
+                                   HorizontalAlignment="Right"
+                                   FontFamily="Noto Sans KR"
+                                   Foreground="#2A2A2A"/>
+                            </DockPanel>
 
-                <StackPanel 
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Margin="0,70,0,0">
+                            <!-- No Diary Message -->
+                            <StackPanel HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Margin="0,70,0,0">
+                                <Image Source="/Resources/Images/Icons/pen.png"
+                                    Width="30"
+                                    Height="30"
+                                    Margin="0,0,0,8"/>
+                                <TextBlock Text="오늘 등록된 일기가 없어요."
+                                       FontSize="13"
+                                       Foreground="#2A2A2A"
+                                       HorizontalAlignment="Center"
+                                       FontFamily="Noto Sans KR"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
 
-                    <Image 
-                        Source="/Resources/Images/Icons/pen.png" 
-                        Width="30" 
-                        Height="30" 
-                        Margin="0,0,0,8"/>
-                    <TextBlock 
-                        Text="오늘 등록된 일기가 없어요." 
-                        FontSize="13"
-                        Foreground="#2A2A2A" 
-                        HorizontalAlignment="Center" 
-                        FontFamily="Noto Sans KR" />
+                    <!-- [2-2] When Diary EXISTS -->
+                    <Border Background="#FFFFFF"
+                    CornerRadius="20"
+                    Padding="0"
+                    BorderBrush="Transparent"
+                    Visibility="{Binding HasDiary, Converter={StaticResource BoolToVis}}">
 
-                </StackPanel>
-            </StackPanel>
-        </Border>
+                        <Grid>
+                            <!-- [A] Background Image with Rounded Corners -->
+                            <Border CornerRadius="20" ClipToBounds="True">
+                                <Border.Background>
+                                    <ImageBrush ImageSource="{Binding DiaryImageSource}" Stretch="UniformToFill" />
+                                </Border.Background>
+                            </Border>
+
+                            <!-- [B] Gradient Overlay -->
+                            <Border CornerRadius="20" Background="Transparent">
+                                <Rectangle VerticalAlignment="Bottom"
+                                       Height="120"
+                                       RadiusX="20"
+                                       RadiusY="20">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+                                            <GradientStop Color="#CC000000" Offset="0.0"/>
+                                            <GradientStop Color="Transparent" Offset="1.0"/>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Border>
+
+                            <!-- [C] Date and Weather -->
+                            <Grid Margin="16" VerticalAlignment="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding DateText}"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Foreground="White"/>
+                                <TextBlock Grid.Column="1"
+                                       Text="{Binding WeatherText, StringFormat='날씨: {0}'}"
+                                       FontSize="14"
+                                       Foreground="White"/>
+                            </Grid>
+
+                            <!-- [D] Title + Emotion Tags -->
+                            <StackPanel VerticalAlignment="Bottom" Margin="16">
+                                <TextBlock Text="오늘의 일기"
+                                           FontFamily="Noto Sans KR"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       Margin="0,0,0,8"/>
+                                <ItemsControl ItemsSource="{Binding EmotionTags}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="4"
+                                                Padding="6,2"
+                                                Background="Transparent"
+                                                BorderBrush="White"
+                                                BorderThickness="1"
+                                                CornerRadius="12">
+                                                <TextBlock Text="{Binding}"
+                                                       Foreground="White"
+                                                       FontSize="13"
+                                                       FontWeight="SemiBold"
+                                                       FontFamily="Noto Sans KR"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+
+
+
 
         <!-- 버튼 -->
         <StackPanel Grid.Row="3" Margin="20,0,20,0" UseLayoutRounding="False" >

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MalangDiary.Helpers"
              StartupUri="MainWindow.xaml">
+    
     <Application.Resources>
         <!-- ShadowEffect 정의 추가 -->
         <DropShadowEffect x:Key="ShadowEffect" Color="#A7A7A7" ShadowDepth="1" />
@@ -10,7 +11,9 @@
         <!-- 컨버터 등록 -->
         <local:IntToVisibilityConverter x:Key="ZeroToVisibleConverter" />
         <local:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
-
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <local:InverseBoolToVisConverter x:Key="InverseBoolToVis"/>
+        
         <!-- ✅ 회색 Watermark 스타일 (회원가입 등) -->
         <Style x:Key="GrayWatermarkTextBoxStyle" TargetType="TextBox">
             <Setter Property="Foreground" Value="Black"/>

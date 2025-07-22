@@ -18,6 +18,7 @@ namespace MalangDiary.Models {
 
             _socket = socket;
             _session = session;
+
         }
 
 
@@ -47,13 +48,13 @@ namespace MalangDiary.Models {
             }
 
             // 현재 선택된 아기의 UID를 가져옵니다.
-            string CurrentChildUid = _session.GetCurrentChildUid().ToString();
+            int CurrentChildUid = _session.GetCurrentChildUid();
 
             // json 생성
             JObject jsonData = new()
             {
                 {"PROTOCOL", "GET_LATEST_DIARY" },
-                {"CHILDUID", CurrentChildUid.ToString() }
+                {"CHILD_UID", CurrentChildUid }
             };
 
             // 보내는 메세지작업
@@ -92,8 +93,12 @@ namespace MalangDiary.Models {
                     }
                 }
                 LatestDiary = ResultDiaryInfo;
+                _session.SetCurrentDiaryUid(ResultDiaryInfo.Uid);
             }
-            return ResultDiaryInfo;
+            else if ( protocol == "GET_LATEST_DIARY" && response == "FAIL" ) {
+                ResultDiaryInfo.Uid = 0;
+            }
+                return ResultDiaryInfo;
         }
     }
 }
