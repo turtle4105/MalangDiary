@@ -29,16 +29,22 @@
         <DockPanel Grid.Row="0" Background="#FFACAC">
             <Button Content="&lt;" Width="40"
                     Command="{Binding GoBackCommand}"
-            Background="Transparent" BorderThickness="0"
-            FontSize="16" Foreground="White"
-            DockPanel.Dock="Left" HorizontalAlignment="Left"/>
+                    Background="Transparent" 
+                    BorderThickness="0"
+                    FontSize="16" 
+                    Foreground="White"
+                    DockPanel.Dock="Left" 
+                    HorizontalAlignment="Left">
+            </Button>
         </DockPanel>
 
 
         <!-- 탭 버튼 -->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Background="#FFF9D9DC">
             <Button Content="달력" Width="200" Height="40" Background="#FFF9D9DC" BorderThickness="0" FontWeight="Bold"/>
-            <Button Content="사진" Width="200" Height="40" Background="Transparent" BorderThickness="0" Foreground="Gray"/>
+            <Button Content="사진"
+                    Command="{Binding GoToChkGalleryCommand}"
+                    Width="200" Height="40" Background="Transparent" BorderThickness="0" Foreground="Gray"/>
         </StackPanel>
 
         <!-- 월 표시 -->

@@ -20,8 +20,8 @@ namespace MalangDiary.Models
 
         public (bool isSuccess, string message) RegisterChild(string name, string birthdate, string gender, string iconColor)
         {
-            //int parentUid = _session.GetCurrentParentUid();
-            int parentUid = 38;
+            int parentUid = _session.GetCurrentParentUid();
+            //int parentUid = 38;
 
             if (string.IsNullOrWhiteSpace(name) ||
                 string.IsNullOrWhiteSpace(birthdate) ||

@@ -24,13 +24,12 @@ namespace MalangDiary.Models {
         /* Member Variables */
         private readonly SocketManager _socket;
         private readonly UserSession _session;
-        private DiaryInfo LatestDiary; // 최신 일기 정보
+        private DiaryInfo LatestDiary;      // DiaryInfo of today's diary
 
 
         /* Member Mehtods */
         public void LoadData() {
             GetLatestDiary();
-            GetBabyInfo();
         }
 
         public DiaryInfo GetDiaryInfo() {
@@ -95,10 +94,6 @@ namespace MalangDiary.Models {
                 LatestDiary = ResultDiaryInfo;
             }
             return ResultDiaryInfo;
-        }
-
-        public static void GetBabyInfo() {
-
         }
     }
 }

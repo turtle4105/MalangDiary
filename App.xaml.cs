@@ -40,6 +40,9 @@ namespace MalangDiary {
             services.AddTransient<RgsChdViewModel>();
             services.AddTransient<RgsChdVoiceView>();
             services.AddTransient<RcdDiaryViewModel>();
+            services.AddTransient<ChkCldViewModel>();
+            services.AddTransient<ChkDiaryViewModel>();
+            services.AddTransient<ChkGalleryViewModel>();
         }
     }
 }

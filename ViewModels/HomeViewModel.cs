@@ -7,6 +7,7 @@ using MalangDiary.Models;
 using MalangDiary.Structs;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,11 +23,16 @@ namespace MalangDiary.ViewModels
             GetLatestDiary();
         }
 
+        /* Member Variables */
         HomeModel _homemodel;
 
         [ObservableProperty] private string dateText = DateTime.Now.ToString("yyyy-MM-dd");
         [ObservableProperty] private string weatherText = "none";
 
+        [ObservableProperty] private ObservableCollection<ChildInfo> childrenInfo = new();  // binding용 ChildInfo
+
+
+        /* Member Methods */
         public void GetLatestDiary() {
             // 여기에 최신 일기를 가져오는 로직을 추가합니다.
             // 예시로, 현재 날짜와 시간을 업데이트합니다.

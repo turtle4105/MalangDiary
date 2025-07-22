@@ -1,9 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using MalangDiary.Enums;
+using MalangDiary.Messages;
 using MalangDiary.Models;
 using Microsoft.Xaml.Behaviors.Core;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace MalangDiary.ViewModels {
@@ -62,7 +65,12 @@ namespace MalangDiary.ViewModels {
 
         [RelayCommand] private void GoBack() {
             Console.WriteLine("[ChkGalleryViewModel] GoBack command executed.");
-            WeakReferenceMessenger.Default.Send(new NavigateBackAction());
+            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Home));
+        }
+
+        [RelayCommand] private static void GoToChkCld() {
+            Console.WriteLine("[ChkGalleryViewModel] GoToChkCld command executed.");
+            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.ChkCld));
         }
     }
 }

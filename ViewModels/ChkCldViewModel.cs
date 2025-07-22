@@ -75,14 +75,19 @@ namespace MalangDiary.ViewModels {
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string name = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        [RelayCommand] private void GoBack() {
+        [RelayCommand] private static void GoBack() {
             Console.WriteLine("[ChkCldViewModel] GoBack command executed.");
-            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Goback));
+            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Home));
+        }
+
+        [RelayCommand] private static void GoToChkGallery() {
+            Console.WriteLine("[ChkGalleryModel] GoToChkGallery command executed.");
+            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.ChkGallery));
         }
     }
 

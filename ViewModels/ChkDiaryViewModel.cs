@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using MalangDiary.Helpers;
+using MalangDiary.Messages;
 using MalangDiary.Models;
 using Microsoft.Xaml.Behaviors.Core;
 using System.Collections.ObjectModel;
@@ -82,7 +83,7 @@ namespace MalangDiary.ViewModels {
 
         [RelayCommand] private void GoBack() {
             Console.WriteLine("[ChkDiaryViewModel] GoBack command executed.");
-            WeakReferenceMessenger.Default.Send(new NavigateBackAction());
+            WeakReferenceMessenger.Default.Send(new PageChangeMessage(Enums.PageType.Goback));
         }
     }
 }
