@@ -24,8 +24,6 @@ using namespace std;
 
 bool CreateUserDirectory(const string& parentId, const int& uid);
 
-// UTF-8 -> UTF-16 ��ȯ �� ���
-//static std::wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
 
 // UTF-8 ���ڿ� �� UTF-16 (wstring)
 wstring Utf8ToWstring(const string& utf8) {

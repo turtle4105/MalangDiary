@@ -3,6 +3,7 @@ import re
 import tempfile
 import logging
 import json
+import urllib.parse
 import numpy as np
 import soundfile as sf
 from datetime import datetime
@@ -17,6 +18,12 @@ from faster_whisper import WhisperModel
 from resemblyzer import VoiceEncoder
 import torchaudio
 from sklearn.metrics.pairwise import cosine_similarity as sklearn_cosine_similarity
+
+# 1. UTF-8 인코딩 설정 (Windows에서 한글 출력 문제 해결)
+import sys, io
+sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
+sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding='utf-8')
+
 
 # 1. 로깅 설정
 logging.basicConfig(
@@ -373,7 +380,10 @@ def generate_diary_with_emotions(child_text: str, full_context: str, child_name:
     "이 대화는 아이와 보호자의  대화입니다. 등장 인물, 주요 사건, 대화 맥락{full_context}
 , 아이의 감정{child_text}과 행동을 포함해 일기 형태로 작성해줘."
 
- 이 대화는 아이와 보호자의 대화입니다. 아이 이름은 반드시 '{child_name}'로 사용하세요. 대화에서 비슷한 이름(예: 오타)이 나오면 '{child_name}'로 보정하여 일기를 작성하세요. 등장 인물, 주요 사건, 대화 맥락{full_context}, 아이의 감정{child_text}과 행동을 포함해 아이 관점의 일기 형태로 작성해줘
+ 
+ 이 대화는 아이와 보호자의 대화입니다. 전체 대화에서 이름과 비슷한 이름이 나오면 '{child_name}'로 보정하여 일기를 작성하세요. 등장 인물, 주요 사건, 대화 맥락{full_context}, 아이의 감정{child_text}과 행동을 포함해 아이 관점의 일기 형태로 작성해주세요
+ 보통 아이들은 자기자신을 (3인칭)이름으로 부르지 않기때문에 일기에서'{child_name}는' 이렇게 자기자신을 지칭하는 표현은 하지 않습니다.
+ 
 
 
 [전체 대화 맥락]
@@ -387,14 +397,14 @@ def generate_diary_with_emotions(child_text: str, full_context: str, child_name:
 
 --- 출력 형식 ---
 제목: (아이의 말에 기반한 짧은 제목, 이모지 가능)  
-내용: (아이의 말 중심으로 정돈된 일기 형식의 문단, 10문장 내외)  
+내용: (아이의 말 중심으로 정돈된 일기 형식의 문단, 4~10문장 내외 - 전체 스크립트의 양에 따라 유동적)  
 """
 
     try:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.5,
+            temperature=0.4,
         )
         response_text = response.choices[0].message.content.strip()
 
@@ -447,6 +457,10 @@ async def transcribe(
 ):
     request_id = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
     logger.info(f"=== 새로운 요청 시작 [{request_id}] ===")
+    
+    # 디코딩: 퍼센트 인코딩된 child_name 복원
+    child_name = urllib.parse.unquote(child_name)
+
     if child_name:
         logger.info(f"[{request_id}] 아이 이름: '{child_name}' - 호명 패턴 감지 활성화")
     step_logger.info(f"REQUEST {request_id}: 새로운 transcribe 요청 (아이 이름: {child_name})")
