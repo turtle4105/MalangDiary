@@ -7156,3 +7156,1233 @@
 2025-07-22 21:49:41,625 - steps - INFO - REQUEST 20250722_214810_366809: 모든 단계 완료 - 결과 반환
 2025-07-22 21:49:41,627 - __main__ - INFO - [20250722_214810_366809] 결과 파일 저장: result_20250722_214810_366809.json
 2025-07-22 21:49:41,628 - steps - INFO - REQUEST 20250722_214810_366809: 임시 파일들 정리 완료
+2025-07-23 08:34:57,664 - __main__ - INFO - === 서버 초기화 시작 ===
+2025-07-23 08:34:57,934 - __main__ - INFO - OpenAI 클라이언트 초기화 완료
+2025-07-23 08:34:57,934 - __main__ - INFO - Whisper 모델 로딩 시작 (small, cuda, float32)
+2025-07-23 08:34:59,428 - __main__ - INFO - Whisper 모델 로딩 완료
+2025-07-23 08:34:59,428 - __main__ - INFO - VoiceEncoder 모델 로딩 시작
+2025-07-23 08:34:59,455 - __main__ - INFO - VoiceEncoder 모델 로딩 완료
+2025-07-23 08:34:59,456 - __main__ - INFO - === 서버 초기화 완료 ===
+2025-07-23 08:34:59,478 - __main__ - INFO - === 서버 시작 ===
+2025-07-23 08:35:12,134 - __main__ - INFO - === 새로운 요청 시작 [20250723_083512_134484] ===
+2025-07-23 08:35:12,135 - __main__ - INFO - [20250723_083512_134484] 아이 이름: 'ÀüÀÎ¿ì' - 호명 패턴 감지 활성화
+2025-07-23 08:35:12,135 - steps - INFO - REQUEST 20250723_083512_134484: 새로운 transcribe 요청 (아이 이름: ÀüÀÎ¿ì)
+2025-07-23 08:35:12,136 - __main__ - INFO - 업로드된 오디오 파일: output.wav, 크기: 12275076 bytes, 타입: audio/wav
+2025-07-23 08:35:12,136 - __main__ - INFO - 업로드된 임베딩 데이터: 문자열 형태, 길이: 25 문자
+2025-07-23 08:35:12,148 - __main__ - INFO - 임시 오디오 파일 생성: C:\Users\scar\AppData\Local\Temp\tmptzi0bh5g.wav
+2025-07-23 08:35:12,149 - steps - INFO - REQUEST 20250723_083512_134484: 임시 오디오 파일 생성 - C:\Users\scar\AppData\Local\Temp\tmptzi0bh5g.wav
+2025-07-23 08:35:12,150 - __main__ - INFO - [20250723_083512_134484] 문자열 임베딩 데이터 직접 수신
+2025-07-23 08:35:12,151 - __main__ - INFO - [20250723_083512_134484] 문자열 배열 임베딩 데이터 로딩 완료 - 차원: (5,)
+2025-07-23 08:35:12,152 - steps - INFO - REQUEST 20250723_083512_134484: 임베딩 데이터 로딩 성공
+2025-07-23 08:35:12,152 - __main__ - INFO - [20250723_083512_134484] STEP 1: Whisper 전사 시작
+2025-07-23 08:35:12,153 - steps - INFO - REQUEST 20250723_083512_134484: STEP 1 - Whisper 전사 시작
+2025-07-23 08:35:12,397 - faster_whisper - INFO - Processing audio with duration 06:23.594
+2025-07-23 08:35:13,991 - faster_whisper - INFO - VAD filter removed 00:43.040 of audio
+2025-07-23 08:36:53,522 - __main__ - INFO - [20250723_083512_134484] Whisper 전사 완료 - 177개 세그먼트 추출
+2025-07-23 08:36:53,523 - steps - INFO - REQUEST 20250723_083512_134484: STEP 1 완료 - 177개 세그먼트
+2025-07-23 08:36:53,524 - __main__ - INFO - [20250723_083512_134484] 원본 텍스트 생성 - 길이: 3637 문자
+2025-07-23 08:36:53,524 - steps - INFO - REQUEST 20250723_083512_134484: 원본 텍스트 생성 - [0.00]  유명 책도 읽었어? [2.00]  응 [3.00]  어떤 책이 제일 기억에 나? [5.00]  머리에 이가 있대요 [7.00]  머리에 이가 있대요? [9.00]  ...
+2025-07-23 08:36:53,524 - __main__ - INFO - [20250723_083512_134484] STEP 2: 타임스탬프 제거
+2025-07-23 08:36:53,525 - steps - INFO - REQUEST 20250723_083512_134484: STEP 2 - 타임스탬프 제거
+2025-07-23 08:36:53,525 - __main__ - INFO - [20250723_083512_134484] 타임스탬프 제거 완료 - 정제된 길이: 3460 문자
+2025-07-23 08:36:53,525 - steps - INFO - REQUEST 20250723_083512_134484: STEP 2 완료 - 정제된 텍스트: [0.00] 유명 책도 읽었어? [2.00] 응 [3.00] 어떤 책이 제일 기억에 나? [5.00] 머리에 이가 있대요 [7.00] 머리에 이가 있대요? [9.00] 너 이가 뭔...
+2025-07-23 08:36:53,526 - __main__ - INFO - [20250723_083512_134484] STEP 3: 음성 식별 단계
+2025-07-23 08:36:53,526 - steps - INFO - REQUEST 20250723_083512_134484: STEP 3 - 음성 식별 시작
+2025-07-23 08:36:53,527 - __main__ - INFO - [20250723_083512_134484] 전체 맥락 텍스트 생성 - 길이: 2093 문자
+2025-07-23 08:36:53,527 - __main__ - INFO - [20250723_083512_134484] 아이 이름 설정: 'ÀüÀÎ¿ì' - 호명 패턴 감지 활성화
+2025-07-23 08:36:53,540 - __main__ - INFO - 오디오 파일 로딩 완료: 6137499 샘플, 16000 Hz
+2025-07-23 08:36:54,499 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,500 - __main__ - INFO - 세그먼트 [2.00-3.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,513 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,514 - __main__ - INFO - 세그먼트 [0.00-2.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,521 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,521 - __main__ - INFO - 세그먼트 [3.00-5.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,525 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,526 - __main__ - INFO - 세그먼트 [5.00-7.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,543 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,543 - __main__ - INFO - 세그먼트 [7.00-9.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,562 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,563 - __main__ - INFO - 세그먼트 [9.00-11.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,573 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,573 - __main__ - INFO - 세그먼트 [11.00-16.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,576 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,577 - __main__ - INFO - 세그먼트 [16.00-18.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,588 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,588 - __main__ - INFO - 세그먼트 [18.00-20.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,603 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,604 - __main__ - INFO - 세그먼트 [22.92-23.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,611 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,611 - __main__ - INFO - 세그먼트 [20.00-22.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,614 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,615 - __main__ - INFO - 세그먼트 [25.92-26.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,623 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,624 - __main__ - INFO - 세그먼트 [23.92-25.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,648 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,649 - __main__ - INFO - 세그먼트 [26.92-28.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,658 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,659 - __main__ - INFO - 세그먼트 [30.92-32.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,659 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,660 - __main__ - INFO - 세그먼트 [28.92-30.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,678 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,679 - __main__ - INFO - 세그먼트 [32.92-36.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,698 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,698 - __main__ - INFO - 세그먼트 [36.92-40.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,708 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,709 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,709 - __main__ - INFO - 세그먼트 [42.92-45.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,710 - __main__ - INFO - 세그먼트 [40.92-42.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,728 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,729 - __main__ - INFO - 세그먼트 [45.92-48.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,740 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,740 - __main__ - INFO - 세그먼트 [54.92-55.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,745 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,746 - __main__ - INFO - 세그먼트 [48.92-52.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,756 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,757 - __main__ - INFO - 세그먼트 [52.92-54.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,760 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,760 - __main__ - INFO - 세그먼트 [55.92-56.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,786 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,787 - __main__ - INFO - 세그먼트 [61.92-62.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,789 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,790 - __main__ - INFO - 세그먼트 [56.92-59.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,791 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,791 - __main__ - INFO - 세그먼트 [62.92-63.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,794 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,794 - __main__ - INFO - 세그먼트 [59.92-61.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,813 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,814 - __main__ - INFO - 세그먼트 [63.92-64.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,822 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,823 - __main__ - INFO - 세그먼트 [70.92-71.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,832 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,833 - __main__ - INFO - 세그먼트 [64.92-66.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,838 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,838 - __main__ - INFO - 세그먼트 [66.92-70.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,857 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,858 - __main__ - INFO - 세그먼트 [71.92-73.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,863 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,863 - __main__ - INFO - 세그먼트 [75.92-76.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,870 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,870 - __main__ - INFO - 세그먼트 [73.92-75.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,890 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,891 - __main__ - INFO - 세그먼트 [76.92-79.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,909 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,909 - __main__ - INFO - 세그먼트 [79.92-82.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,919 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,919 - __main__ - INFO - 세그먼트 [82.92-87.42]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,930 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,931 - __main__ - INFO - 세그먼트 [87.42-95.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,940 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,940 - __main__ - INFO - 세그먼트 [98.48-99.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,945 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,945 - __main__ - INFO - 세그먼트 [95.48-98.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,959 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,960 - __main__ - INFO - 세그먼트 [101.48-102.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,966 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,966 - __main__ - INFO - 세그먼트 [99.48-101.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,985 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,986 - __main__ - INFO - 세그먼트 [102.48-104.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,993 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,993 - __main__ - INFO - 세그먼트 [104.48-106.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:54,995 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:54,996 - __main__ - INFO - 세그먼트 [108.48-109.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,001 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,001 - __main__ - INFO - 세그먼트 [106.48-108.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,014 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,015 - __main__ - INFO - 세그먼트 [109.48-110.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,024 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,024 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,024 - __main__ - INFO - 세그먼트 [110.48-111.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,025 - __main__ - INFO - 세그먼트 [113.48-114.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,041 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,041 - __main__ - INFO - 세그먼트 [111.48-113.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,054 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,055 - __main__ - INFO - 세그먼트 [116.48-117.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,059 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,060 - __main__ - INFO - 세그먼트 [114.48-116.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,067 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,067 - __main__ - INFO - 세그먼트 [117.48-119.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,087 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,087 - __main__ - INFO - 세그먼트 [125.56-126.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,089 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,089 - __main__ - INFO - 세그먼트 [119.48-122.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,102 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,103 - __main__ - INFO - 세그먼트 [122.56-125.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,106 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,106 - __main__ - INFO - 세그먼트 [126.56-128.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,114 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,115 - __main__ - INFO - 세그먼트 [128.56-129.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,131 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,131 - __main__ - INFO - 세그먼트 [131.56-132.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,132 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,133 - __main__ - INFO - 세그먼트 [129.56-131.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,140 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,141 - __main__ - INFO - 세그먼트 [134.56-135.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,143 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,144 - __main__ - INFO - 세그먼트 [132.56-134.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,159 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,160 - __main__ - INFO - 세그먼트 [135.56-136.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,169 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,170 - __main__ - INFO - 세그먼트 [141.56-142.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,176 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,176 - __main__ - INFO - 세그먼트 [136.56-139.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,182 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,183 - __main__ - INFO - 세그먼트 [139.56-141.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,201 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,201 - __main__ - INFO - 세그먼트 [142.56-144.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,207 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,208 - __main__ - INFO - 세그먼트 [144.56-146.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,218 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,218 - __main__ - INFO - 세그먼트 [146.56-149.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,224 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,225 - __main__ - INFO - 세그먼트 [149.56-151.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,245 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,246 - __main__ - INFO - 세그먼트 [154.56-156.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,246 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,247 - __main__ - INFO - 세그먼트 [151.56-154.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,262 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,262 - __main__ - INFO - 세그먼트 [156.56-158.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,266 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,267 - __main__ - INFO - 세그먼트 [158.56-160.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,282 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,283 - __main__ - INFO - 세그먼트 [160.56-162.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,293 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,294 - __main__ - INFO - 세그먼트 [166.56-167.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,295 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,295 - __main__ - INFO - 세그먼트 [162.56-164.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,307 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,307 - __main__ - INFO - 세그먼트 [164.56-166.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,324 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,325 - __main__ - INFO - 세그먼트 [167.56-172.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,335 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,335 - __main__ - INFO - 세그먼트 [176.76-177.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,339 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,339 - __main__ - INFO - 세그먼트 [172.76-174.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,343 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,343 - __main__ - INFO - 세그먼트 [174.76-176.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,362 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,362 - __main__ - INFO - 세그먼트 [177.76-180.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,373 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,373 - __main__ - INFO - 세그먼트 [184.76-185.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,381 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,381 - __main__ - INFO - 세그먼트 [180.76-182.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,385 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,385 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,385 - __main__ - INFO - 세그먼트 [185.76-186.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,386 - __main__ - INFO - 세그먼트 [182.76-184.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,416 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,417 - __main__ - INFO - 세그먼트 [186.76-188.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,424 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,425 - __main__ - INFO - 세그먼트 [190.76-192.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,426 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,426 - __main__ - INFO - 세그먼트 [188.76-190.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,443 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,443 - __main__ - INFO - 세그먼트 [192.76-201.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,460 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,461 - __main__ - INFO - 세그먼트 [204.22-206.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,466 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,466 - __main__ - INFO - 세그먼트 [201.22-204.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,472 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,473 - __main__ - INFO - 세그먼트 [206.22-208.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,482 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,483 - __main__ - INFO - 세그먼트 [210.22-211.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,487 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,488 - __main__ - INFO - 세그먼트 [208.22-210.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,500 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,500 - __main__ - INFO - 세그먼트 [214.22-215.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,512 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,513 - __main__ - INFO - 세그먼트 [211.22-214.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,525 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,526 - __main__ - INFO - 세그먼트 [215.22-219.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,530 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,531 - __main__ - INFO - 세그먼트 [219.62-221.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,543 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,544 - __main__ - INFO - 세그먼트 [221.62-223.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,557 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,558 - __main__ - INFO - 세그먼트 [223.62-225.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,561 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,561 - __main__ - INFO - 세그먼트 [225.62-228.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,571 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,572 - __main__ - INFO - 세그먼트 [231.62-232.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,573 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,574 - __main__ - INFO - 세그먼트 [228.62-230.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,587 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,588 - __main__ - INFO - 세그먼트 [232.62-233.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,602 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,602 - __main__ - INFO - 세그먼트 [233.62-238.29]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,620 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,621 - __main__ - INFO - 세그먼트 [238.29-242.21]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,621 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,623 - __main__ - INFO - 세그먼트 [242.21-245.21]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,627 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,627 - __main__ - INFO - 세그먼트 [248.21-249.21]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,631 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,632 - __main__ - INFO - 세그먼트 [245.21-248.21]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,662 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,662 - __main__ - INFO - 세그먼트 [255.22-257.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,663 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,664 - __main__ - INFO - 세그먼트 [249.21-254.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,665 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,665 - __main__ - INFO - 세그먼트 [257.22-259.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,672 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,673 - __main__ - INFO - 세그먼트 [260.22-263.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,700 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,701 - __main__ - INFO - 세그먼트 [267.22-269.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,705 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,706 - __main__ - INFO - 세그먼트 [263.22-265.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,706 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,707 - __main__ - INFO - 세그먼트 [265.22-267.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,714 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,714 - __main__ - INFO - 세그먼트 [269.22-271.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,731 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,731 - __main__ - INFO - 세그먼트 [271.22-273.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,742 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,743 - __main__ - INFO - 세그먼트 [273.22-275.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,744 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,745 - __main__ - INFO - 세그먼트 [275.22-277.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,752 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,752 - __main__ - INFO - 세그먼트 [277.22-279.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,763 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,764 - __main__ - INFO - 세그먼트 [279.22-281.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,779 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,779 - __main__ - INFO - 세그먼트 [286.22-287.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,784 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,784 - __main__ - INFO - 세그먼트 [281.22-283.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,785 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,785 - __main__ - INFO - 세그먼트 [284.22-286.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,796 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,796 - __main__ - INFO - 세그먼트 [287.22-289.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,825 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,826 - __main__ - INFO - 세그먼트 [289.22-291.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,832 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,833 - __main__ - INFO - 세그먼트 [298.37-300.37]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,838 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,839 - __main__ - INFO - 세그먼트 [300.37-304.68]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,842 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,843 - __main__ - INFO - 세그먼트 [291.22-298.37]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,862 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,862 - __main__ - INFO - 세그먼트 [314.04-315.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,864 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,864 - __main__ - INFO - 세그먼트 [315.04-316.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,870 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,870 - __main__ - INFO - 세그먼트 [316.04-317.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,886 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,886 - __main__ - INFO - 세그먼트 [304.68-314.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,891 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,892 - __main__ - INFO - 세그먼트 [317.04-318.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,896 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,897 - __main__ - INFO - 세그먼트 [320.04-321.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,904 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,904 - __main__ - INFO - 세그먼트 [318.04-320.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,913 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,914 - __main__ - INFO - 세그먼트 [321.04-322.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,918 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,919 - __main__ - INFO - 세그먼트 [322.04-323.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,922 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,922 - __main__ - INFO - 세그먼트 [323.04-324.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,937 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,937 - __main__ - INFO - 세그먼트 [324.04-326.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,952 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,953 - __main__ - INFO - 세그먼트 [326.04-328.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,958 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,958 - __main__ - INFO - 세그먼트 [328.04-330.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,960 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,961 - __main__ - INFO - 세그먼트 [330.04-332.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,972 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,973 - __main__ - INFO - 세그먼트 [332.04-335.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,991 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,992 - __main__ - INFO - 세그먼트 [335.04-337.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,995 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,996 - __main__ - INFO - 세그먼트 [341.04-342.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:55,999 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:55,999 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,000 - __main__ - INFO - 세그먼트 [339.04-341.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,001 - __main__ - INFO - 세그먼트 [337.04-339.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,018 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,019 - __main__ - INFO - 세그먼트 [344.04-345.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,025 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,025 - __main__ - INFO - 세그먼트 [345.04-346.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,029 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,029 - __main__ - INFO - 세그먼트 [342.04-344.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,040 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,041 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,041 - __main__ - INFO - 세그먼트 [347.04-349.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,042 - __main__ - INFO - 세그먼트 [349.04-350.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,047 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,048 - __main__ - INFO - 세그먼트 [351.04-352.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,063 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,064 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,064 - __main__ - INFO - 세그먼트 [355.04-356.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,065 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,065 - __main__ - INFO - 세그먼트 [352.04-354.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,066 - __main__ - INFO - 세그먼트 [354.04-355.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,076 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,076 - __main__ - INFO - 세그먼트 [356.04-358.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,099 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,099 - __main__ - INFO - 세그먼트 [358.04-360.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,101 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,101 - __main__ - INFO - 세그먼트 [364.04-365.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,104 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,104 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,105 - __main__ - INFO - 세그먼트 [362.04-364.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,107 - __main__ - INFO - 세그먼트 [360.04-362.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,130 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,130 - __main__ - INFO - 세그먼트 [365.04-367.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,138 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,139 - __main__ - INFO - 세그먼트 [367.04-369.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,143 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,144 - __main__ - INFO - 세그먼트 [369.04-371.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,145 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,145 - __main__ - INFO - 세그먼트 [371.04-374.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,152 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,153 - __main__ - INFO - 세그먼트 [374.04-375.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,171 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,172 - __main__ - INFO - 세그먼트 [380.04-381.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,174 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,174 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,175 - __main__ - INFO - 세그먼트 [375.04-377.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,175 - __main__ - INFO - 세그먼트 [381.04-382.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,179 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,180 - __main__ - INFO - 세그먼트 [377.04-380.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,189 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:36:56,190 - __main__ - INFO - 세그먼트 [382.04-383.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:36:56,191 - __main__ - WARNING - 아이 음성으로 식별된 구간이 없어서 전체 텍스트 사용
+2025-07-23 08:36:56,194 - __main__ - INFO - [20250723_083512_134484] 아이 음성 식별 완료 - 추출된 텍스트 수: 177
+2025-07-23 08:36:56,194 - __main__ - INFO - [20250723_083512_134484] 아이 음성 내용:  유명 책도 읽었어?  응  어떤 책이 제일 기억에 나?  머리에 이가 있대요  머리에 이가 있대요?  너 이가 뭔지 알아?  그.. 그 생각엔 생기고 무슨..  그.. 뭐였지?  그..  털복숭이고  이가?  이가 털복숭이라고?  다리가 많이..  이가 다리가 많아?  저기 책에 남아  아 진짜?  내가 알고 있는 이가.. 그 이가 많아?  엄마가 알고 있는 이는 이빨 아니야?  아니지  어렸을.. 엄마 어렸을 때는 이..  머릿속에 이 있는 애가 많았어  근데 지금은 머릿속에 이 있는 애가 별로 없지  그렇구나  어?  이거 봐 야  아 털이.. 몸에 털이가 많.. 털이 많은 거네  다리는 6개는 이거 권충이잖아  응  맞아?  응  맞나 아닌가 모르겠네  엄마 어렸을 때는 이 있는 애도 많았어  아 그래  약간은 많았다는..  어 봐 우리 방학 얘기하고 있지?  맞아  응 방학에는 인도가 원하는 건 뭐야?  모두가 방학 때 뭐 할까를 고민하고 있어  음 게임이랑 물놀이 나왔지  우리 머리가 한꺼번에 고를 수가..  한꺼번에 고를 수 있어?  어!  너가 원하는 걸 얘기해주면 돼  응  그러면 엄마가 계획표를 짤 때  이는 이걸 원하니까  이는 생각도 반영할 수 있지  넣어줄 수 있어  오케이  응  엄마가 좋아하는 걸로 해야 돼  끝  아니지 이렇게 딜을 할 때는  엄마가 좋아하는 게 아니라  네가 좋아하는 걸 말해야지  그렇다면  엄마가 좋아하는 건 학습시간이지  맞아  그래서 오늘 아침에 인루가  책 다 봤어  책 한 시간이나 봤잖아  한 시간 넘게 봤어 지금  좋아 이제 그럼 인루가 원하는 걸 말해봐  놀이  놀이시간  놀이시간 확보가 중요하구나  놀이시간 확보를 얼마나 해줘야 돼  음  24시간 중에  아니  24시간 중에 인루야 10시간은 자지  그럼 14시간 남지  4시간에서 밥 아침 점심 저녁 먹지  그럼 3시간 빼지  11시간이지  11시간에서  아침 저녁 책 읽는 시간  2시간 2시간 빼야 되지  그럼 몇 시간?  음  11시간에서 2시간 2시간 빼면  4시간을 빼야 되니까  7시간 남네  7시간?  7시간에서 3시간 공부하지  4시간 남네  4시간은 게임  안고 놀이  아니요  그럼 그 4시간에서  게임과 놀이를 같이 해야 돼  어떻게 해야 되겠어  게임도 들어가고  게임 시간을 버리고 놀이면 놀이를 하면 돼  게임  근데 너는 게임 다 하고 나면  놀이시간도 달라 그러잖아  게임  3시간 하고 놀이 시간 1시간 하는 건 어떨까  아  그리고 인루야 엄마가  살짝 힌트를 주자면  밥을 1시간씩 잡았잖아  밥을 20분 만에 다 먹으면 40분이 남아  그 시간도 다 모으고 모으고 모으면  그것도 한 2시간 나와  그렇지  그렇다면  게임을 3시간 하고  그  놀이를 3시간 하는 건 어떨까 그럴 때는  엄마 생각에도 너무 욕심을 부리는 것 같아  그렇지?  게임도 하고 놀이도 하고  그것도 게임 하루 3시간  놀이 하루 3시간은  6시간이나 보장을 해달라는 거는  Too much  너무 많이 놀기만 하겠다는 거야  그렇다면  아 야 그리고 문제는 뭐냐면  너희는 운동하러 가잖아  학교도 가고  그러면 4시에 오지  학교에서 4시에 끝나면  집에 오면 4시 반이지  그러면 9시에 자거든  그럼 다 시간밖에 안 남아  그것 다는  내 시간밖에 안 남네  내 시간에서 공부하고 척 보고  그럼 끝인데?  그럼 이럴 때는  가장 원하는 걸 한 개만 말하는 거야  제 마음이 바뀌었대  물놀이래  민우는  게임  그 게임  무조건 게임  기승전 게임  맞아?  응  아이고 또야  게임이 너무 좋아  너는 무슨 게임이 좋은데  너무 좋아  어떤 게임이 제일 좋은데  한 개만 말할 수는 없고  다섯 개만 해봐 그럼  일단은  브러스타드  러블럭스  의주의 이유로  뭐라고?  양코  그다음에 또  무한의 계단  와  다섯 개는 아주 그냥  술술술술 술술  나오네 그치?  너도 있어 엄마  우선은 이누 이야기를 듣는 거니까  좋아 그럼 이누야 우리  그래서 오늘부터  방학 시작이야 그치?  오늘 잘 지내서  시간은 어떻게  어떻게 잡을까를 고민을 해보자  우선 첫 번째 미션 책 읽긴 잘했어  좋아  이제 그러면  조금 쉬자 책을 한 시간 넘겨봤으니 말이지  오케이?  응  애써서
+2025-07-23 08:36:56,195 - steps - INFO - REQUEST 20250723_083512_134484: STEP 3 완료 - 아이 음성:  유명 책도 읽었어?  응  어떤 책이 제일 기억에 나?  머리에 이가 있대요  머리에 이가 있대요?  너 이가 뭔지 알아?  그.. 그 생각엔 생기고 무슨..  그.. 뭐였지? ...
+2025-07-23 08:36:56,195 - __main__ - INFO - [20250723_083512_134484] STEP 4: 텍스트 정제 단계 (오타 수정만)
+2025-07-23 08:36:56,196 - steps - INFO - REQUEST 20250723_083512_134484: STEP 4 - 텍스트 정제 시작
+2025-07-23 08:36:56,196 - __main__ - INFO - 단순 텍스트 정리 시작 - 입력 길이: 3460 문자
+2025-07-23 08:36:56,197 - __main__ - INFO - 단순 텍스트 정리 완료 - 출력 길이: 3460 문자
+2025-07-23 08:36:56,197 - __main__ - INFO - [20250723_083512_134484] STEP 5: 일기+감정 통합 생성 단계
+2025-07-23 08:36:56,197 - steps - INFO - REQUEST 20250723_083512_134484: STEP 5 - 일기+감정 통합 생성 시작
+2025-07-23 08:36:56,198 - __main__ - INFO - 일기+감정 통합 생성 시작 - 아이 발화 길이: 2093 / 전체 맥락 길이: 2093 / 아이 이름: ÀüÀÎ¿ì
+2025-07-23 08:36:59,147 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-23 08:36:59,154 - __main__ - INFO - 통합 생성 완료 - 길이: 215 문자, 토큰: 8638
+2025-07-23 08:36:59,155 - __main__ - INFO - 일기+감정 통합 생성 완료 - 제목: 📚🎮 놀이와 게임의 고민, 감정: ['고민', '즐거움', '깨달음']
+2025-07-23 08:36:59,155 - __main__ - INFO - [20250723_083512_134484] === 요청 처리 완료 ===
+2025-07-23 08:36:59,155 - steps - INFO - REQUEST 20250723_083512_134484: 모든 단계 완료 - 결과 반환
+2025-07-23 08:36:59,157 - __main__ - INFO - [20250723_083512_134484] 결과 파일 저장: result_20250723_083512_134484.json
+2025-07-23 08:36:59,158 - steps - INFO - REQUEST 20250723_083512_134484: 임시 파일들 정리 완료
+2025-07-23 08:44:19,046 - __main__ - INFO - === 서버 초기화 시작 ===
+2025-07-23 08:44:19,308 - __main__ - INFO - OpenAI 클라이언트 초기화 완료
+2025-07-23 08:44:19,308 - __main__ - INFO - Whisper 모델 로딩 시작 (small, cuda, float32)
+2025-07-23 08:44:20,528 - __main__ - INFO - Whisper 모델 로딩 완료
+2025-07-23 08:44:20,529 - __main__ - INFO - VoiceEncoder 모델 로딩 시작
+2025-07-23 08:44:20,554 - __main__ - INFO - VoiceEncoder 모델 로딩 완료
+2025-07-23 08:44:20,555 - __main__ - INFO - === 서버 초기화 완료 ===
+2025-07-23 08:44:20,572 - __main__ - INFO - === 서버 시작 ===
+2025-07-23 08:44:22,175 - __main__ - INFO - === 새로운 요청 시작 [20250723_084422_175732] ===
+2025-07-23 08:44:22,176 - __main__ - INFO - [20250723_084422_175732] 아이 이름: 'ÀüÀÎ¿ì' - 호명 패턴 감지 활성화
+2025-07-23 08:44:22,177 - steps - INFO - REQUEST 20250723_084422_175732: 새로운 transcribe 요청 (아이 이름: ÀüÀÎ¿ì)
+2025-07-23 08:44:22,177 - __main__ - INFO - 업로드된 오디오 파일: output.wav, 크기: 12275076 bytes, 타입: audio/wav
+2025-07-23 08:44:22,177 - __main__ - INFO - 업로드된 임베딩 데이터: 문자열 형태, 길이: 25 문자
+2025-07-23 08:44:22,187 - __main__ - INFO - 임시 오디오 파일 생성: C:\Users\scar\AppData\Local\Temp\tmps_plzs8e.wav
+2025-07-23 08:44:22,188 - steps - INFO - REQUEST 20250723_084422_175732: 임시 오디오 파일 생성 - C:\Users\scar\AppData\Local\Temp\tmps_plzs8e.wav
+2025-07-23 08:44:22,189 - __main__ - INFO - [20250723_084422_175732] 문자열 임베딩 데이터 직접 수신
+2025-07-23 08:44:22,190 - __main__ - INFO - [20250723_084422_175732] 문자열 배열 임베딩 데이터 로딩 완료 - 차원: (5,)
+2025-07-23 08:44:22,190 - steps - INFO - REQUEST 20250723_084422_175732: 임베딩 데이터 로딩 성공
+2025-07-23 08:44:22,190 - __main__ - INFO - [20250723_084422_175732] STEP 1: Whisper 전사 시작
+2025-07-23 08:44:22,191 - steps - INFO - REQUEST 20250723_084422_175732: STEP 1 - Whisper 전사 시작
+2025-07-23 08:44:22,366 - faster_whisper - INFO - Processing audio with duration 06:23.594
+2025-07-23 08:44:23,636 - faster_whisper - INFO - VAD filter removed 00:43.040 of audio
+2025-07-23 08:45:46,603 - __main__ - INFO - [20250723_084422_175732] Whisper 전사 완료 - 177개 세그먼트 추출
+2025-07-23 08:45:46,603 - steps - INFO - REQUEST 20250723_084422_175732: STEP 1 완료 - 177개 세그먼트
+2025-07-23 08:45:46,604 - __main__ - INFO - [20250723_084422_175732] 원본 텍스트 생성 - 길이: 3637 문자
+2025-07-23 08:45:46,604 - steps - INFO - REQUEST 20250723_084422_175732: 원본 텍스트 생성 - [0.00]  유명 책도 읽었어? [2.00]  응 [3.00]  어떤 책이 제일 기억에 나? [5.00]  머리에 이가 있대요 [7.00]  머리에 이가 있대요? [9.00]  ...
+2025-07-23 08:45:46,605 - __main__ - INFO - [20250723_084422_175732] STEP 2: 타임스탬프 제거
+2025-07-23 08:45:46,605 - steps - INFO - REQUEST 20250723_084422_175732: STEP 2 - 타임스탬프 제거
+2025-07-23 08:45:46,606 - __main__ - INFO - [20250723_084422_175732] 타임스탬프 제거 완료 - 정제된 길이: 3460 문자
+2025-07-23 08:45:46,606 - steps - INFO - REQUEST 20250723_084422_175732: STEP 2 완료 - 정제된 텍스트: [0.00] 유명 책도 읽었어? [2.00] 응 [3.00] 어떤 책이 제일 기억에 나? [5.00] 머리에 이가 있대요 [7.00] 머리에 이가 있대요? [9.00] 너 이가 뭔...
+2025-07-23 08:45:46,607 - __main__ - INFO - [20250723_084422_175732] STEP 3: 음성 식별 단계
+2025-07-23 08:45:46,607 - steps - INFO - REQUEST 20250723_084422_175732: STEP 3 - 음성 식별 시작
+2025-07-23 08:45:46,607 - __main__ - INFO - [20250723_084422_175732] 전체 맥락 텍스트 생성 - 길이: 2093 문자
+2025-07-23 08:45:46,608 - __main__ - INFO - [20250723_084422_175732] 아이 이름 설정: 'ÀüÀÎ¿ì' - 호명 패턴 감지 활성화
+2025-07-23 08:45:46,620 - __main__ - INFO - 오디오 파일 로딩 완료: 6137499 샘플, 16000 Hz
+2025-07-23 08:45:47,575 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,575 - __main__ - INFO - 세그먼트 [2.00-3.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,586 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,587 - __main__ - INFO - 세그먼트 [0.00-2.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,595 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,596 - __main__ - INFO - 세그먼트 [5.00-7.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,598 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,599 - __main__ - INFO - 세그먼트 [3.00-5.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,616 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,617 - __main__ - INFO - 세그먼트 [7.00-9.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,630 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,630 - __main__ - INFO - 세그먼트 [9.00-11.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,645 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,646 - __main__ - INFO - 세그먼트 [11.00-16.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,648 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,649 - __main__ - INFO - 세그먼트 [16.00-18.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,659 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,660 - __main__ - INFO - 세그먼트 [18.00-20.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,676 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,677 - __main__ - INFO - 세그먼트 [22.92-23.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,678 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,679 - __main__ - INFO - 세그먼트 [20.00-22.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,687 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,688 - __main__ - INFO - 세그먼트 [25.92-26.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,695 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,696 - __main__ - INFO - 세그먼트 [23.92-25.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,720 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,721 - __main__ - INFO - 세그먼트 [26.92-28.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,725 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,726 - __main__ - INFO - 세그먼트 [28.92-30.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,729 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,729 - __main__ - INFO - 세그먼트 [30.92-32.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,747 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,748 - __main__ - INFO - 세그먼트 [32.92-36.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,771 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,772 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,772 - __main__ - INFO - 세그먼트 [40.92-42.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,774 - __main__ - INFO - 세그먼트 [36.92-40.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,778 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,778 - __main__ - INFO - 세그먼트 [42.92-45.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,798 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,799 - __main__ - INFO - 세그먼트 [45.92-48.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,806 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,806 - __main__ - INFO - 세그먼트 [54.92-55.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,820 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,821 - __main__ - INFO - 세그먼트 [48.92-52.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,823 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,824 - __main__ - INFO - 세그먼트 [52.92-54.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,828 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,829 - __main__ - INFO - 세그먼트 [55.92-56.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,843 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,844 - __main__ - INFO - 세그먼트 [56.92-59.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,852 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,852 - __main__ - INFO - 세그먼트 [61.92-62.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,859 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,859 - __main__ - INFO - 세그먼트 [62.92-63.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,869 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,869 - __main__ - INFO - 세그먼트 [59.92-61.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,871 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,872 - __main__ - INFO - 세그먼트 [63.92-64.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,895 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,896 - __main__ - INFO - 세그먼트 [64.92-66.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,899 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,900 - __main__ - INFO - 세그먼트 [70.92-71.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,907 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,908 - __main__ - INFO - 세그먼트 [66.92-70.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,915 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,915 - __main__ - INFO - 세그먼트 [71.92-73.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,927 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,928 - __main__ - INFO - 세그먼트 [75.92-76.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,940 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,941 - __main__ - INFO - 세그먼트 [73.92-75.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,959 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,960 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,960 - __main__ - INFO - 세그먼트 [76.92-79.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,961 - __main__ - INFO - 세그먼트 [79.92-82.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,984 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,985 - __main__ - INFO - 세그먼트 [82.92-87.42]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:47,994 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:47,994 - __main__ - INFO - 세그먼트 [98.48-99.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,003 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,004 - __main__ - INFO - 세그먼트 [87.42-95.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,019 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,020 - __main__ - INFO - 세그먼트 [95.48-98.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,021 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,022 - __main__ - INFO - 세그먼트 [101.48-102.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,033 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,034 - __main__ - INFO - 세그먼트 [99.48-101.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,045 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,046 - __main__ - INFO - 세그먼트 [102.48-104.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,062 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,063 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,063 - __main__ - INFO - 세그먼트 [106.48-108.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,065 - __main__ - INFO - 세그먼트 [108.48-109.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,068 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,068 - __main__ - INFO - 세그먼트 [104.48-106.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,070 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,071 - __main__ - INFO - 세그먼트 [109.48-110.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,090 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,090 - __main__ - INFO - 세그먼트 [110.48-111.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,098 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,099 - __main__ - INFO - 세그먼트 [113.48-114.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,111 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,112 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,112 - __main__ - INFO - 세그먼트 [111.48-113.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,113 - __main__ - INFO - 세그먼트 [114.48-116.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,117 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,118 - __main__ - INFO - 세그먼트 [116.48-117.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,143 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,143 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,144 - __main__ - INFO - 세그먼트 [125.56-126.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,145 - __main__ - INFO - 세그먼트 [117.48-119.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,157 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,157 - __main__ - INFO - 세그먼트 [122.56-125.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,159 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,159 - __main__ - INFO - 세그먼트 [119.48-122.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,173 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,174 - __main__ - INFO - 세그먼트 [128.56-129.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,184 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,185 - __main__ - INFO - 세그먼트 [126.56-128.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,190 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,191 - __main__ - INFO - 세그먼트 [131.56-132.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,197 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,198 - __main__ - INFO - 세그먼트 [129.56-131.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,213 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,214 - __main__ - INFO - 세그먼트 [134.56-135.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,218 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,219 - __main__ - INFO - 세그먼트 [135.56-136.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,222 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,222 - __main__ - INFO - 세그먼트 [132.56-134.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,235 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,236 - __main__ - INFO - 세그먼트 [136.56-139.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,245 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,246 - __main__ - INFO - 세그먼트 [141.56-142.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,253 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,254 - __main__ - INFO - 세그먼트 [139.56-141.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,265 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,266 - __main__ - INFO - 세그먼트 [142.56-144.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,271 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,271 - __main__ - INFO - 세그먼트 [144.56-146.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,289 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,290 - __main__ - INFO - 세그먼트 [146.56-149.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,293 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,294 - __main__ - INFO - 세그먼트 [149.56-151.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,306 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,307 - __main__ - INFO - 세그먼트 [154.56-156.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,311 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,311 - __main__ - INFO - 세그먼트 [151.56-154.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,331 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,332 - __main__ - INFO - 세그먼트 [158.56-160.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,333 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,333 - __main__ - INFO - 세그먼트 [156.56-158.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,344 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,344 - __main__ - INFO - 세그먼트 [160.56-162.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,355 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,356 - __main__ - INFO - 세그먼트 [162.56-164.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,362 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,363 - __main__ - INFO - 세그먼트 [166.56-167.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,372 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,373 - __main__ - INFO - 세그먼트 [164.56-166.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,391 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,392 - __main__ - INFO - 세그먼트 [167.56-172.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,401 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,402 - __main__ - INFO - 세그먼트 [176.76-177.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,405 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,406 - __main__ - INFO - 세그먼트 [172.76-174.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,410 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,410 - __main__ - INFO - 세그먼트 [174.76-176.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,428 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,428 - __main__ - INFO - 세그먼트 [177.76-180.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,439 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,440 - __main__ - INFO - 세그먼트 [184.76-185.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,441 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,441 - __main__ - INFO - 세그먼트 [180.76-182.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,449 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,449 - __main__ - INFO - 세그먼트 [182.76-184.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,451 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,451 - __main__ - INFO - 세그먼트 [185.76-186.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,483 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,483 - __main__ - INFO - 세그먼트 [188.76-190.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,487 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,488 - __main__ - INFO - 세그먼트 [186.76-188.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,502 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,503 - __main__ - INFO - 세그먼트 [190.76-192.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,505 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,505 - __main__ - INFO - 세그먼트 [192.76-201.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,528 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,528 - __main__ - INFO - 세그먼트 [204.22-206.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,531 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,531 - __main__ - INFO - 세그먼트 [201.22-204.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,541 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,542 - __main__ - INFO - 세그먼트 [208.22-210.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,548 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,549 - __main__ - INFO - 세그먼트 [206.22-208.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,559 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,560 - __main__ - INFO - 세그먼트 [210.22-211.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,567 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,568 - __main__ - INFO - 세그먼트 [214.22-215.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,569 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,570 - __main__ - INFO - 세그먼트 [211.22-214.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,599 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,599 - __main__ - INFO - 세그먼트 [215.22-219.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,605 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,605 - __main__ - INFO - 세그먼트 [219.62-221.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,607 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,607 - __main__ - INFO - 세그먼트 [223.62-225.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,610 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,611 - __main__ - INFO - 세그먼트 [221.62-223.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,635 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,636 - __main__ - INFO - 세그먼트 [231.62-232.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,637 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,638 - __main__ - INFO - 세그먼트 [232.62-233.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,646 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,646 - __main__ - INFO - 세그먼트 [225.62-228.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,651 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,652 - __main__ - INFO - 세그먼트 [228.62-230.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,679 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,679 - __main__ - INFO - 세그먼트 [233.62-238.29]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,683 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,684 - __main__ - INFO - 세그먼트 [238.29-242.21]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,694 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,695 - __main__ - INFO - 세그먼트 [242.21-245.21]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,699 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,699 - __main__ - INFO - 세그먼트 [245.21-248.21]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,706 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,706 - __main__ - INFO - 세그먼트 [248.21-249.21]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,729 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,730 - __main__ - INFO - 세그먼트 [249.21-254.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,742 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,743 - __main__ - INFO - 세그먼트 [257.22-259.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,744 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,745 - __main__ - INFO - 세그먼트 [255.22-257.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,746 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,747 - __main__ - INFO - 세그먼트 [260.22-263.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,767 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,767 - __main__ - INFO - 세그먼트 [263.22-265.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,784 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,785 - __main__ - INFO - 세그먼트 [269.22-271.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,789 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,790 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,790 - __main__ - INFO - 세그먼트 [265.22-267.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,792 - __main__ - INFO - 세그먼트 [267.22-269.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,799 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,800 - __main__ - INFO - 세그먼트 [271.22-273.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,826 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,827 - __main__ - INFO - 세그먼트 [273.22-275.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,834 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,835 - __main__ - INFO - 세그먼트 [275.22-277.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,838 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,838 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,839 - __main__ - INFO - 세그먼트 [279.22-281.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,840 - __main__ - INFO - 세그먼트 [277.22-279.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,864 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,864 - __main__ - INFO - 세그먼트 [281.22-283.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,865 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,866 - __main__ - INFO - 세그먼트 [286.22-287.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,875 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,876 - __main__ - INFO - 세그먼트 [284.22-286.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,883 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,884 - __main__ - INFO - 세그먼트 [287.22-289.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,905 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,906 - __main__ - INFO - 세그먼트 [289.22-291.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,922 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,922 - __main__ - INFO - 세그먼트 [291.22-298.37]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,931 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,932 - __main__ - INFO - 세그먼트 [298.37-300.37]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,945 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,946 - __main__ - INFO - 세그먼트 [300.37-304.68]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,954 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,955 - __main__ - INFO - 세그먼트 [314.04-315.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,962 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,963 - __main__ - INFO - 세그먼트 [304.68-314.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,967 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,968 - __main__ - INFO - 세그먼트 [315.04-316.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,977 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,977 - __main__ - INFO - 세그먼트 [316.04-317.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,979 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,979 - __main__ - INFO - 세그먼트 [317.04-318.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:48,996 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:48,997 - __main__ - INFO - 세그먼트 [320.04-321.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,001 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,002 - __main__ - INFO - 세그먼트 [318.04-320.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,004 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,005 - __main__ - INFO - 세그먼트 [322.04-323.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,006 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,006 - __main__ - INFO - 세그먼트 [321.04-322.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,024 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,025 - __main__ - INFO - 세그먼트 [323.04-324.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,041 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,042 - __main__ - INFO - 세그먼트 [324.04-326.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,045 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,045 - __main__ - INFO - 세그먼트 [326.04-328.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,050 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,051 - __main__ - INFO - 세그먼트 [328.04-330.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,067 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,068 - __main__ - INFO - 세그먼트 [330.04-332.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,079 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,080 - __main__ - INFO - 세그먼트 [332.04-335.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,081 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,082 - __main__ - INFO - 세그먼트 [335.04-337.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,094 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,095 - __main__ - INFO - 세그먼트 [337.04-339.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,104 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,104 - __main__ - INFO - 세그먼트 [341.04-342.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,110 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,111 - __main__ - INFO - 세그먼트 [339.04-341.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,116 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,117 - __main__ - INFO - 세그먼트 [342.04-344.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,121 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,121 - __main__ - INFO - 세그먼트 [344.04-345.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,128 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,129 - __main__ - INFO - 세그먼트 [345.04-346.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,140 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,141 - __main__ - INFO - 세그먼트 [349.04-350.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,151 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,152 - __main__ - INFO - 세그먼트 [351.04-352.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,154 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,155 - __main__ - INFO - 세그먼트 [347.04-349.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,161 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,161 - __main__ - INFO - 세그먼트 [352.04-354.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,165 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,166 - __main__ - INFO - 세그먼트 [354.04-355.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,178 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,179 - __main__ - INFO - 세그먼트 [355.04-356.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,193 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,194 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,195 - __main__ - INFO - 세그먼트 [356.04-358.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,195 - __main__ - INFO - 세그먼트 [358.04-360.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,200 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,200 - __main__ - INFO - 세그먼트 [360.04-362.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,220 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,221 - __main__ - INFO - 세그먼트 [362.04-364.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,222 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,223 - __main__ - INFO - 세그먼트 [364.04-365.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,233 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,233 - __main__ - INFO - 세그먼트 [365.04-367.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,235 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,236 - __main__ - INFO - 세그먼트 [367.04-369.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,255 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,256 - __main__ - INFO - 세그먼트 [374.04-375.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,263 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,264 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,264 - __main__ - INFO - 세그먼트 [371.04-374.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,266 - __main__ - INFO - 세그먼트 [369.04-371.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,271 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,272 - __main__ - INFO - 세그먼트 [375.04-377.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,288 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,289 - __main__ - INFO - 세그먼트 [377.04-380.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,292 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,292 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,292 - __main__ - INFO - 세그먼트 [380.04-381.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,293 - __main__ - INFO - 세그먼트 [381.04-382.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,294 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:45:49,294 - __main__ - INFO - 세그먼트 [382.04-383.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:45:49,297 - __main__ - WARNING - 아이 음성으로 식별된 구간이 없어서 전체 텍스트 사용
+2025-07-23 08:45:49,299 - __main__ - INFO - [20250723_084422_175732] 아이 음성 식별 완료 - 추출된 텍스트 수: 177
+2025-07-23 08:45:49,300 - __main__ - INFO - [20250723_084422_175732] 아이 음성 내용:  유명 책도 읽었어?  응  어떤 책이 제일 기억에 나?  머리에 이가 있대요  머리에 이가 있대요?  너 이가 뭔지 알아?  그.. 그 생각엔 생기고 무슨..  그.. 뭐였지?  그..  털복숭이고  이가?  이가 털복숭이라고?  다리가 많이..  이가 다리가 많아?  저기 책에 남아  아 진짜?  내가 알고 있는 이가.. 그 이가 많아?  엄마가 알고 있는 이는 이빨 아니야?  아니지  어렸을.. 엄마 어렸을 때는 이..  머릿속에 이 있는 애가 많았어  근데 지금은 머릿속에 이 있는 애가 별로 없지  그렇구나  어?  이거 봐 야  아 털이.. 몸에 털이가 많.. 털이 많은 거네  다리는 6개는 이거 권충이잖아  응  맞아?  응  맞나 아닌가 모르겠네  엄마 어렸을 때는 이 있는 애도 많았어  아 그래  약간은 많았다는..  어 봐 우리 방학 얘기하고 있지?  맞아  응 방학에는 인도가 원하는 건 뭐야?  모두가 방학 때 뭐 할까를 고민하고 있어  음 게임이랑 물놀이 나왔지  우리 머리가 한꺼번에 고를 수가..  한꺼번에 고를 수 있어?  어!  너가 원하는 걸 얘기해주면 돼  응  그러면 엄마가 계획표를 짤 때  이는 이걸 원하니까  이는 생각도 반영할 수 있지  넣어줄 수 있어  오케이  응  엄마가 좋아하는 걸로 해야 돼  끝  아니지 이렇게 딜을 할 때는  엄마가 좋아하는 게 아니라  네가 좋아하는 걸 말해야지  그렇다면  엄마가 좋아하는 건 학습시간이지  맞아  그래서 오늘 아침에 인루가  책 다 봤어  책 한 시간이나 봤잖아  한 시간 넘게 봤어 지금  좋아 이제 그럼 인루가 원하는 걸 말해봐  놀이  놀이시간  놀이시간 확보가 중요하구나  놀이시간 확보를 얼마나 해줘야 돼  음  24시간 중에  아니  24시간 중에 인루야 10시간은 자지  그럼 14시간 남지  4시간에서 밥 아침 점심 저녁 먹지  그럼 3시간 빼지  11시간이지  11시간에서  아침 저녁 책 읽는 시간  2시간 2시간 빼야 되지  그럼 몇 시간?  음  11시간에서 2시간 2시간 빼면  4시간을 빼야 되니까  7시간 남네  7시간?  7시간에서 3시간 공부하지  4시간 남네  4시간은 게임  안고 놀이  아니요  그럼 그 4시간에서  게임과 놀이를 같이 해야 돼  어떻게 해야 되겠어  게임도 들어가고  게임 시간을 버리고 놀이면 놀이를 하면 돼  게임  근데 너는 게임 다 하고 나면  놀이시간도 달라 그러잖아  게임  3시간 하고 놀이 시간 1시간 하는 건 어떨까  아  그리고 인루야 엄마가  살짝 힌트를 주자면  밥을 1시간씩 잡았잖아  밥을 20분 만에 다 먹으면 40분이 남아  그 시간도 다 모으고 모으고 모으면  그것도 한 2시간 나와  그렇지  그렇다면  게임을 3시간 하고  그  놀이를 3시간 하는 건 어떨까 그럴 때는  엄마 생각에도 너무 욕심을 부리는 것 같아  그렇지?  게임도 하고 놀이도 하고  그것도 게임 하루 3시간  놀이 하루 3시간은  6시간이나 보장을 해달라는 거는  Too much  너무 많이 놀기만 하겠다는 거야  그렇다면  아 야 그리고 문제는 뭐냐면  너희는 운동하러 가잖아  학교도 가고  그러면 4시에 오지  학교에서 4시에 끝나면  집에 오면 4시 반이지  그러면 9시에 자거든  그럼 다 시간밖에 안 남아  그것 다는  내 시간밖에 안 남네  내 시간에서 공부하고 척 보고  그럼 끝인데?  그럼 이럴 때는  가장 원하는 걸 한 개만 말하는 거야  제 마음이 바뀌었대  물놀이래  민우는  게임  그 게임  무조건 게임  기승전 게임  맞아?  응  아이고 또야  게임이 너무 좋아  너는 무슨 게임이 좋은데  너무 좋아  어떤 게임이 제일 좋은데  한 개만 말할 수는 없고  다섯 개만 해봐 그럼  일단은  브러스타드  러블럭스  의주의 이유로  뭐라고?  양코  그다음에 또  무한의 계단  와  다섯 개는 아주 그냥  술술술술 술술  나오네 그치?  너도 있어 엄마  우선은 이누 이야기를 듣는 거니까  좋아 그럼 이누야 우리  그래서 오늘부터  방학 시작이야 그치?  오늘 잘 지내서  시간은 어떻게  어떻게 잡을까를 고민을 해보자  우선 첫 번째 미션 책 읽긴 잘했어  좋아  이제 그러면  조금 쉬자 책을 한 시간 넘겨봤으니 말이지  오케이?  응  애써서
+2025-07-23 08:45:49,301 - steps - INFO - REQUEST 20250723_084422_175732: STEP 3 완료 - 아이 음성:  유명 책도 읽었어?  응  어떤 책이 제일 기억에 나?  머리에 이가 있대요  머리에 이가 있대요?  너 이가 뭔지 알아?  그.. 그 생각엔 생기고 무슨..  그.. 뭐였지? ...
+2025-07-23 08:45:49,301 - __main__ - INFO - [20250723_084422_175732] STEP 4: 텍스트 정제 단계 (오타 수정만)
+2025-07-23 08:45:49,301 - steps - INFO - REQUEST 20250723_084422_175732: STEP 4 - 텍스트 정제 시작
+2025-07-23 08:45:49,302 - __main__ - INFO - 단순 텍스트 정리 시작 - 입력 길이: 3460 문자
+2025-07-23 08:45:49,302 - __main__ - INFO - 단순 텍스트 정리 완료 - 출력 길이: 3460 문자
+2025-07-23 08:45:49,302 - __main__ - INFO - [20250723_084422_175732] STEP 5: 일기+감정 통합 생성 단계
+2025-07-23 08:45:49,303 - steps - INFO - REQUEST 20250723_084422_175732: STEP 5 - 일기+감정 통합 생성 시작
+2025-07-23 08:45:49,303 - __main__ - INFO - 일기+감정 통합 생성 시작 - 아이 발화 길이: 2093 / 전체 맥락 길이: 2093 / 아이 이름: ÀüÀÎ¿ì
+2025-07-23 08:45:52,821 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-23 08:45:52,824 - __main__ - INFO - 통합 생성 완료 - 길이: 281 문자, 토큰: 8685
+2025-07-23 08:45:52,824 - __main__ - INFO - 일기+감정 통합 생성 완료 - 제목: 📚 머리에 이가 있는 책**, 감정: ['** 신기함', '당황', '중요함']
+2025-07-23 08:45:52,825 - __main__ - INFO - [20250723_084422_175732] === 요청 처리 완료 ===
+2025-07-23 08:45:52,825 - steps - INFO - REQUEST 20250723_084422_175732: 모든 단계 완료 - 결과 반환
+2025-07-23 08:45:52,826 - __main__ - INFO - [20250723_084422_175732] 결과 파일 저장: result_20250723_084422_175732.json
+2025-07-23 08:45:52,828 - steps - INFO - REQUEST 20250723_084422_175732: 임시 파일들 정리 완료
+2025-07-23 08:48:56,614 - __main__ - INFO - === 서버 초기화 시작 ===
+2025-07-23 08:48:56,875 - __main__ - INFO - OpenAI 클라이언트 초기화 완료
+2025-07-23 08:48:56,875 - __main__ - INFO - Whisper 모델 로딩 시작 (small, cuda, float32)
+2025-07-23 08:48:58,100 - __main__ - INFO - Whisper 모델 로딩 완료
+2025-07-23 08:48:58,100 - __main__ - INFO - VoiceEncoder 모델 로딩 시작
+2025-07-23 08:48:58,123 - __main__ - INFO - VoiceEncoder 모델 로딩 완료
+2025-07-23 08:48:58,124 - __main__ - INFO - === 서버 초기화 완료 ===
+2025-07-23 08:48:58,140 - __main__ - INFO - === 서버 시작 ===
+2025-07-23 08:55:01,283 - __main__ - INFO - === 서버 초기화 시작 ===
+2025-07-23 08:55:01,546 - __main__ - INFO - OpenAI 클라이언트 초기화 완료
+2025-07-23 08:55:01,546 - __main__ - INFO - Whisper 모델 로딩 시작 (small, cuda, float32)
+2025-07-23 08:55:03,070 - __main__ - INFO - Whisper 모델 로딩 완료
+2025-07-23 08:55:03,070 - __main__ - INFO - VoiceEncoder 모델 로딩 시작
+2025-07-23 08:55:03,095 - __main__ - INFO - VoiceEncoder 모델 로딩 완료
+2025-07-23 08:55:03,096 - __main__ - INFO - === 서버 초기화 완료 ===
+2025-07-23 08:55:03,112 - __main__ - INFO - === 서버 시작 ===
+2025-07-23 08:55:06,264 - __main__ - INFO - === 새로운 요청 시작 [20250723_085506_264175] ===
+2025-07-23 08:55:06,264 - __main__ - INFO - [20250723_085506_264175] 아이 이름: 'ÀüÀÎ¿ì' - 호명 패턴 감지 활성화
+2025-07-23 08:55:06,265 - steps - INFO - REQUEST 20250723_085506_264175: 새로운 transcribe 요청 (아이 이름: ÀüÀÎ¿ì)
+2025-07-23 08:55:06,266 - __main__ - INFO - 업로드된 오디오 파일: output.wav, 크기: 12275076 bytes, 타입: audio/wav
+2025-07-23 08:55:06,266 - __main__ - INFO - 업로드된 임베딩 데이터: 문자열 형태, 길이: 25 문자
+2025-07-23 08:55:06,276 - __main__ - INFO - 임시 오디오 파일 생성: C:\Users\scar\AppData\Local\Temp\tmpyt2zvav1.wav
+2025-07-23 08:55:06,276 - steps - INFO - REQUEST 20250723_085506_264175: 임시 오디오 파일 생성 - C:\Users\scar\AppData\Local\Temp\tmpyt2zvav1.wav
+2025-07-23 08:55:06,278 - __main__ - INFO - [20250723_085506_264175] 문자열 임베딩 데이터 직접 수신
+2025-07-23 08:55:06,278 - __main__ - INFO - [20250723_085506_264175] 문자열 배열 임베딩 데이터 로딩 완료 - 차원: (5,)
+2025-07-23 08:55:06,279 - steps - INFO - REQUEST 20250723_085506_264175: 임베딩 데이터 로딩 성공
+2025-07-23 08:55:06,279 - __main__ - INFO - [20250723_085506_264175] STEP 1: Whisper 전사 시작
+2025-07-23 08:55:06,280 - steps - INFO - REQUEST 20250723_085506_264175: STEP 1 - Whisper 전사 시작
+2025-07-23 08:55:06,458 - faster_whisper - INFO - Processing audio with duration 06:23.594
+2025-07-23 08:55:07,722 - faster_whisper - INFO - VAD filter removed 00:43.040 of audio
+2025-07-23 08:56:30,830 - __main__ - INFO - [20250723_085506_264175] Whisper 전사 완료 - 177개 세그먼트 추출
+2025-07-23 08:56:30,830 - steps - INFO - REQUEST 20250723_085506_264175: STEP 1 완료 - 177개 세그먼트
+2025-07-23 08:56:30,831 - __main__ - INFO - [20250723_085506_264175] 원본 텍스트 생성 - 길이: 3637 문자
+2025-07-23 08:56:30,831 - steps - INFO - REQUEST 20250723_085506_264175: 원본 텍스트 생성 - [0.00]  유명 책도 읽었어? [2.00]  응 [3.00]  어떤 책이 제일 기억에 나? [5.00]  머리에 이가 있대요 [7.00]  머리에 이가 있대요? [9.00]  ...
+2025-07-23 08:56:30,832 - __main__ - INFO - [20250723_085506_264175] STEP 2: 타임스탬프 제거
+2025-07-23 08:56:30,832 - steps - INFO - REQUEST 20250723_085506_264175: STEP 2 - 타임스탬프 제거
+2025-07-23 08:56:30,833 - __main__ - INFO - [20250723_085506_264175] 타임스탬프 제거 완료 - 정제된 길이: 3460 문자
+2025-07-23 08:56:30,833 - steps - INFO - REQUEST 20250723_085506_264175: STEP 2 완료 - 정제된 텍스트: [0.00] 유명 책도 읽었어? [2.00] 응 [3.00] 어떤 책이 제일 기억에 나? [5.00] 머리에 이가 있대요 [7.00] 머리에 이가 있대요? [9.00] 너 이가 뭔...
+2025-07-23 08:56:30,833 - __main__ - INFO - [20250723_085506_264175] STEP 3: 음성 식별 단계
+2025-07-23 08:56:30,834 - steps - INFO - REQUEST 20250723_085506_264175: STEP 3 - 음성 식별 시작
+2025-07-23 08:56:30,834 - __main__ - INFO - [20250723_085506_264175] 전체 맥락 텍스트 생성 - 길이: 2093 문자
+2025-07-23 08:56:30,835 - __main__ - INFO - [20250723_085506_264175] 아이 이름 설정: 'ÀüÀÎ¿ì' - 호명 패턴 감지 활성화
+2025-07-23 08:56:30,847 - __main__ - INFO - 오디오 파일 로딩 완료: 6137499 샘플, 16000 Hz
+2025-07-23 08:56:31,789 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,790 - __main__ - INFO - 세그먼트 [2.00-3.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,817 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,818 - __main__ - INFO - 세그먼트 [0.00-2.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,819 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,820 - __main__ - INFO - 세그먼트 [3.00-5.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,822 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,823 - __main__ - INFO - 세그먼트 [5.00-7.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,836 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,836 - __main__ - INFO - 세그먼트 [7.00-9.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,860 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,860 - __main__ - INFO - 세그먼트 [9.00-11.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,871 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,871 - __main__ - INFO - 세그먼트 [11.00-16.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,873 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,874 - __main__ - INFO - 세그먼트 [16.00-18.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,883 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,884 - __main__ - INFO - 세그먼트 [18.00-20.00]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,901 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,902 - __main__ - INFO - 세그먼트 [22.92-23.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,906 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,906 - __main__ - INFO - 세그먼트 [20.00-22.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,914 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,915 - __main__ - INFO - 세그먼트 [25.92-26.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,923 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,924 - __main__ - INFO - 세그먼트 [23.92-25.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,945 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,946 - __main__ - INFO - 세그먼트 [28.92-30.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,947 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,948 - __main__ - INFO - 세그먼트 [26.92-28.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,961 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,962 - __main__ - INFO - 세그먼트 [30.92-32.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,976 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,976 - __main__ - INFO - 세그먼트 [32.92-36.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,992 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,992 - __main__ - INFO - 세그먼트 [36.92-40.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:31,994 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:31,995 - __main__ - INFO - 세그먼트 [40.92-42.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,013 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,013 - __main__ - INFO - 세그먼트 [42.92-45.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,029 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,029 - __main__ - INFO - 세그먼트 [45.92-48.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,041 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,041 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,041 - __main__ - INFO - 세그먼트 [52.92-54.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,043 - __main__ - INFO - 세그먼트 [48.92-52.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,044 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,044 - __main__ - INFO - 세그먼트 [54.92-55.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,057 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,058 - __main__ - INFO - 세그먼트 [55.92-56.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,075 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,075 - __main__ - INFO - 세그먼트 [61.92-62.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,084 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,084 - __main__ - INFO - 세그먼트 [59.92-61.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,088 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,088 - __main__ - INFO - 세그먼트 [62.92-63.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,091 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,092 - __main__ - INFO - 세그먼트 [56.92-59.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,104 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,105 - __main__ - INFO - 세그먼트 [63.92-64.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,119 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,120 - __main__ - INFO - 세그먼트 [70.92-71.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,127 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,128 - __main__ - INFO - 세그먼트 [64.92-66.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,140 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,141 - __main__ - INFO - 세그먼트 [66.92-70.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,152 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,153 - __main__ - INFO - 세그먼트 [71.92-73.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,154 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,155 - __main__ - INFO - 세그먼트 [75.92-76.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,165 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,165 - __main__ - INFO - 세그먼트 [73.92-75.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,192 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,193 - __main__ - INFO - 세그먼트 [76.92-79.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,204 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,205 - __main__ - INFO - 세그먼트 [82.92-87.42]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,210 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,211 - __main__ - INFO - 세그먼트 [79.92-82.92]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,228 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,229 - __main__ - INFO - 세그먼트 [87.42-95.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,233 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,234 - __main__ - INFO - 세그먼트 [98.48-99.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,248 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,248 - __main__ - INFO - 세그먼트 [95.48-98.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,254 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,255 - __main__ - INFO - 세그먼트 [101.48-102.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,260 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,260 - __main__ - INFO - 세그먼트 [99.48-101.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,272 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,272 - __main__ - INFO - 세그먼트 [102.48-104.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,287 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,287 - __main__ - INFO - 세그먼트 [108.48-109.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,294 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,295 - __main__ - INFO - 세그먼트 [104.48-106.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,296 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,297 - __main__ - INFO - 세그먼트 [106.48-108.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,299 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,300 - __main__ - INFO - 세그먼트 [109.48-110.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,316 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,317 - __main__ - INFO - 세그먼트 [110.48-111.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,325 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,326 - __main__ - INFO - 세그먼트 [113.48-114.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,341 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,342 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,342 - __main__ - INFO - 세그먼트 [114.48-116.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,343 - __main__ - INFO - 세그먼트 [111.48-113.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,345 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,345 - __main__ - INFO - 세그먼트 [116.48-117.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,363 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,364 - __main__ - INFO - 세그먼트 [117.48-119.48]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,375 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,376 - __main__ - INFO - 세그먼트 [125.56-126.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,387 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,388 - __main__ - INFO - 세그먼트 [119.48-122.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,393 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,395 - __main__ - INFO - 세그먼트 [122.56-125.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,406 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,407 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,407 - __main__ - INFO - 세그먼트 [128.56-129.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,408 - __main__ - INFO - 세그먼트 [126.56-128.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,422 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,423 - __main__ - INFO - 세그먼트 [131.56-132.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,430 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,430 - __main__ - INFO - 세그먼트 [129.56-131.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,433 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,434 - __main__ - INFO - 세그먼트 [134.56-135.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,451 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,452 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,452 - __main__ - INFO - 세그먼트 [135.56-136.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,453 - __main__ - INFO - 세그먼트 [132.56-134.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,467 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,468 - __main__ - INFO - 세그먼트 [136.56-139.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,472 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,472 - __main__ - INFO - 세그먼트 [139.56-141.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,481 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,481 - __main__ - INFO - 세그먼트 [141.56-142.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,498 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,499 - __main__ - INFO - 세그먼트 [142.56-144.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,507 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,508 - __main__ - INFO - 세그먼트 [144.56-146.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,511 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,512 - __main__ - INFO - 세그먼트 [146.56-149.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,526 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,527 - __main__ - INFO - 세그먼트 [149.56-151.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,542 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,542 - __main__ - INFO - 세그먼트 [151.56-154.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,546 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,547 - __main__ - INFO - 세그먼트 [154.56-156.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,550 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,551 - __main__ - INFO - 세그먼트 [156.56-158.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,570 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,570 - __main__ - INFO - 세그먼트 [158.56-160.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,582 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,583 - __main__ - INFO - 세그먼트 [162.56-164.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,586 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,586 - __main__ - INFO - 세그먼트 [160.56-162.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,589 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,589 - __main__ - INFO - 세그먼트 [164.56-166.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,597 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,597 - __main__ - INFO - 세그먼트 [166.56-167.56]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,629 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,630 - __main__ - INFO - 세그먼트 [176.76-177.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,632 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,633 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,633 - __main__ - INFO - 세그먼트 [167.56-172.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,634 - __main__ - INFO - 세그먼트 [174.76-176.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,636 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,636 - __main__ - INFO - 세그먼트 [172.76-174.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,665 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,666 - __main__ - INFO - 세그먼트 [184.76-185.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,672 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,672 - __main__ - INFO - 세그먼트 [180.76-182.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,676 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,676 - __main__ - INFO - 세그먼트 [182.76-184.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,678 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,678 - __main__ - INFO - 세그먼트 [177.76-180.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,693 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,693 - __main__ - INFO - 세그먼트 [185.76-186.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,704 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,705 - __main__ - INFO - 세그먼트 [186.76-188.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,715 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,715 - __main__ - INFO - 세그먼트 [188.76-190.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,726 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,727 - __main__ - INFO - 세그먼트 [190.76-192.76]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,743 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,744 - __main__ - INFO - 세그먼트 [201.22-204.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,749 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,750 - __main__ - INFO - 세그먼트 [192.76-201.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,756 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,757 - __main__ - INFO - 세그먼트 [204.22-206.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,773 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,774 - __main__ - INFO - 세그먼트 [206.22-208.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,775 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,776 - __main__ - INFO - 세그먼트 [210.22-211.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,778 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,778 - __main__ - INFO - 세그먼트 [208.22-210.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,795 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,796 - __main__ - INFO - 세그먼트 [211.22-214.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,804 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,805 - __main__ - INFO - 세그먼트 [214.22-215.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,808 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,809 - __main__ - INFO - 세그먼트 [219.62-221.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,823 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,824 - __main__ - INFO - 세그먼트 [215.22-219.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,832 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,833 - __main__ - INFO - 세그먼트 [221.62-223.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,843 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,844 - __main__ - INFO - 세그먼트 [225.62-228.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,851 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,851 - __main__ - INFO - 세그먼트 [223.62-225.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,857 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,857 - __main__ - INFO - 세그먼트 [231.62-232.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,865 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,865 - __main__ - INFO - 세그먼트 [232.62-233.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,867 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,867 - __main__ - INFO - 세그먼트 [228.62-230.62]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,897 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,897 - __main__ - INFO - 세그먼트 [238.29-242.21]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,901 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,901 - __main__ - INFO - 세그먼트 [242.21-245.21]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,902 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,903 - __main__ - INFO - 세그먼트 [233.62-238.29]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,910 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,911 - __main__ - INFO - 세그먼트 [245.21-248.21]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,920 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,921 - __main__ - INFO - 세그먼트 [248.21-249.21]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,940 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,941 - __main__ - INFO - 세그먼트 [249.21-254.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,950 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,950 - __main__ - INFO - 세그먼트 [255.22-257.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,951 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,952 - __main__ - INFO - 세그먼트 [257.22-259.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,958 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,959 - __main__ - INFO - 세그먼트 [260.22-263.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,970 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,972 - __main__ - INFO - 세그먼트 [263.22-265.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,983 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,983 - __main__ - INFO - 세그먼트 [267.22-269.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,988 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,989 - __main__ - INFO - 세그먼트 [265.22-267.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:32,990 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:32,990 - __main__ - INFO - 세그먼트 [269.22-271.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,001 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,002 - __main__ - INFO - 세그먼트 [271.22-273.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,017 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,017 - __main__ - INFO - 세그먼트 [273.22-275.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,021 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,021 - __main__ - INFO - 세그먼트 [277.22-279.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,028 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,029 - __main__ - INFO - 세그먼트 [279.22-281.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,030 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,031 - __main__ - INFO - 세그먼트 [275.22-277.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,051 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,052 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,052 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,053 - __main__ - INFO - 세그먼트 [286.22-287.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,055 - __main__ - INFO - 세그먼트 [284.22-286.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,056 - __main__ - INFO - 세그먼트 [281.22-283.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,072 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,072 - __main__ - INFO - 세그먼트 [287.22-289.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,085 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,086 - __main__ - INFO - 세그먼트 [298.37-300.37]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,088 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,089 - __main__ - INFO - 세그먼트 [289.22-291.22]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,105 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,106 - __main__ - INFO - 세그먼트 [291.22-298.37]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,113 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,114 - __main__ - INFO - 세그먼트 [314.04-315.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,128 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,128 - __main__ - INFO - 세그먼트 [300.37-304.68]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,130 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,131 - __main__ - INFO - 세그먼트 [315.04-316.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,136 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,137 - __main__ - INFO - 세그먼트 [316.04-317.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,146 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,146 - __main__ - INFO - 세그먼트 [304.68-314.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,158 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,158 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,159 - __main__ - INFO - 세그먼트 [317.04-318.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,160 - __main__ - INFO - 세그먼트 [320.04-321.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,164 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,164 - __main__ - INFO - 세그먼트 [318.04-320.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,169 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,169 - __main__ - INFO - 세그먼트 [321.04-322.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,179 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,180 - __main__ - INFO - 세그먼트 [323.04-324.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,185 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,185 - __main__ - INFO - 세그먼트 [322.04-323.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,197 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,197 - __main__ - INFO - 세그먼트 [324.04-326.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,207 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,207 - __main__ - INFO - 세그먼트 [326.04-328.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,209 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,210 - __main__ - INFO - 세그먼트 [328.04-330.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,226 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,227 - __main__ - INFO - 세그먼트 [330.04-332.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,232 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,232 - __main__ - INFO - 세그먼트 [332.04-335.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,239 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,240 - __main__ - INFO - 세그먼트 [337.04-339.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,245 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,246 - __main__ - INFO - 세그먼트 [335.04-337.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,254 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,255 - __main__ - INFO - 세그먼트 [341.04-342.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,269 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,270 - __main__ - INFO - 세그먼트 [339.04-341.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,271 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,272 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,272 - __main__ - INFO - 세그먼트 [342.04-344.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,273 - __main__ - INFO - 세그먼트 [344.04-345.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,277 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,277 - __main__ - INFO - 세그먼트 [345.04-346.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,293 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,294 - __main__ - INFO - 세그먼트 [349.04-350.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,296 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,297 - __main__ - INFO - 세그먼트 [351.04-352.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,306 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,306 - __main__ - INFO - 세그먼트 [352.04-354.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,310 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,310 - __main__ - INFO - 세그먼트 [347.04-349.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,312 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,312 - __main__ - INFO - 세그먼트 [354.04-355.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,319 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,320 - __main__ - INFO - 세그먼트 [355.04-356.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,337 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,338 - __main__ - INFO - 세그먼트 [356.04-358.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,341 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,342 - __main__ - INFO - 세그먼트 [360.04-362.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,350 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,351 - __main__ - INFO - 세그먼트 [358.04-360.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,357 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,357 - __main__ - INFO - 세그먼트 [362.04-364.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,360 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,361 - __main__ - INFO - 세그먼트 [364.04-365.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,368 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,369 - __main__ - INFO - 세그먼트 [365.04-367.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,389 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,390 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,391 - __main__ - INFO - 세그먼트 [374.04-375.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,392 - __main__ - INFO - 세그먼트 [367.04-369.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,395 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,396 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,396 - __main__ - INFO - 세그먼트 [369.04-371.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,397 - __main__ - INFO - 세그먼트 [371.04-374.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,419 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,420 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,420 - __main__ - INFO - 세그먼트 [381.04-382.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,421 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,421 - __main__ - INFO - 세그먼트 [380.04-381.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,422 - __main__ - INFO - 세그먼트 [375.04-377.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,430 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,431 - __main__ - INFO - 세그먼트 [377.04-380.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,436 - __main__ - ERROR - 세그먼트 임베딩 처리 실패: Incompatible dimension for X and Y matrices: X.shape[1] == 256 while Y.shape[1] == 5
+2025-07-23 08:56:33,436 - __main__ - INFO - 세그먼트 [382.04-383.04]: 유사도 0.000 - 어른 (이름호명: False)
+2025-07-23 08:56:33,438 - __main__ - WARNING - 아이 음성으로 식별된 구간이 없어서 전체 텍스트 사용
+2025-07-23 08:56:33,444 - __main__ - INFO - 수동 필터링 결과: 26개 텍스트 추출
+2025-07-23 08:56:33,446 - __main__ - INFO - [20250723_085506_264175] 아이 음성 식별 완료 - 추출된 텍스트 수: 26
+2025-07-23 08:56:33,446 - __main__ - INFO - [20250723_085506_264175] 아이 음성 내용: 그.. 아니지 아 그래 맞아 어! 오케이 그렇다면 맞아 놀이 놀이시간 아니 아니요 게임 게임 그렇지 그렇다면 그렇다면 물놀이래 민우는 게임 그 게임 일단은 러블럭스 양코 좋아 애써서
+2025-07-23 08:56:33,447 - steps - INFO - REQUEST 20250723_085506_264175: STEP 3 완료 - 아이 음성: 그.. 아니지 아 그래 맞아 어! 오케이 그렇다면 맞아 놀이 놀이시간 아니 아니요 게임 게임 그렇지 그렇다면 그렇다면 물놀이래 민우는 게임 그 게임 일단은 러블럭스 양코 좋아 애써...
+2025-07-23 08:56:33,447 - __main__ - INFO - [20250723_085506_264175] STEP 4: 텍스트 정제 단계 (오타 수정만)
+2025-07-23 08:56:33,448 - steps - INFO - REQUEST 20250723_085506_264175: STEP 4 - 텍스트 정제 시작
+2025-07-23 08:56:33,448 - __main__ - INFO - 단순 텍스트 정리 시작 - 입력 길이: 3460 문자
+2025-07-23 08:56:33,449 - __main__ - INFO - 단순 텍스트 정리 완료 - 출력 길이: 3460 문자
+2025-07-23 08:56:33,449 - __main__ - INFO - [20250723_085506_264175] STEP 5: 일기+감정 통합 생성 단계
+2025-07-23 08:56:33,449 - steps - INFO - REQUEST 20250723_085506_264175: STEP 5 - 일기+감정 통합 생성 시작
+2025-07-23 08:56:33,449 - __main__ - INFO - 일기+감정 통합 생성 시작 - 아이 발화 길이: 101 / 전체 맥락 길이: 2093 / 아이 이름: ÀüÀÎ¿ì
+2025-07-23 08:56:36,903 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-23 08:56:36,905 - __main__ - INFO - 통합 생성 완료 - 길이: 470 문자, 토큰: 4995
+2025-07-23 08:56:36,906 - __main__ - INFO - 일기+감정 통합 생성 완료 - 제목: ** 🎮 게임이 최고야!, 감정: ['** 즐거움', '기대', '만족']
+2025-07-23 08:56:36,906 - __main__ - INFO - [20250723_085506_264175] === 요청 처리 완료 ===
+2025-07-23 08:56:36,906 - steps - INFO - REQUEST 20250723_085506_264175: 모든 단계 완료 - 결과 반환
+2025-07-23 08:56:36,907 - __main__ - INFO - [20250723_085506_264175] 결과 파일 저장: result_20250723_085506_264175.json
+2025-07-23 08:56:36,909 - steps - INFO - REQUEST 20250723_085506_264175: 임시 파일들 정리 완료

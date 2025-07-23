@@ -80,7 +80,7 @@ def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
         return 0.0
     return np.dot(a, b) / (norm_a * norm_b)
 
-def process_segment_embedding(segment_audio: np.ndarray, sample_rate: int, child_embedding: np.ndarray, voice_encoder: VoiceEncoder, similarity_threshold: float = 0.68) -> float:
+def process_segment_embedding(segment_audio: np.ndarray, sample_rate: int, child_embedding: np.ndarray, voice_encoder: VoiceEncoder, similarity_threshold: float = 0.65) -> float:
     """단일 세그먼트의 임베딩 처리 및 유사도 계산 (메모리 기반)"""
     try:
         # 세그먼트가 너무 짧은 경우 패딩
@@ -144,13 +144,16 @@ def has_child_name_calling_pattern(text: str, child_name: str) -> bool:
     
     return False
 
-def identify_child_voice_optimized(audio_path: str, segments_list: List, child_name: str = None, child_embedding_param: np.ndarray = None, similarity_threshold: float = 0.68) -> List[str]:
+def identify_child_voice_optimized(audio_path: str, segments_list: List, child_name: str = None, child_embedding_param: np.ndarray = None, similarity_threshold: float = 0.75) -> List[str]:
     """아이의 음성 식별 (메모리 기반 + 병렬 처리 + 이름 호명 패턴 감지)"""
     if child_embedding_param is None:
         logger.warning("아이 음성 임베딩이 없어서 전체 텍스트 사용")
         return [seg.text for seg in segments_list]
     
     try:
+
+       
+
         # torchaudio로 오디오 로딩 (더 빠름)
         waveform, sample_rate = torchaudio.load(audio_path)
         audio_data = waveform.squeeze(0).numpy()  # (channels, samples) -> (samples,)
@@ -214,7 +217,7 @@ def identify_child_voice_optimized(audio_path: str, segments_list: List, child_n
         
         if not selected_texts:
             logger.warning("아이 음성으로 식별된 구간이 없어서 전체 텍스트 사용")
-            return [seg.text for seg in segments_list]
+            return filter_child_voice_manual(segments_list, child_name)
         
         # 중복 제거 (순서 유지)
         selected_texts = list(dict.fromkeys(selected_texts))
@@ -229,7 +232,7 @@ def identify_child_voice_optimized(audio_path: str, segments_list: List, child_n
         
     except Exception as e:
         logger.error(f"음성 식별 실패: {e}")
-        return [seg.text for seg in segments_list]
+        return filter_child_voice_manual(segments_list, child_name)  # 에러 시도 fallback
 
 def filter_child_voice_manual(segments_list: List, child_name: str = None) -> List[str]:
     """수동으로 아이의 음성 패턴을 필터링 (보조 방법 + 이름 호명 패턴 감지)"""
@@ -270,7 +273,8 @@ def filter_child_voice_manual(segments_list: List, child_name: str = None) -> Li
         if child_name and has_child_name_calling_pattern(text, child_name):
             logger.debug(f"이름 호명 패턴 감지로 제외: '{text}'")
             continue
-            
+        
+        is_parent = any(re.search(pattern, text) for pattern in parent_patterns)
         # 엄마 패턴 체크
         is_parent = False
         for pattern in parent_patterns:
@@ -530,7 +534,7 @@ async def transcribe(
         # 아이의 음성만 식별 (최적화된 메모리 기반 방식 + 이름 호명 패턴 감지)
         if child_name:
             logger.info(f"[{request_id}] 아이 이름 설정: '{child_name}' - 호명 패턴 감지 활성화")
-        child_texts = identify_child_voice_optimized(tmp_audio_path, segments_list, child_name, request_child_embedding, similarity_threshold=0.68)
+        child_texts = identify_child_voice_optimized(tmp_audio_path, segments_list, child_name, request_child_embedding, similarity_threshold=0.65)
         child_only_text = " ".join(child_texts)
         
         logger.info(f"[{request_id}] 아이 음성 식별 완료 - 추출된 텍스트 수: {len(child_texts)}")
