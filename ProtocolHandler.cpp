@@ -113,7 +113,6 @@ nlohmann::json ProtocolHandler::handle_Login(const nlohmann::json& json, DBManag
         response["RESP"] = "FAIL";
         response["MESSAGE"] = toUTF8_safely(error_msg);
     }
-
     return response;
 }
 
@@ -146,7 +145,7 @@ nlohmann::json ProtocolHandler::handle_RegisterChild(const nlohmann::json& json,
         // 부모 ID 추가 조회
         string parentId;
         if (db.getParentIdByUID(parents_uid, parentId)) {
-            if (CreateChildDirectory(parentId, parents_uid, babyname, out_child_uid)) {
+            if (CreateChildDirectory(parentId, parents_uid, out_child_uid)) {
                 cout << u8"→ [REGISTER_CHILD] 자녀 폴더 생성 완료" << endl;
             }
             else {
@@ -180,7 +179,7 @@ nlohmann::json ProtocolHandler::handle_LatestDiary(const nlohmann::json& json, D
     int child_uid = json.value("CHILD_UID", -1);
     if (child_uid == -1) {
         response["RESP"] = "FAIL";
-        response["MESSAGE"] = "CHILD_UID 누락됨";
+        response["MESSAGE"] = u8"CHILD_UID 누락됨";
         return response;
     }
 
@@ -203,5 +202,74 @@ nlohmann::json ProtocolHandler::handle_LatestDiary(const nlohmann::json& json, D
     }
     response["EMOTIONS"] = emotion_array;
     return response;
+    cout << u8"→ [GET_LATEST_DIARY] 오늘의 일기 전송 완료 ";
 }
+
+nlohmann::json ProtocolHandler::handle_SettingVoice(const nlohmann::json& json, const std::vector<char>& payload, DBManager& db) {
+    nlohmann::json response;
+    response["PROTOCOL"] = "SETTING_VOICE";
+    cout << u8"[SETTING_VOICE] 요청:\n" << json.dump(2) << endl;
+
+    // [1] 필드 추출
+    int child_uid = json.value("CHILD_UID", -1);
+    string filename = json.value("FILENAME", "");
+
+    // [2] 부모 정보 조회
+    int parent_uid = -1;
+    string parent_id;
+    if (!db.getParentsUidByChild(child_uid, parent_uid) ||
+        !db.getParentIdByUID(parent_uid, parent_id)) {
+        response["RESP"] = "FAIL";
+        response["MESSAGE"] = u8"부모 정보 조회 실패";
+        cout << u8"→[DIRECTORY] 부모 정보 조회 실패" << endl;
+
+        return response;
+    }
+    // [3] 자녀 폴더 경로
+    string child_dir = GetChildFolderPath(parent_id, parent_uid, child_uid);
+
+    //// [5] 자녀 폴더 생성
+    //if (!CreateChildDirectory(parent_id, parent_uid, child_uid)) {
+    //    response["RESP"] = "FAIL";
+    //    response["MESSAGE"] = u8"자녀 폴더 생성 실패";
+    //    cout << u8"→[DIRECTORY] 생성 실패" << endl;
+    //    return response;
+    //}
+    //cout << u8"→[DIRECTORY] 생성 성공" << endl;
+
+    // [6] 파일 저장
+    string full_path = GetChildFolderPath(parent_id, parent_uid, child_uid) + "\\" + filename;
+    string command = "venv\\bin\\python.exe embed_child_voice.py \"" + full_path + "\" " + to_string(child_uid);
+    FILE* pipe = _popen(command.c_str(), "r");
+    if (!pipe) {
+        response["RESP"] = "FAIL";
+        response["MESSAGE"] = u8"임베딩 실행 실패";
+        cout << u8"→[EMBEDDING] 실행 실패" << endl;
+
+        return response;
+    }
+    char buffer[4096];
+    std::string json_output;
+    while (fgets(buffer, sizeof(buffer), pipe)) {
+        json_output += buffer;
+    }
+    _pclose(pipe);
+
+    nlohmann::json result_json = nlohmann::json::parse(json_output);
+    std::vector<float> embedding = result_json["EMBEDDING"].get<std::vector<float>>();
+    
+    string error_msg;
+    if (!db.setVoiceVector(child_uid, embedding, error_msg)) {
+        response["RESP"] = "FAIL";
+        response["EMBEDDING"] = u8"DB 저장 실패: " + toUTF8_safely(error_msg);
+        return response;
+    }
+    response["RESP"] = "SUCCESS";
+    response["MESSAGE"] = u8"임베딩 및 저장 완료";
+    cout << u8"→[EMBEDDING] 실행 완료" << endl;
+    return response;
+
+}
+
+
 

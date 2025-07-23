@@ -37,9 +37,6 @@ public:
         const string& birthdate, const string& gender,
         const string& icon_color, int& out_child_uid, string& out_error_msg);
 
-    // 부모 아이디 조회
-    bool getParentIdByUID(int uid, string& out_id);
-
     // 초기화면 일기조회
     bool getLatestDiary(const int& child_uid,
         string& title,
@@ -47,7 +44,20 @@ public:
         string& date,
         vector<string>& emotions, string& out_error_msg);
 
+    // 부모 아이디 조회
+    bool getParentIdByUID(int uid, string& out_id);
 
+    // 자녀 UID -> 부모 UID 조회
+    bool getParentsUidByChild(int child_uid, int& out_parents_uid);
+
+    // 자녀 UID -> 자녀 이름 조회
+    //bool getChildNameByUID(int child_uid, std::string& out_name);
+
+    // 세팅 음성파일 경로 삽입
+    //bool setVoicePath(int child_uid, const string& path);
+
+    // 목소리 벡터 삽입
+    bool setVoiceVector(int child_uid, const std::vector<float>& embedding, std::string& out_error);
 
 private:
     unique_ptr<sql::Connection> conn_;

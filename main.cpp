@@ -127,6 +127,17 @@ void handleClient(SOCKET clientSocket) {
                 db.connect();
                 nlohmann::json response = ProtocolHandler::handle_RegisterChild(json, db);
                 TcpServer::sendJsonResponse(clientSocket, response.dump());
+
+                if (response.value("RESP", "") == "SUCCESS") {
+                    int parent_uid = json.value("PARENTS_UID", -1);
+                    string parent_id;
+
+                    if (db.getParentIdByUID(parent_uid, parent_id)) {
+                        string child_name = json.value("NAME", "");
+                        int child_uid = response.value("CHILD_UID", -1);
+                        CreateChildDirectory(parent_id, parent_uid, child_uid);
+                    }
+                }
                 LINE
             }
 
@@ -138,6 +149,14 @@ void handleClient(SOCKET clientSocket) {
                 LINE
             }
             
+            else if (protocol == u8"SETTING_VOICE") {
+                LINE_LABEL("SETTING_VOICE")
+                db.connect();
+                nlohmann::json response = ProtocolHandler::handle_SettingVoice(json, payload, db);
+                TcpServer::sendJsonResponse(clientSocket, response.dump());
+                LINE
+            }
+
             else {
                 cerr << u8"[에러] 알 수 없는 프로토콜: " << protocol << endl;
                 TcpServer::sendJsonResponse(clientSocket, R"({"PROTOCOL":"UNKNOWN","RESP":"FAIL","MESSAGE":"UNSUPPORTED_PROTOCOL"})");

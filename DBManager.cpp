@@ -1,5 +1,6 @@
 ﻿#include "DBManager.h"
 #include <iostream>
+#include <nlohmann/json.hpp>
 
 using namespace std;
 
@@ -23,6 +24,109 @@ bool DBManager::connect() {
     }
     catch (sql::SQLException& e) {
         cerr << " {{(>_<)}} DB 연결 실패: " << e.what() << endl;
+        return false;
+    }
+}
+
+// ========== [파일 생성 디렉토리 서치] ============
+bool DBManager::getParentIdByUID(int uid, string& out_id) {
+    try {
+        unique_ptr<sql::PreparedStatement> stmt(
+            conn_->prepareStatement("SELECT id FROM parents WHERE parents_uid = ?")
+        );
+        stmt->setInt(1, uid);
+        unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+
+        if (res->next()) {
+            out_id = res->getString("id");
+            return true;
+        }
+    }
+    catch (sql::SQLException& e) {
+        cerr << "→ [DB 오류] 부모 ID 조회 실패: " << e.what() << endl;
+    }
+    return false;
+}
+
+bool DBManager::getParentsUidByChild(int child_uid, int& out_parents_uid) {
+    if (!conn_) return false;
+    try {
+        std::unique_ptr<sql::PreparedStatement> stmt(
+            conn_->prepareStatement("SELECT parents_id FROM child WHERE child_uid = ?")
+        );
+        stmt->setInt(1, child_uid);
+        std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+
+        if (res->next()) {
+            out_parents_uid = res->getInt("parents_id");
+            return true;
+        }
+    }
+    catch (sql::SQLException& e) {
+        std::cerr << u8"[DB 오류] 부모 UID 조회 실패: " << e.what() << std::endl;
+    }
+    return false;
+}
+
+//bool DBManager::getChildNameByUID(int child_uid, std::string& out_name) {
+//    if (!conn_) return false;
+//    try {
+//        std::unique_ptr<sql::PreparedStatement> stmt(
+//            conn_->prepareStatement("SELECT name FROM child WHERE child_uid = ?")
+//        );
+//        stmt->setInt(1, child_uid);
+//        std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+//
+//        if (res->next()) {
+//            out_name = res->getString("name");
+//            return true;
+//        }
+//    }
+//    catch (sql::SQLException& e) {
+//        std::cerr << "[DB 오류] 자녀 이름 조회 실패: " << e.what() << std::endl;
+//    }
+//    return false;
+//}
+
+//bool DBManager::setVoicePath(int child_uid, const string& path) {
+//    if (!conn_) {
+//        return false;
+//    }
+//    try {
+//        std::unique_ptr<sql::PreparedStatement> stmt(
+//            conn_->prepareStatement("UPDATE child SET setting_path = ? WHERE child_uid = ?")
+//        );
+//        stmt->setString(1, path);
+//        stmt->setInt(2, child_uid);
+//        stmt->executeUpdate();
+//        return true;
+//    }
+//    catch (sql::SQLException& e) {
+//        return false;
+//    }
+//}
+//
+
+//============ [임베딩 결과 저장] ============
+bool DBManager::setVoiceVector(int child_uid, const std::vector<float>& embedding, std::string& out_error) {
+    if (!conn_) {
+        out_error = "DB 연결 안됨";
+        return false;
+    }
+
+    try {
+        nlohmann::json j = embedding;
+        std::string embed_json = j.dump();
+        std::unique_ptr<sql::PreparedStatement> set_Vec(
+            conn_->prepareStatement("UPDATE child SET voice_vector = ? WHERE child_uid = ?")
+        );
+        set_Vec->setString(1, embed_json);
+        set_Vec->setInt(2, child_uid);
+        set_Vec->executeUpdate();
+        return true;
+    }
+    catch (sql::SQLException& e) {
+        out_error = e.what();
         return false;
     }
 }
@@ -199,25 +303,8 @@ bool DBManager::registerChild(const int& parents_uid, const string& name,
     }
 }
 
-bool DBManager::getParentIdByUID(int uid, string& out_id) {
-    try {
-        unique_ptr<sql::PreparedStatement> stmt(
-            conn_->prepareStatement("SELECT id FROM parents WHERE uid = ?")
-        );
-        stmt->setInt(1, uid);
-        unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-
-        if (res->next()) {
-            out_id = res->getString("id");
-            return true;
-        }
-    }
-    catch (sql::SQLException& e) {
-        cerr << "→ [DB 오류] 부모 ID 조회 실패: " << e.what() << endl;
-    }
-    return false;
-}
-
+//    ============ [오늘의 일기 조회] ============
+/*    child_uid -> title, weather, date, emotions   */
 bool DBManager::getLatestDiary(const int& child_uid, std::string& title,
     int& weather, std::string& date, std::vector<std::string>& emotions, std::string& out_error_msg) {
 
@@ -289,3 +376,4 @@ bool DBManager::getLatestDiary(const int& child_uid, std::string& title,
         return false;
     }
 }
+
