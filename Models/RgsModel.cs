@@ -10,17 +10,25 @@ namespace MalangDiary.Models
 {
     public class RgsModel
     {
-        public RgsModel(SocketManager socket, UserSession session)
-        {
+        /** Constructer **/
+        public RgsModel(SocketManager socket, UserSession session) {
             Console.WriteLine("[RgsModel] RgsModel 인스턴스가 생성되었습니다.");
             _socket = socket;
             _session = session;
         }
 
+
+
+        /** Member Variables **/
         private readonly SocketManager _socket;
         private readonly UserSession _session;
         public bool IsVoiceSet { get; private set; } = false;
 
+
+
+        /** Member Methods **/
+
+        /* Protocol - REGISTER_CHILD */
         public (bool isSuccess, string message) RegisterChild(string name, string birthdate, string gender, string iconColor)
         {
             int parentUid = _session.GetCurrentParentUid();
@@ -72,6 +80,9 @@ namespace MalangDiary.Models
                 return (false, message);
             }
         }
+
+
+        /* Protocol - SETTING_VOICE */
         public (bool isSuccess, string message) SetBabyVoice(string filePath)
         {
             // 실제 자녀 UID

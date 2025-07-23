@@ -113,7 +113,8 @@
             <Button Content="&lt;" 
                     Command="{Binding GoBackCommand}" 
                     Width="40" Background="Transparent" BorderThickness="0" FontSize="18" Foreground="White" 
-                    Style="{StaticResource FlatButtonStyle}"/>
+                    Style="{StaticResource FlatButtonStyle}"
+                    Margin="0,0,0,5"/>
             <TextBlock Text="자녀등록" FontWeight="Bold" FontSize="18" Foreground="White"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,40,0"/>
         </DockPanel>

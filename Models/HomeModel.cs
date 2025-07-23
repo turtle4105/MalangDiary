@@ -1,14 +1,17 @@
-﻿using MalangDiary.Services;
+﻿using MalangDiary.Helpers;
+using MalangDiary.Models;
+using MalangDiary.Services;
+using MalangDiary.Structs;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using MalangDiary.Structs;
-using MalangDiary.Models;
-using MalangDiary.Helpers;
+using static System.Net.WebRequestMethods;
+using File = System.IO.File;
 
 namespace MalangDiary.Models {
     public class HomeModel {
@@ -68,7 +71,12 @@ namespace MalangDiary.Models {
             _socket.Send(sendingItem);
 
             // 받는 작업
-            jsonData = JObject.Parse(_socket.Receive().json);
+            WorkItem recvItem = new();
+            recvItem = _socket.Receive();
+
+            jsonData = JObject.Parse(recvItem.json);
+            byte[] byteData = recvItem.payload;
+            string filePath = recvItem.path;
 
             string protocol = jsonData["PROTOCOL"]!.ToString();
             string response = jsonData["RESP"]!.ToString();   // not null
@@ -96,11 +104,51 @@ namespace MalangDiary.Models {
                 }
                 LatestDiary = ResultDiaryInfo;
                 _session.SetCurrentDiaryUid(ResultDiaryInfo.Uid);
+
+                string FixedImgPath = "./Images/TodaysDiaryImg.jpg";
+                WriteToFile(FixedImgPath, byteData);
             }
             else if ( protocol == "GET_LATEST_DIARY" && response == "FAIL" ) {
                 ResultDiaryInfo.Uid = 0;
             }
                 return ResultDiaryInfo;
+        }
+
+
+        public bool CheckImgDirExists(DirectoryInfo dir) {
+            if( dir.Exists is false ) {     // No Dir -> Create Dir -> return true
+                dir.Create(); 
+                return true;
+            }
+            else if( dir.Exists is true ) { // Yes Dir -> return true
+                return true;
+            }
+            else {
+                Console.WriteLine("Failed to Check Dir");
+                return false;               // Exception -> return false
+            }
+        }
+
+
+        public bool WriteToFile(string filePath, byte[] byteArray) {
+            string dirPath = "./Images";
+            DirectoryInfo dir = new DirectoryInfo(dirPath);
+            bool dirCheck = CheckImgDirExists(dir);
+
+            if (!dirCheck) {
+                Console.WriteLine("Failed to create Dir");
+                return false;
+            }
+
+            try {
+                File.WriteAllBytes(filePath, byteArray); // 파일이 없으면 자동 생성
+                Console.WriteLine($"Image has been saved into {filePath}");
+                return true;
+            }
+            catch (IOException ex) {
+                Console.WriteLine("파일 저장 중 오류: " + ex.Message);
+                return false;
+            }
         }
     }
 }

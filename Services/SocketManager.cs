@@ -129,19 +129,27 @@ namespace MalangDiary.Services {
         /// </summary>
         /// <returns></returns>
         public WorkItem Receive() {
+            Console.WriteLine("[SocketManager] Executed public WorkItem Receive()");
+            
             byte[] header = ReadExact(8); // 헤더 8바이트 읽기
+            Console.WriteLine("Read header");
 
             // total_len, json_len 추출
             int totalLen = BitConverter.ToInt32(header, 0);
             int jsonLen = BitConverter.ToInt32(header, 4);
             int payloadLen = totalLen - jsonLen;
+            Console.WriteLine("totalLen:" + totalLen);
+            Console.WriteLine("jsonLen:" + jsonLen);
+            Console.WriteLine("payloadLen:" + payloadLen);
 
             // JSON 부분 읽기
             byte[] jsonBytes = ReadExact(jsonLen);
             string json = Encoding.UTF8.GetString(jsonBytes);
+            Console.WriteLine("Read json");
 
             // 파일 부분 (있다면) 읽기
             byte[] payload = payloadLen > 0 ? ReadExact(payloadLen) : new byte[0];
+            Console.WriteLine("Read Payload");
 
             Console.WriteLine("json: " + json);
             Console.WriteLine("payload: " + (payload.Length > 0 ? "있음" : "없음"));
@@ -162,7 +170,9 @@ namespace MalangDiary.Services {
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         private byte[] ReadExact(int size) {
+            Console.WriteLine("[ReadExact] size:" + size);
             byte[] buffer = new byte[size];
+            
             int totalRead = 0;
 
             while (totalRead < size) {
@@ -172,6 +182,8 @@ namespace MalangDiary.Services {
                 if (read == 0)
                     throw new Exception("연결 끊김 또는 데이터 부족");
                 totalRead += read;
+                Console.WriteLine("[ReadExact] read:" + read);
+                Console.WriteLine("[ReadExact] totalRead:" + totalRead);
             }
 
             return buffer;

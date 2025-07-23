@@ -66,6 +66,20 @@ namespace MalangDiary.ViewModels
                 return;
             }
 
+            if (!File.Exists(recordingPath)) {
+                try {
+                    // 파일 생성
+                    File.Create(recordingPath).Close(); // 파일을 생성하고 즉시 닫습니다.
+                    Console.WriteLine($"파일 '{recordingPath}' 생성 완료");
+                }
+                catch (Exception ex) {
+                    Console.WriteLine($"파일 생성 중 오류 발생: {ex.Message}");
+                }
+            }
+            else {
+                Console.WriteLine($"파일 '{recordingPath}' 이미 존재합니다.");
+            }
+
             Console.WriteLine("[ViewModel] 저장하기 버튼 눌림");
             var (success, message) = _rgsmodel.SetBabyVoice(recordingPath);
 

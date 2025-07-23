@@ -59,7 +59,7 @@ namespace MalangDiary.ViewModels {
             DateText = LatestDiary.Date ?? DateTime.Now.ToString("yyyy-MM-dd");
             WeatherText = LatestDiary.Weather ?? "날씨 정보 없음";
 
-            DiaryImageSource = LoadImageFromPath(result.PhotoFileName);
+            DiaryImageSource = LoadImageFromPath("./Images/TodaysDiaryImg.jpg");
 
             OnPropertyChanged(nameof(EmotionTags));
 

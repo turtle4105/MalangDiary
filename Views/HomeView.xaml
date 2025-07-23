@@ -55,7 +55,8 @@
                 <Image Source="/Resources/Images/Icons/baby-head-with-a-small-heart-outline.png" 
                        Width="15" Height="15"
                        HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
+                       VerticalAlignment="Center"
+                       RenderOptions.BitmapScalingMode="HighQuality"/>
             </Grid>
         </DockPanel>
 
@@ -89,7 +90,8 @@
                                         <Image Source="/Resources/Images/Icons/baby-head-with-a-small-heart-outline.png" 
                                            Width="30" Height="30"
                                            HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"/>
+                                           VerticalAlignment="Center"
+                                           RenderOptions.BitmapScalingMode="HighQuality"/>
                                     </Grid>
                                 </ControlTemplate>
                             </Button.Template>
@@ -102,8 +104,8 @@
             <!-- [2] Add Child (+) Button -->
             <Grid Width="56" Height="56" Margin="4">
                 <Button Background="Transparent"
-                BorderThickness="0"
-                Command="{Binding GoToRgsChdCommand}">
+                    BorderThickness="0"
+                    Command="{Binding GoToRgsChdCommand}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Grid>
@@ -129,21 +131,21 @@
 
             <!-- [1] Shadow Background Layer -->
             <Border Background="White"
-            CornerRadius="20"
-            Effect="{StaticResource ShadowEffect}" />
+                CornerRadius="20"
+                Effect="{StaticResource ShadowEffect}" />
 
             <!-- [2] Content Layer -->
             <Border CornerRadius="20"
-            ClipToBounds="True"
-            Background="Transparent">
+                ClipToBounds="True"
+                Background="Transparent">
 
                 <Grid>
                     <!-- [2-1] When NO Diary -->
                     <Border Background="#FFFFFF"
-                    CornerRadius="20"
-                    Padding="16"
-                    BorderBrush="Transparent"
-                    Visibility="{Binding HasDiary, Converter={StaticResource InverseBoolToVis}}">
+                        CornerRadius="20"
+                        Padding="16"
+                        BorderBrush="Transparent"
+                        Visibility="{Binding HasDiary, Converter={StaticResource InverseBoolToVis}}">
                         <StackPanel>
                             <!-- Date and Weather -->
                             <DockPanel>
@@ -174,7 +176,7 @@
                         </StackPanel>
                     </Border>
 
-    <!-- [2-2] When Diary EXISTS -->
+                    <!-- [2-2] When Diary EXISTS -->
                     <Border Background="#FFFFFF"
                         CornerRadius="20"
                         Padding="0"
@@ -192,9 +194,9 @@
                             <!-- [B] Gradient Overlay -->
                             <Border CornerRadius="20" Background="Transparent">
                                 <Rectangle VerticalAlignment="Bottom"
-                        Height="120"
-                        RadiusX="20"
-                        RadiusY="20">
+                                    Height="120"
+                                    RadiusX="20"
+                                    RadiusY="20">
                                     <Rectangle.Fill>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
                                             <GradientStop Color="#CC000000" Offset="0.0"/>
@@ -211,23 +213,23 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="{Binding DateText}"
-                        FontSize="18"
-                        FontWeight="Bold"
-                        Foreground="White"/>
+                                FontSize="18"
+                                FontWeight="Bold"
+                                Foreground="White"/>
                                 <TextBlock Grid.Column="1"
-                        Text="{Binding WeatherText, StringFormat='날씨: {0}'}"
-                        FontSize="14"
-                        Foreground="White"/>
+                                Text="{Binding WeatherText, StringFormat='날씨: {0}'}"
+                                FontSize="14"
+                                Foreground="White"/>
                             </Grid>
 
                             <!-- [D] Title + Emotion Tags -->
                             <StackPanel VerticalAlignment="Bottom" Margin="16">
                                 <TextBlock Text="오늘의 일기"
-                            FontFamily="Noto Sans KR"
-                        FontSize="18"
-                        FontWeight="Bold"
-                        Foreground="White"
-                        Margin="0,0,0,8"/>
+                                    FontFamily="Noto Sans KR"
+                                    FontSize="18"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Margin="0,0,0,8"/>
                                 <ItemsControl ItemsSource="{Binding EmotionTags}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -237,16 +239,16 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border Margin="4"
-                                Padding="6,2"
-                                Background="Transparent"
-                                BorderBrush="White"
-                                BorderThickness="1"
-                                CornerRadius="12">
+                                                Padding="6,2"
+                                                Background="Transparent"
+                                                BorderBrush="White"
+                                                BorderThickness="1"
+                                                CornerRadius="12">
                                                 <TextBlock Text="{Binding}"
-                                        Foreground="White"
-                                        FontSize="13"
-                                        FontWeight="SemiBold"
-                                        FontFamily="Noto Sans KR"/>
+                                                    Foreground="White"
+                                                    FontSize="13"
+                                                    FontWeight="SemiBold"
+                                                    FontFamily="Noto Sans KR"/>
                                             </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -266,14 +268,14 @@
         <StackPanel Grid.Row="3" Margin="20,0,20,0" UseLayoutRounding="False" >
             <!-- 일기쓰기 버튼 -->
             <Button Content="일기쓰기"
-                    FontSize="14"
-                    FontFamily="Noto Sans KR"
-                    Height="52"
-                    Background="#FFACAC" 
-                    Foreground="White" 
-                    BorderThickness="0" 
-                    Command="{Binding GoToRcdDiaryCommand}"
-                    Margin="0,0,0,10">
+                FontSize="14"
+                FontFamily="Noto Sans KR"
+                Height="52"
+                Background="#FFACAC" 
+                Foreground="White" 
+                BorderThickness="0" 
+                Command="{Binding GoToRcdDiaryCommand}"
+                Margin="0,0,0,10">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
@@ -287,21 +289,21 @@
 
             <!-- 일기확인 버튼 -->
             <Button Content="일기확인" 
-                    Height="52"
-                    FontFamily="Noto Sans KR"
-                    FontSize="14"
-                    Background="#FFF9F0" 
-                    Foreground="#FFACAC" 
-                    BorderBrush="#FFACAC" 
-                    BorderThickness="1.5" 
-                    Command="{Binding GoToChkCldCommand}" 
-                    Margin="0,0,0,10">
+                Height="52"
+                FontFamily="Noto Sans KR"
+                FontSize="14"
+                Background="#FFF9F0" 
+                Foreground="#FFACAC" 
+                BorderBrush="#FFACAC" 
+                BorderThickness="1.5" 
+                Command="{Binding GoToChkCldCommand}" 
+                Margin="0,0,0,10">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                CornerRadius="26">
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="26">
                             <ContentPresenter HorizontalAlignment="Center" 
                                               VerticalAlignment="Center"/>
                         </Border>

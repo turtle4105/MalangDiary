@@ -56,21 +56,21 @@ namespace MalangDiary.ViewModels
         }
 
         /* Member Methods */
-        [RelayCommand]
-        private static void GoBack() {
+        [RelayCommand] private static void GoBack() {
             Console.WriteLine("[RgsChdViewModel] GoBack command executed.");
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Goback));
         }
 
-        [RelayCommand]
-        public void SetColor(string colorCode)
+
+        /* SetColor */
+        [RelayCommand] public void SetColor(string colorCode)
         {
             SelectedProfileColor = colorCode;
             Console.WriteLine($" 프로필 색상 선택됨: {colorCode}");
         }
 
-        [RelayCommand]
-        public void RgsChd() {
+        /* Register Child */
+        [RelayCommand] public void RgsChd() {
             Console.WriteLine(" [RgsChd] 자녀 등록 시도됨");
 
             string gender = IsMale ? "M" : IsFemale ? "F" : "";
@@ -92,8 +92,9 @@ namespace MalangDiary.ViewModels
                 Console.WriteLine($" 자녀 등록 실패: {message}");
         }
 
-        [RelayCommand]
-        public void RecordVoice()
+
+        /* RecordVoice */
+        [RelayCommand] public void RecordVoice()
         {   
             // 아이 목소리 등록하기 View로 이동
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.RgsChdVoice));
