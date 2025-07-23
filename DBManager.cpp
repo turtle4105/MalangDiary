@@ -107,23 +107,28 @@ bool DBManager::getParentsUidByChild(int child_uid, int& out_parents_uid) {
 //}
 //
 
-//============ [임베딩 결과 저장] ============
-bool DBManager::setVoiceVector(int child_uid, const std::vector<float>& embedding, std::string& out_error) {
+bool DBManager::setVoiceVectorRaw(int child_uid, const std::string& jsonStr, std::string& out_error) {
     if (!conn_) {
-        out_error = "DB 연결 안됨";
+        out_error = u8"DB 연결 안됨";
         return false;
     }
 
     try {
-        nlohmann::json j = embedding;
-        std::string embed_json = j.dump();
-        std::unique_ptr<sql::PreparedStatement> set_Vec(
+        // JSON 재구성 → 깨질 수 있는 인코딩 요소 제거
+        nlohmann::json parsed_json = nlohmann::json::parse(jsonStr);
+        std::string cleaned_json = parsed_json.dump();  // 인코딩-safe하게 다시 dump
+
+        std::unique_ptr<sql::PreparedStatement> stmt(
             conn_->prepareStatement("UPDATE child SET voice_vector = ? WHERE child_uid = ?")
         );
-        set_Vec->setString(1, embed_json);
-        set_Vec->setInt(2, child_uid);
-        set_Vec->executeUpdate();
+        stmt->setString(1, cleaned_json);
+        stmt->setInt(2, child_uid);
+        stmt->executeUpdate();
         return true;
+    }
+    catch (const nlohmann::json::parse_error& e) {
+        out_error = string(u8"JSON 파싱 실패: ") + e.what();
+        return false;
     }
     catch (sql::SQLException& e) {
         out_error = e.what();
@@ -234,7 +239,7 @@ bool DBManager::login(
             child.name = childRes->getString("name");
             child.gender = childRes->getString("gender");
             child.birth = childRes->getString("birth_date");
-            child.icon_color = childRes->getInt("icon_color");
+            child.icon_color = childRes->getString("icon_color");
             out_children.push_back(child);
         }
         return true;
@@ -248,9 +253,20 @@ bool DBManager::login(
 
 //    ============ [자녀 등록] ============
 /*    parents_uid, name, birthdate, gender,icon_color   -> child_uid   */
-bool DBManager::registerChild(const int& parents_uid, const string& name,
-    const string& birthdate, const string& gender,
-    const string& icon_color, int& out_child_uid, string& out_error_msg){
+bool DBManager::registerChild(
+    const int& parents_uid,
+    const std::string& name,
+    const std::string& birthdate,
+    const std::string& gender,
+    std::vector<std_child_info>& out_children,
+    int& out_child_uid,
+    const std::string& icon_color,
+    std::string& out_error_msg
+) {
+    
+    out_child_uid = -1;
+    out_children.clear();
+
     if (!conn_) {
         out_error_msg = u8"→[DB 오류] DB 연결 실패";
         return false;
@@ -265,7 +281,7 @@ bool DBManager::registerChild(const int& parents_uid, const string& name,
         unique_ptr<sql::ResultSet> dupRes(checkDup->executeQuery());
 
         if (dupRes->next() && dupRes->getInt(1) > 0) {
-            out_error_msg = "같은 이름의 자녀가 이미 등록되어 있습니다.";
+            out_error_msg = u8"같은 이름의 자녀가 이미 등록되어 있습니다.";
             return false;
         }
 
@@ -289,13 +305,31 @@ bool DBManager::registerChild(const int& parents_uid, const string& name,
 
         if (uidRes->next()) {
             out_child_uid = uidRes->getInt(1);  // 첫 번째 컬럼
-            return true;
         }
         else {
-            out_error_msg = "UID 조회 실패";
+            out_error_msg = u8"UID 조회 실패";
             return false;
         }
+        // [3] 해당 부모의 자녀 정보 가져오기
+        unique_ptr<sql::PreparedStatement> childStmt(
+            conn_->prepareStatement("SELECT child_uid, name, gender, birth_date, icon_color FROM child WHERE parents_id = ?")
+        );
+
+        childStmt->setInt(1, parents_uid);
+        unique_ptr<sql::ResultSet> childRes(childStmt->executeQuery());
+
+        while (childRes->next()) {
+            std_child_info child;
+            child.child_uid = childRes->getInt("child_uid");
+            child.name = childRes->getString("name");
+            child.gender = childRes->getString("gender");
+            child.birth = childRes->getString("birth_date");
+            child.icon_color = childRes->getString("icon_color");
+            out_children.push_back(child);
+        }
+        return true;
     }
+
     catch (sql::SQLException& e) {
         cerr << "→ [DB 오류] 자녀 등록 실패: " << e.what() << endl;
         out_error_msg = u8"{{{(>_<)}}} DB오류_예외적인 경우 .. 확인필요 ";
@@ -305,11 +339,11 @@ bool DBManager::registerChild(const int& parents_uid, const string& name,
 
 //    ============ [오늘의 일기 조회] ============
 /*    child_uid -> title, weather, date, emotions   */
-bool DBManager::getLatestDiary(const int& child_uid, std::string& title,
+bool DBManager::getLatestDiary(const int& child_uid, int& diary_uid, string& photo_path, std::string& title,
     int& weather, std::string& date, std::vector<std::string>& emotions, std::string& out_error_msg) {
 
     if (!conn_) {
-        out_error_msg = "→ [DB 오류] DB 연결 실패";
+        out_error_msg = u8"→ [DB 오류] DB 연결 실패";
         return false;
     }
 
@@ -326,7 +360,7 @@ bool DBManager::getLatestDiary(const int& child_uid, std::string& title,
         // [2] 오늘 날짜의 일기 중 최신 1개 조회
         std::unique_ptr<sql::PreparedStatement> check_diary(
             conn_->prepareStatement(R"(
-                SELECT diary_uid, title, weather, create_at
+                SELECT diary_uid, title, weather, create_at, photo_path
                 FROM diary
                 WHERE child_id = ? AND is_deleted = 0 
                   AND DATE_FORMAT(create_at, '%Y%m%d') = ?
@@ -341,14 +375,15 @@ bool DBManager::getLatestDiary(const int& child_uid, std::string& title,
         std::unique_ptr<sql::ResultSet> res(check_diary->executeQuery());
 
         if (!res->next()) {
-            out_error_msg = "오늘 날짜의 일기가 존재하지 않습니다.";
+            out_error_msg = u8"오늘 날짜의 일기가 존재하지 않습니다.";
             return false;
         }
 
-        int diary_uid = res->getInt("diary_uid");
+        diary_uid = res->getInt("diary_uid");
         title = res->getString("title");
         weather = res->getInt("weather");
         date = res->getString("create_at");
+        photo_path = res-> getString("photo_path");
 
         // [3] 감정(emotions) 테이블에서 감정 정보 조회
         std::unique_ptr<sql::PreparedStatement> emo_stmt(
@@ -372,7 +407,7 @@ bool DBManager::getLatestDiary(const int& child_uid, std::string& title,
         return true;
     }
     catch (sql::SQLException& e) {
-        out_error_msg = "[DB 예외] " + std::string(e.what());
+        out_error_msg = u8"[DB 예외] " + std::string(e.what());
         return false;
     }
 }

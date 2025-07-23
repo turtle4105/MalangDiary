@@ -11,7 +11,7 @@ struct std_child_info {
     string name;
     string gender;
     string birth;
-    int icon_color;
+    string icon_color;
 }; 
 
 class DBManager {
@@ -34,12 +34,12 @@ public:
 
     // 자녀 등록
     bool registerChild(const int& parents_uid, const string& name,
-        const string& birthdate, const string& gender,
-        const string& icon_color, int& out_child_uid, string& out_error_msg);
+        const string& birthdate, const string& gender, vector<std_child_info>& children,
+        int& out_child_uid, const string& icon_color, string& out_error_msg);
 
     // 초기화면 일기조회
-    bool getLatestDiary(const int& child_uid,
-        string& title,
+    bool getLatestDiary(const int& child_uid, int& diary_uid,
+        string& title, string& photo_path,
         int& weather,
         string& date,
         vector<string>& emotions, string& out_error_msg);
@@ -57,7 +57,7 @@ public:
     //bool setVoicePath(int child_uid, const string& path);
 
     // 목소리 벡터 삽입
-    bool setVoiceVector(int child_uid, const std::vector<float>& embedding, std::string& out_error);
+    bool setVoiceVectorRaw(int child_uid, const std::string& jsonStr, std::string& out_error);
 
 private:
     unique_ptr<sql::Connection> conn_;

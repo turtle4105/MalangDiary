@@ -1,5 +1,6 @@
 #include "FileUtils.h"
 #include <windows.h>
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -33,7 +34,15 @@ std::string GetChildFolderPath(const std::string& parentId, int parentUid, int c
 }
 
 bool CreateChildDirectory(const std::string& parentId, int parentUid, int childUid) {
-    return IsDirectoryExists(GetChildFolderPath(parentId, parentUid, childUid));
+    std::string childPath = GetChildFolderPath(parentId, parentUid, childUid);
+
+    if (!IsDirectoryExists(childPath)) return false;
+
+    // 하위 디렉토리 생성
+    if (!IsDirectoryExists(childPath + "\\image")) return false;
+    if (!IsDirectoryExists(childPath + "\\voice")) return false;
+
+    return true;
 }
 
 //bool EnsureSettingFolder(const std::string& childPath) {
@@ -53,4 +62,30 @@ bool SaveBinaryFile(const std::string& path, const std::vector<char>& data) {
     file.write(data.data(), data.size());
     file.close();
     return true;
+}
+
+
+
+
+std::string FindPhotoByDate(const std::string& parentId, int parentUid, int childUid, const std::string& date) {
+    std::string basePath = GetChildFolderPath(parentId, parentUid, childUid) + "\\image";
+    std::string pattern = basePath + "\\" + date + "*.jpg";  // 예: 2025-07-23*.jpg
+
+    WIN32_FIND_DATAA findFileData;
+    HANDLE hFind = FindFirstFileA(pattern.c_str(), &findFileData);
+    if (hFind == INVALID_HANDLE_VALUE) return "";  // 없음
+
+    std::string foundFile = findFileData.cFileName;
+    FindClose(hFind);
+
+    return "/" + parentId + "_" + std::to_string(parentUid) + "/" +
+        std::to_string(childUid) + "/image/" + foundFile;  // photo_path용 리턴
+}
+
+size_t getFileSize(const std::string& path) {
+    std::ifstream file(path, std::ios::binary | std::ios::ate);
+    if (!file.is_open()) return 0;
+
+    std::streampos pos = file.tellg();
+    return static_cast<size_t>(pos);
 }

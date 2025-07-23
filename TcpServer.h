@@ -19,6 +19,8 @@ public:
     static bool readExact(SOCKET sock, char* buffer, int totalBytes);
     static bool receivePacket(SOCKET clientSocket, string& out_json, vector<char>& out_payload);
     static void sendJsonResponse(SOCKET sock, const string& jsonStr);
+    //static void sendBinary(SOCKET sock, const std::string& path);
+    static void sendPacket(SOCKET sock, const std::string& jsonStr, const std::vector<char>& payload);
 
 private:
     int port_;

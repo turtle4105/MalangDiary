@@ -9,6 +9,7 @@
 #include <string>
 #include <codecvt> 
 #include <locale>
+#include <fstream>
 #include <nlohmann/json.hpp>
 #include <fcntl.h>     // _O_U8TEXT
 #include <io.h>        // _setmode, _fileno
@@ -127,25 +128,32 @@ void handleClient(SOCKET clientSocket) {
                 db.connect();
                 nlohmann::json response = ProtocolHandler::handle_RegisterChild(json, db);
                 TcpServer::sendJsonResponse(clientSocket, response.dump());
-
-                if (response.value("RESP", "") == "SUCCESS") {
-                    int parent_uid = json.value("PARENTS_UID", -1);
-                    string parent_id;
-
-                    if (db.getParentIdByUID(parent_uid, parent_id)) {
-                        string child_name = json.value("NAME", "");
-                        int child_uid = response.value("CHILD_UID", -1);
-                        CreateChildDirectory(parent_id, parent_uid, child_uid);
-                    }
-                }
                 LINE
             }
 
             else if (protocol == u8"GET_LATEST_DIARY") {
                 LINE_LABEL("GET_LATEST_DIARY")
-                db.connect();
+                    db.connect();
+
+                // [1] 일기 + 사진 메타 정보 조회
                 nlohmann::json response = ProtocolHandler::handle_LatestDiary(json, db);
-                TcpServer::sendJsonResponse(clientSocket, response.dump());
+
+                // [2] 사진 바이너리 로딩
+                std::vector<char> payload;
+                if (response.value("HAS_PHOTO", false)) {
+                    std::string abs_path = "user_data" + response.value("PHOTO_PATH", "");
+                    std::replace(abs_path.begin(), abs_path.end(), '/', '\\');
+
+                    std::ifstream file(abs_path, std::ios::binary);
+                    if (file) {
+                        payload = std::vector<char>((std::istreambuf_iterator<char>(file)),
+                            std::istreambuf_iterator<char>());
+                    }
+                }
+
+                // [3] JSON + payload 통합 전송 (1회 전송!)
+                TcpServer::sendPacket(clientSocket, response.dump(), payload);
+
                 LINE
             }
             

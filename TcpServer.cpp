@@ -202,3 +202,59 @@ void TcpServer::sendJsonResponse(SOCKET sock, const string& jsonStr) {
     send(sock, header, 8, 0);
     send(sock, jsonStr.c_str(), jsonStr.size(), 0);
 }
+
+// =======================================================================
+// [sendBinary]
+// - 클라이언트에게 보낼 바이너리 파일 생성
+// =======================================================================
+
+//void TcpServer::sendBinary(SOCKET sock, const std::string& filePath) {
+//    std::ifstream file(filePath, std::ios::binary);
+//    if (!file.is_open()) {
+//        std::cerr << u8"→ [sendBinary] 바이너리 파일 열기 실패: " << filePath << std::endl;
+//        return;
+//    }
+//
+//    std::vector<char> buffer((std::istreambuf_iterator<char>(file)),
+//        std::istreambuf_iterator<char>());
+//
+//    send(sock, buffer.data(), buffer.size(), 0);
+//    std::cout << u8"→ [sendBinary] 바이너리 전송 완료 (" << buffer.size() << " bytes)\n";
+//}
+//
+// =======================================================================
+// [sendPacket]
+// - 클라이언트에게 보낼 바이너리 파일 생성
+// =======================================================================
+void TcpServer::sendPacket(SOCKET sock, const std::string& jsonStr, const std::vector<char>& payload) {
+    uint32_t jsonSize = static_cast<uint32_t>(jsonStr.size());
+    uint32_t payloadSize = static_cast<uint32_t>(payload.size());
+    uint32_t totalSize = jsonSize + payloadSize;
+
+    std::vector<char> packet(totalSize);
+    packet.resize(8 + totalSize);  // 반드시 헤더 포함 크기
+
+    // [0~3] 전체 크기
+    memcpy(packet.data(), &totalSize, 4);
+
+    // [4~7] JSON 크기
+    memcpy(packet.data() + 4, &jsonSize, 4);
+
+    // [8 ~ 8+jsonSize-1] JSON
+    memcpy(packet.data() + 8, jsonStr.data(), jsonSize);
+
+    // [8+jsonSize ~ end] payload
+    if (payloadSize > 0) {
+        memcpy(packet.data() + 8 + jsonSize, payload.data(), payloadSize);
+    }
+
+    //  send() 한번으로 전송
+    send(sock, packet.data(), packet.size(), 0);
+
+    //  디버그 출력
+    std::cout << u8"\n===== [sendPacket] 패킷 전송 디버그 정보 =====\n";
+    std::cout << "Total Size : " << totalSize << " bytes\n";
+    std::cout << "JSON Size  : " << jsonSize << " bytes\n";
+    std::cout << "Payload Size: " << payloadSize << " bytes\n";
+    cout << u8" → [sendPacket]  전송 완료 ";
+}
