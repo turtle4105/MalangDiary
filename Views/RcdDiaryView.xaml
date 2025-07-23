@@ -75,7 +75,11 @@
             </Grid>
 
             <!-- 상태 텍스트 -->
-            <TextBlock Text="듣는 중" FontSize="14" Foreground="#FF9B9B" Margin="0,20,0,90" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding RecordingStatus}" 
+                       FontSize="14" 
+                       Foreground="#FF9B9B" 
+                       Margin="0,20,0,90" 
+                       HorizontalAlignment="Center"/>
 
             <!-- 다시 녹음 버튼 -->
             <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="#FFF6E5"
@@ -84,17 +88,18 @@
                         FontSize="16"
                         FontWeight="Bold"
                         Foreground="#FFACAC"
-                        Style="{StaticResource NoHighlightButtonStyle}"/>
+                        Style="{StaticResource NoHighlightButtonStyle}"
+                        Command="{Binding ReRecordCommand}" />
             </Border>
 
             <!-- 녹음 종료 버튼 -->
             <Border CornerRadius="25" Background="#FFACAC" Width="375" Height="50">
-                <Button Content="녹음 종료"
-                FontSize="16"
-                FontWeight="Bold"
-                Foreground="White"
-                Style="{StaticResource NoHighlightButtonStyle}"
-                Command="{Binding GoToConfirmDiaryCommand}" />  
+                <Button Content="{Binding StopButtonText}"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="White"
+                        Style="{StaticResource NoHighlightButtonStyle}"
+                        Command="{Binding GoToConfirmDiaryCommand}" />
             </Border>
 
         </StackPanel>

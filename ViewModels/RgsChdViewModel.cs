@@ -24,7 +24,7 @@ namespace MalangDiary.ViewModels
         [ObservableProperty] private string birthMonth;
         [ObservableProperty] private string birthDay;
         [ObservableProperty] private string selectedProfileColor;
-        [ObservableProperty]  private bool isVoiceRecorded;
+        [ObservableProperty] private bool isVoiceRecorded;
 
         /* Member Variables */
         private readonly RgsModel _rgsModel;

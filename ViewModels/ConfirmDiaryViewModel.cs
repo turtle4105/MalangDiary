@@ -3,13 +3,25 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using MalangDiary.Enums;
 using MalangDiary.Messages;
+using MalangDiary.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MalangDiary.ViewModels
 {
     public partial class ConfirmDiaryViewModel : ObservableObject
     {
-        // 다시 녹음 (= 이전으로 되돌리기)
+
+        public ConfirmDiaryViewModel(DiaryModel diarymodel)
+        {
+            _diarymodel = diarymodel;
+        }
+        DiaryModel _diarymodel;
+
+        // 다시 녹음 
         [RelayCommand]
         private void ReRecord()
         {

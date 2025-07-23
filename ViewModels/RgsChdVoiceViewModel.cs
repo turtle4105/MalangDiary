@@ -22,6 +22,7 @@ namespace MalangDiary.ViewModels
         }
         
         private readonly RgsModel _rgsmodel;
+
         private bool isRecorded = false; // 저장 상태 여부
 
         [ObservableProperty]
