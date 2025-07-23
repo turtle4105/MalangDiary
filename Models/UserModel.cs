@@ -36,6 +36,7 @@ namespace MalangDiary.Models {
 
 
 
+
         /** Member Methods **/
         
         /* SetAllChildInfo */
@@ -125,9 +126,9 @@ namespace MalangDiary.Models {
             return (false, "서버 응답이 올바르지 않습니다.");
         }
 
+
         /* Method for Protocol-LogIn */
         public /*async Task<*/bool/*>*/ LogIn(string email, string password) {
-
 
             /* [1] new json */
             JObject jsonData = new() {
