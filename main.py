@@ -309,7 +309,7 @@ def remove_timestamps(text: str) -> str:
     return result
 
 # 6. 단순 텍스트 정리 함수 (GPT 없이)
-def simple_text_cleanup(text: str) -> str:
+def simple_text_cleanup(text: str,child_name: str = None) -> str:
     """GPT 없이 단순한 오타 수정만 수행"""
     logger.info(f"단순 텍스트 정리 시작 - 입력 길이: {len(text)} 문자")
     
@@ -328,6 +328,18 @@ def simple_text_cleanup(text: str) -> str:
     result = text
     for old, new in replacements.items():
         result = result.replace(old, new)
+    # child_name 기반 이름 오타 보정 (범용: 마지막 음절 변형 치환)   
+    if child_name:
+        name_variations = [
+            child_name[:-1] + '루',  # 인우 → 인루
+            child_name[:-1] + '누',  # 인우 → 인누
+            child_name[:-1] + '효',  # 인우 → 인누
+            # 필요 시 더 추가 (예: child_name + '이' 등)
+        ]
+        for var in name_variations:
+            if var != child_name:
+                result = re.sub(re.escape(var), child_name, result, flags=re.IGNORECASE)
+        logger.info(f"이름 보정 적용: {child_name} 변형 치환 완료")
     
     # 불필요한 공백 정리
     result = re.sub(r'\s+', ' ', result).strip()
@@ -361,6 +373,8 @@ def generate_diary_with_emotions(child_text: str, full_context: str, child_name:
     "이 대화는 아이와 보호자의  대화입니다. 등장 인물, 주요 사건, 대화 맥락{full_context}
 , 아이의 감정{child_text}과 행동을 포함해 일기 형태로 작성해줘."
 
+ 이 대화는 아이와 보호자의 대화입니다. 아이 이름은 반드시 '{child_name}'로 사용하세요. 대화에서 비슷한 이름(예: 오타)이 나오면 '{child_name}'로 보정하여 일기를 작성하세요. 등장 인물, 주요 사건, 대화 맥락{full_context}, 아이의 감정{child_text}과 행동을 포함해 아이 관점의 일기 형태로 작성해줘
+
 
 [전체 대화 맥락]
 {full_context}
@@ -374,7 +388,6 @@ def generate_diary_with_emotions(child_text: str, full_context: str, child_name:
 --- 출력 형식 ---
 제목: (아이의 말에 기반한 짧은 제목, 이모지 가능)  
 내용: (아이의 말 중심으로 정돈된 일기 형식의 문단, 10문장 내외)  
-감정: (일기 내용에 기반해 유추 가능한 감정 키워드 최소 3개~5개, 쉼표로 구분)
 """
 
     try:
@@ -529,6 +542,8 @@ async def transcribe(
         
         # 전체 맥락 이해를 위한 전체 텍스트 생성
         full_context = " ".join([seg.text for seg in segments_list])
+        full_context = simple_text_cleanup(full_context, child_name) #보정 추가
+
         logger.info(f"[{request_id}] 전체 맥락 텍스트 생성 - 길이: {len(full_context)} 문자")
         
         # 아이의 음성만 식별 (최적화된 메모리 기반 방식 + 이름 호명 패턴 감지)
@@ -536,6 +551,7 @@ async def transcribe(
             logger.info(f"[{request_id}] 아이 이름 설정: '{child_name}' - 호명 패턴 감지 활성화")
         child_texts = identify_child_voice_optimized(tmp_audio_path, segments_list, child_name, request_child_embedding, similarity_threshold=0.65)
         child_only_text = " ".join(child_texts)
+        child_only_text = simple_text_cleanup(child_only_text, child_name)  # 보정 추가
         
         logger.info(f"[{request_id}] 아이 음성 식별 완료 - 추출된 텍스트 수: {len(child_texts)}")
         logger.info(f"[{request_id}] 아이 음성 내용: {child_only_text}")
@@ -544,7 +560,7 @@ async def transcribe(
         # STEP 4: 텍스트 정제 (단순 오타 수정만)
         logger.info(f"[{request_id}] STEP 4: 텍스트 정제 단계 (오타 수정만)")
         step_logger.info(f"REQUEST {request_id}: STEP 4 - 텍스트 정제 시작")
-        refined_text = simple_text_cleanup(whisper_text)
+        refined_text = simple_text_cleanup(whisper_text, child_name)
 
         # STEP 5: 통합 일기+감정 생성 (GPT 1회 호출)
         if child_name:
@@ -559,13 +575,11 @@ async def transcribe(
         # STEP 6: 결과 반환 (기존 포맷 호환)
         result = {
             "transcript": whisper_text,  # 전체 원본 텍스트 반환 (타임스탬프 제거된)
-            "refined_transcript": refined_text,  # GPT로 정제된 텍스트 (오타 수정만)
-            "child_voice_only": child_only_text,  # 아이 발화만 추출된 텍스트
+            # "refined_transcript": refined_text,  # GPT로 정제된 텍스트 (오타 수정만)
+            # "child_voice_only": child_only_text,  # 아이 발화만 추출된 텍스트
             "emotion": ", ".join(diary_result["emotions"]),  # 기존 포맷: 문자열
-            "diary": {  # 기존 포맷: 객체
-                "title": diary_result["title"],
-                "content": diary_result["content"]
-            }
+            "title": diary_result["title"],
+            "content": diary_result["content"]
         }
         
         logger.info(f"[{request_id}] === 요청 처리 완료 ===")
