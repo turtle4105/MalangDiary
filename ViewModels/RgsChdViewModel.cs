@@ -5,6 +5,7 @@ using MalangDiary.Enums;
 using MalangDiary.Messages;
 using MalangDiary.Models;
 using System;
+using System.IO;
 using System.Windows;
 
 namespace MalangDiary.ViewModels
@@ -17,6 +18,15 @@ namespace MalangDiary.ViewModels
             Console.WriteLine("RgsChdViewModel has Created");
             _rgsModel = rgsModel;
             SelectedProfileColor = "#FFACAC"; // 기본값
+
+            // 녹음 완료 메시지 수신 등록
+            WeakReferenceMessenger.Default.Register<VoiceRecordedMessage>(this, (r, m) => {
+                if (m.IsRecorded)
+                {
+                    IsVoiceRecorded = true;
+                    Console.WriteLine("[RgsChdViewModel] 녹음 완료 상태 반영됨");
+                }
+            });
         }
 
         [ObservableProperty] private string name;
@@ -70,27 +80,56 @@ namespace MalangDiary.ViewModels
         }
 
         [RelayCommand]
-        public void RgsChd() {
+        public void RgsChd()
+        {
             Console.WriteLine(" [RgsChd] 자녀 등록 시도됨");
 
             string gender = IsMale ? "M" : IsFemale ? "F" : "";
             string birthdate = $"{BirthYear}-{BirthMonth}-{BirthDay}";
 
-            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(birthdate) || string.IsNullOrWhiteSpace(gender)) {
+                 // 입력값 검증
+            if (string.IsNullOrWhiteSpace(Name) ||
+                string.IsNullOrWhiteSpace(birthdate) ||
+                string.IsNullOrWhiteSpace(gender))
+            {
                 Console.WriteLine(" 입력값 누락: 이름, 생년월일, 성별 중 하나 이상 없음");
+                MessageBox.Show("이름, 생년월일, 성별을 모두 입력해주세요.", "입력 누락", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            var (isSuccess, message) = _rgsModel.RegisterChild(Name, birthdate, gender, SelectedProfileColor);
-
-            if (isSuccess) {
-                Console.WriteLine($" 자녀 등록 성공: {message}");
-                MessageBox.Show($"자녀 등록이 완료되었습니다.", "자녀 등록 성공", MessageBoxButton.OK, MessageBoxImage.Information);
-                WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Home));
+            if (!IsVoiceRecorded)
+            {
+                MessageBox.Show("아이의 목소리를 등록해주세요.", "녹음 누락", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
-            else
-                Console.WriteLine($" 자녀 등록 실패: {message}");
+
+                   //  자녀 등록
+            var (childSuccess, childMsg) = _rgsModel.RegisterChild(Name, birthdate, gender, SelectedProfileColor);
+            if (!childSuccess)
+            {
+                MessageBox.Show("자녀 등록에 실패했습니다.", "등록 실패", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            Console.WriteLine($"자녀 등록 성공: {childMsg}");
+
+                    // 목소리 등록 (등록된 CHILD_UID 기반)
+            string voiceFilePath = Path.Combine("recordings", "setting_voice.wav");
+            var (voiceSuccess, voiceMsg) = _rgsModel.SetBabyVoice(voiceFilePath);
+
+            if (!voiceSuccess)
+            {
+                MessageBox.Show("목소리 등록에 실패했습니다.", "등록 실패", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            Console.WriteLine($"목소리 등록 성공: {voiceMsg}");
+
+                 //  최종 완료
+            MessageBox.Show("자녀와 목소리 등록이 모두 완료되었습니다!", "등록 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Home));
         }
+
 
         [RelayCommand]
         public void RecordVoice()

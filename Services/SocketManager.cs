@@ -18,6 +18,7 @@ namespace MalangDiary.Services {
         void Close();
     }
 
+
     public class SocketManager : ISocketManager {
         private TcpClient? client;
         private NetworkStream? stream;
@@ -125,7 +126,7 @@ namespace MalangDiary.Services {
         }
 
         /// <summary>
-        /// 서버로부터 WorkItem을 수신합니다.
+            /// 서버로부터 WorkItem을 수신합니다.
         /// </summary>
         /// <returns></returns>
         public WorkItem Receive() {

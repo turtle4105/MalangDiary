@@ -1,5 +1,6 @@
 ﻿using MalangDiary.Services;
 using MalangDiary.Structs;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,12 +59,12 @@ namespace MalangDiary.Models {
             };
 
 
-            //string jsonStr = JsonSerializer.Serialize(jsonObj);
+            string jsonStr = JsonConvert.SerializeObject(jsonObj);
             byte[] fileBytes = await File.ReadAllBytesAsync(VoicePath);
 
             WorkItem item = new WorkItem
             {
-                //json = jsonStr,
+                json = jsonStr,
                 payload = fileBytes,
                 path = VoicePath
             };
@@ -71,8 +72,5 @@ namespace MalangDiary.Models {
             _socket.Send(item);
             Console.WriteLine("[DiaryModel] 일기 생성 요청 전송 완료");
         }
-
-
     }
-
 }

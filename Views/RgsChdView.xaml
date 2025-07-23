@@ -194,19 +194,45 @@
                               IsChecked="{Binding IsFemale}"/>
             </StackPanel>
 
-            <!-- 녹음 버튼 -->
-            <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="#FFF6E5" Width="363" Height="50" Margin="0,10,0,180">
-                <Button Command="{Binding RecordVoiceCommand}" 
-                    Style="{StaticResource FlatButtonStyle}">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="목소리 녹음하기" FontSize="15" Foreground="#FFACAC" />
-                        <TextBlock Text="✔" FontSize="15" Foreground="#FFACAC" 
-                   Visibility="{Binding IsVoiceRecorded, Converter={StaticResource BoolToVisibilityConverter}}"
-                   Margin="5,0,0,0"/>
-                    </StackPanel>
+            <!-- 목소리 녹음하기 버튼 -->
+            <Border CornerRadius="25"
+        Background="#FFF6E5"
+        BorderBrush="#FFACAC"
+        BorderThickness="1"
+        Width="363"
+        Height="50"
+        Margin="0,10,0,180">
+
+                <Button Command="{Binding RecordVoiceCommand}"
+            Background="Transparent"
+            BorderThickness="0"
+            Style="{StaticResource FlatButtonStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- 텍스트 -->
+                        <TextBlock Text="목소리 녹음하기"
+                       FontSize="15"
+                       Foreground="#FFACAC"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Grid.Column="0" />
+
+                        <!-- 체크 아이콘 -->
+                        <TextBlock Text="✓"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Foreground="#FFACAC"
+                       Margin="10,0,20,0"
+                       VerticalAlignment="Center"
+                       Grid.Column="1"
+                       Visibility="{Binding IsVoiceRecorded, Converter={StaticResource BoolToVisibilityConverter}}"/>   
+                    </Grid>
                 </Button>
-
-
             </Border>
 
             <!-- 등록 완료 버튼 -->

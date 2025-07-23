@@ -9,6 +9,7 @@
         <DropShadowEffect x:Key="ShadowEffect" Color="#A7A7A7" ShadowDepth="1" />
         
         <!-- 컨버터 등록 -->
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <local:SelectedChildBorderConverter x:Key="SelectedChildBorderConverter"/>
         <local:HtmlColorToBrushConverter x:Key="HtmlColorToBrushConverter" />
         <local:IntToVisibilityConverter x:Key="ZeroToVisibleConverter" />

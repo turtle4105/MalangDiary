@@ -91,26 +91,27 @@
 
             <!-- 다시 녹음 버튼 -->
             <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="#FFF6E5"
-                    Width="375" Height="50" Margin="0,40,0,10">
+        Width="375" Height="50" Margin="0,40,0,10">
                 <Button Content="다시 녹음"
-                        Command="{Binding RestartRecordingCommand}"
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Foreground="#FFACAC"
-                        FontFamily="Noto Sans KR"
-                        Style="{StaticResource NoHighlightButtonStyle}"/>
+            Command="{Binding RestartRecordingCommand}"
+            FontSize="16"
+            FontWeight="Bold"
+            Foreground="#FFACAC"
+            FontFamily="Noto Sans KR"
+            Style="{StaticResource NoHighlightButtonStyle}"/>
             </Border>
 
-            <!-- 녹음 종료 or 저장하기 버튼 -->
+            <!-- 녹음 시작 / 종료 / 저장 전환 버튼 -->
             <Border CornerRadius="25" Background="#FFACAC" Width="375" Height="50">
                 <Button Content="{Binding SaveButtonText}"
-                Command="{Binding SaveVoiceCommand}"
-                FontSize="16"
-                FontWeight="Bold"
-                Foreground="White"
-                FontFamily="Noto Sans KR"
-                Style="{StaticResource NoHighlightButtonStyle}"/>
+            Command="{Binding ToggleRecordingCommand}"
+            FontSize="16"
+            FontWeight="Bold"
+            Foreground="White"
+            FontFamily="Noto Sans KR"
+            Style="{StaticResource NoHighlightButtonStyle}"/>
             </Border>
+
 
         </StackPanel>
     </Grid>

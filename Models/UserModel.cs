@@ -12,6 +12,12 @@ namespace MalangDiary.Models
     {
         /*** Member Variables ***/
 
+        private void PrintHex(string title, byte[] bytes)
+        {
+            Console.WriteLine($"{title} ({bytes.Length} bytes):");
+            Console.WriteLine(BitConverter.ToString(bytes).Replace("-", " "));
+        }
+
         // 외부 서비스 및 세션 정보
         private readonly SocketManager _socket;
         private readonly UserSession _session;
