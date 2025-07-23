@@ -18,5 +18,7 @@ public enum PageType {
     ChkCld,
     ChkGallery,
     ChkDiary,
-    Goback
+    Goback,
+    ConfirmDiary,
+    GenDiary
 }

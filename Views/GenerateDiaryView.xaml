@@ -1,0 +1,51 @@
+﻿<Page x:Class="MalangDiary.Views.GenerateDiaryView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      Background="#80000000"
+      d:DesignHeight="800" d:DesignWidth="400">
+
+    <!-- 회색 반투명 배경 위 중앙 팝업 -->
+    <Grid Width="400" Height="800" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Border Background="White"
+                CornerRadius="20"
+                BorderBrush="#FFACAC"
+                BorderThickness="1"
+                Width="360"
+                Height="320"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Padding="20">
+
+            <Grid>
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,10,0,0">
+
+                    <!-- 생성 중 이미지 -->
+                    <Image Width="160" Height="160"
+                           Source="pack://application:,,,/Resources/Images/Icons/creating.png"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,10"/>
+
+                    <!-- 설명 텍스트 -->
+                    <TextBlock TextWrapping="Wrap"
+                               FontSize="14"
+                               Foreground="#888"
+                               TextAlignment="Center"
+                               Width="280"
+                               HorizontalAlignment="Center">
+                        <LineBreak/>
+                        <Run Text="'말랑일기'는" />
+                        <Run Text="'말하다'의 '말'과" />
+                        <LineBreak/>
+                        <Run Text="사랑의 '랑'을" />
+                        <Run Text="합쳐 만든 이름이에요!" />
+
+                    </TextBlock>
+
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

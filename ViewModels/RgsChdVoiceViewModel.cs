@@ -22,19 +22,15 @@ namespace MalangDiary.ViewModels
         }
         
         private readonly RgsModel _rgsmodel;
-
         private bool isRecorded = false; // 저장 상태 여부
 
         [ObservableProperty]
         private string saveButtonText = "녹음 종료";
-
-
         private WaveInEvent? waveIn;
         private WaveFileWriter? writer;
         //private readonly string recordingPath = "C:\\Users\\yhr\\Downloads\\setting_voice.wav";
-        // 1. 실제 녹음 저장 경로 (recordings 폴더에 날짜 기반으로 생성되도록 변경도 가능)
+        // 실제 녹음 저장 경로 (recordings 폴더에 날짜 기반으로 생성되도록 변경도 가능)
         private readonly string recordingPath = Path.Combine("recordings", "setting_voice.wav");
-
 
         /* Member Methods */
         [RelayCommand] private static void GoBack() {
@@ -48,7 +44,6 @@ namespace MalangDiary.ViewModels
             get => _recordingStatus;
             set => SetProperty(ref _recordingStatus, value); // CommunityToolkit의 ObservableObject 방식
         }
-
 
         // ViewModel
         [RelayCommand]
@@ -76,7 +71,7 @@ namespace MalangDiary.ViewModels
             if (success)
             {
                 Console.WriteLine("서버 전송 성공!");
-                // 🔁 저장 후 자녀 등록 화면으로 이동
+                // 저장 후 자녀 등록 화면으로 이동
                 WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.RgsChd));
             }
             else
@@ -84,8 +79,6 @@ namespace MalangDiary.ViewModels
                 Console.WriteLine($"전송 실패: {message}");
             }
         }
-
-
 
         [RelayCommand]
         private void RestartRecording()
@@ -97,8 +90,6 @@ namespace MalangDiary.ViewModels
             isRecorded = false;
             SaveButtonText = "녹음 종료"; // 다시 초기 상태로
         }
-
-
 
         private void StartRecording()
         {

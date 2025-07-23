@@ -1,0 +1,82 @@
+﻿<Page x:Class="MalangDiary.Views.ConfirmDiaryView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      Background="#80000000"
+      d:DesignHeight="800" d:DesignWidth="400">
+
+    <Page.Resources>
+        <!-- 파란 테두리 제거용 버튼 스타일 -->
+        <Style x:Key="NoHighlightButtonStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid Width="400" Height="800" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <!-- 팝업 본체 -->
+        <Border Background="White"
+                CornerRadius="20"
+                BorderBrush="#FFACAC"
+                BorderThickness="1"
+                Width="360"
+                Height="300"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Padding="20">
+
+            <Grid>
+
+
+                <!-- 텍스트 -->
+                <TextBlock Text="말랑 일기를 생성하시겠습니까?"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           TextAlignment="Center"
+                           VerticalAlignment="Top"
+                           Margin="0,60,0,0"
+                           Foreground="Black"/>
+
+                <!-- 버튼 2개 -->
+                <StackPanel VerticalAlignment="Bottom" Margin="0,0,0,10">
+                    <Border CornerRadius="25"
+                            BorderBrush="#FFACAC"
+                            BorderThickness="1"
+                            Background="#FFF6E5"
+                            Height="44"
+                            Margin="0,0,0,8">
+                        <Button Content="다시 녹음"
+                                Command="{Binding ReRecordCommand}"
+                                Foreground="#FFACAC"
+                                FontWeight="Bold"
+                                FontSize="14"
+                                Style="{StaticResource NoHighlightButtonStyle}"/>
+                    </Border>
+
+                    <Border CornerRadius="25"
+                            Background="#FFACAC"
+                            Height="44">
+                        <Button Content="일기 생성"
+                                Command="{Binding CreateDiaryCommand}"
+                                Foreground="White"
+                                FontWeight="Bold"
+                                FontSize="14"
+                                Style="{StaticResource NoHighlightButtonStyle}"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

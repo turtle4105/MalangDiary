@@ -26,8 +26,6 @@ namespace MalangDiary.ViewModels
         [ObservableProperty] private string selectedProfileColor;
         [ObservableProperty]  private bool isVoiceRecorded;
 
-
-
         /* Member Variables */
         private readonly RgsModel _rgsModel;
 
@@ -56,7 +54,6 @@ namespace MalangDiary.ViewModels
                 }
             }
         }
-
 
         /* Member Methods */
         [RelayCommand]
@@ -88,7 +85,8 @@ namespace MalangDiary.ViewModels
 
             if (isSuccess) {
                 Console.WriteLine($" 자녀 등록 성공: {message}");
-                MessageBox.Show($"자녀 등록이 완료되었습니다.", "자녀 등록 성공", MessageBoxButton.OK, MessageBoxImage.Information); 
+                MessageBox.Show($"자녀 등록이 완료되었습니다.", "자녀 등록 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Home));
             }
             else
                 Console.WriteLine($" 자녀 등록 실패: {message}");

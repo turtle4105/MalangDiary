@@ -138,7 +138,6 @@ namespace MalangDiary.Models {
 
             string sendingJson = JsonConvert.SerializeObject(jsonData); // change type: json -> string
             
-
             /* [2] Put json in WorkItem */
             WorkItem sendItem = new () {
                 json = sendingJson,  // sending json
@@ -146,14 +145,11 @@ namespace MalangDiary.Models {
                 path = ""            // no used
             };
 
-
             /* [3] Send the created WorkItem */
             _socket.Send(sendItem);
 
-
             /* [4] Create WorkItem rsponse(response) and receive data from the socket. */
             WorkItem response = /*await*/ _socket.Receive();
-
 
             /* [5] Parse the data. */
             jsonData = JObject.Parse(response.json);

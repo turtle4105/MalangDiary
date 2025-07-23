@@ -74,7 +74,9 @@ namespace MalangDiary.Models
         }
         public (bool isSuccess, string message) SetBabyVoice(string filePath)
         {
-            int childUid = 2; // ← 실제 자녀 UID로 교체 필요
+            // 실제 자녀 UID
+            int childUid = _session.GetCurrentChildUid();
+            //int childUid = 2; 
             string fileName = $"{childUid}_setvoice.wav";
 
             JObject json = new JObject {

@@ -8,7 +8,7 @@
       d:DesignHeight="800" d:DesignWidth="400">
 
     <Page.Resources>
-        <!-- 🔵 파란 테두리 제거 전용 버튼 스타일 -->
+        <!-- 파란 테두리 제거 전용 버튼 스타일 -->
         <Style x:Key="NoHighlightButtonStyle" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -44,7 +44,7 @@
                     FocusVisualStyle="{x:Null}"/>
 
             <!-- 가운데 타이틀 -->
-            <TextBlock Text="말랑일기"
+            <TextBlock Text=""
                        FontWeight="Bold"
                        FontSize="18"
                        Foreground="White"
@@ -90,11 +90,13 @@
             <!-- 녹음 종료 버튼 -->
             <Border CornerRadius="25" Background="#FFACAC" Width="375" Height="50">
                 <Button Content="녹음 종료"
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Foreground="White"
-                        Style="{StaticResource NoHighlightButtonStyle}"/>
+                FontSize="16"
+                FontWeight="Bold"
+                Foreground="White"
+                Style="{StaticResource NoHighlightButtonStyle}"
+                Command="{Binding GoToConfirmDiaryCommand}" />  
             </Border>
+
         </StackPanel>
     </Grid>
 </Page>
