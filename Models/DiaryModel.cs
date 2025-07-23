@@ -57,12 +57,13 @@ namespace MalangDiary.Models {
                 FILENAME = fileName
             };
 
-            string jsonStr = JsonSerializer.Serialize(jsonObj);
+
+            //string jsonStr = JsonSerializer.Serialize(jsonObj);
             byte[] fileBytes = await File.ReadAllBytesAsync(VoicePath);
 
             WorkItem item = new WorkItem
             {
-                json = jsonStr,
+                //json = jsonStr,
                 payload = fileBytes,
                 path = VoicePath
             };
