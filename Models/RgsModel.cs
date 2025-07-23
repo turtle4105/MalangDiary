@@ -11,76 +11,25 @@ namespace MalangDiary.Models
     public class RgsModel
     {
         /** Constructer **/
-        public RgsModel(SocketManager socket, UserSession session) {
+        public RgsModel(SocketManager socket, UserSession session, UserModel userModel) {
             Console.WriteLine("[RgsModel] RgsModel 인스턴스가 생성되었습니다.");
             _socket = socket;
             _session = session;
+            _userModel = userModel;
         }
-
-
 
         /** Member Variables **/
         private readonly SocketManager _socket;
         private readonly UserSession _session;
         public bool IsVoiceSet { get; private set; } = false;
+        private readonly UserModel _userModel;
 
-        //public (bool isSuccess, string message) RegisterChild(string name, string birthdate, string gender, string iconColor)
-        //{
-        //    int parentUid = _session.GetCurrentParentUid();
-        //    //int parentUid = 38;
-
-        //    if (string.IsNullOrWhiteSpace(name) ||
-        //        string.IsNullOrWhiteSpace(birthdate) ||
-        //        string.IsNullOrWhiteSpace(gender) ||
-        //        string.IsNullOrWhiteSpace(iconColor))
-        //    {
-        //        return (false, "입력값이 누락되었습니다.");
-        //    }
-
-        //    JObject jsonData = new()
-        //    {
-        //        { "PROTOCOL", "REGISTER_CHILD" },
-        //        { "PARENTS_UID", parentUid },
-        //        { "NAME", name },
-        //        { "BIRTHDATE", birthdate },
-        //        { "GENDER", gender },
-        //        { "ICON_COLOR", iconColor }
-        //    };
-
-        //    string json = JsonConvert.SerializeObject(jsonData);
-        //    WorkItem sendItem = new()
-        //    {
-        //        json = json,
-        //        payload = new byte[0],
-        //        path = string.Empty
-        //    };
-
-        //    _socket.Send(sendItem);
-        //    WorkItem response = _socket.Receive();
-
-        //    JObject resJson = JObject.Parse(response.json);
-        //    string protocol = resJson["PROTOCOL"]?.ToString() ?? "";
-        //    string resp = resJson["RESP"]?.ToString() ?? "";
-        //    string message = resJson["MESSAGE"]?.ToString() ?? "";
-
-        //    if (protocol == "REGISTER_CHILD" && resp == "SUCCESS")
-        //    {
-        //        int childUid = resJson["CHILD_UID"]?.ToObject<int>() ?? -1;
-        //        Console.WriteLine($"[RgsModel] 자녀 등록 성공: UID={childUid}");
-        //        return (true, message);
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine($"[RgsModel] 자녀 등록 실패: {message}");
-        //        return (false, message);
-        //    }
-        //}
 
         public (bool isSuccess, string message) RegisterChild(string name, string birthdate, string gender, string iconColor)
         {
             int parentUid = _session.GetCurrentParentUid();
 
-            Console.WriteLine("▶ [RegisterChild] 호출됨");
+            Console.WriteLine(" [RegisterChild] 호출됨");
             Console.WriteLine($" - name: {name}");
             Console.WriteLine($" - birthdate: {birthdate}");
             Console.WriteLine($" - gender: {gender}");
@@ -92,22 +41,22 @@ namespace MalangDiary.Models
                 string.IsNullOrWhiteSpace(gender) ||
                 string.IsNullOrWhiteSpace(iconColor))
             {
-                Console.WriteLine("❌ 입력값 누락");
+                Console.WriteLine(" 입력값 누락");
                 return (false, "입력값이 누락되었습니다.");
             }
 
             JObject jsonData = new()
-    {
-        { "PROTOCOL", "REGISTER_CHILD" },
-        { "PARENTS_UID", parentUid },
-        { "NAME", name },
-        { "BIRTHDATE", birthdate },
-        { "GENDER", gender },
-        { "ICON_COLOR", iconColor }
-    };
+            {
+                { "PROTOCOL", "REGISTER_CHILD" },
+                { "PARENTS_UID", parentUid },
+                { "NAME", name },
+                { "BIRTHDATE", birthdate },
+                { "GENDER", gender },
+                { "ICON_COLOR", iconColor }
+            };
 
             string json = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
-            Console.WriteLine("📤 보낼 JSON:");
+            Console.WriteLine(" 보낼 JSON:");
             Console.WriteLine(json);
 
             WorkItem sendItem = new()
@@ -120,35 +69,51 @@ namespace MalangDiary.Models
             try
             {
                 _socket.Send(sendItem);
-                Console.WriteLine("✅ 요청 전송 완료");
+                Console.WriteLine(" 요청 전송 완료");
 
                 WorkItem response = _socket.Receive();
-                Console.WriteLine("📥 서버 응답 수신 완료");
+                Console.WriteLine("서버 응답 수신 완료");
 
-                Console.WriteLine("📄 응답 JSON:");
+                Console.WriteLine(" 응답 JSON:");
                 Console.WriteLine(response.json);
 
                 JObject resJson = JObject.Parse(response.json);
                 string protocol = resJson["PROTOCOL"]?.ToString() ?? "";
                 string resp = resJson["RESP"]?.ToString() ?? "";
                 string message = resJson["MESSAGE"]?.ToString() ?? "";
+                int new_child = resJson["NEW_CHILD"]?.ToObject<int>() ?? -1;
+                _session.SetCurrentChildUid(new_child);
 
                 if (protocol == "REGISTER_CHILD" && resp == "SUCCESS")
                 {
                     int childUid = resJson["CHILD_UID"]?.ToObject<int>() ?? -1;
-                    Console.WriteLine($"✅ 자녀 등록 성공: UID = {childUid}");
-                    _session.SetCurrentChildUid(childUid);  // 💡 꼭 UID 저장
+                    _userModel.SetChildrenFromResponse(resJson);
+
+                     Console.WriteLine("[DEBUG] REGISTER_CHILD 응답 전체:\n" + resJson.ToString());
+
+                    // 방어 코드 추가
+                    var allChildren = _userModel.GetAllChildInfo();
+                    if (allChildren.Count == 0)
+                    {
+                        Console.WriteLine("[RgsChdViewModel] 자녀 등록 후 ChildrenInfo 비어 있음");
+                        return (false, "자녀 정보가 로드되지 않았습니다.");
+                    }
+
+                    _session.SetCurrentChildIndex(0);
+                    _session.SetCurrentChildUid(allChildren[0].Uid);
+
                     return (true, message);
                 }
+
                 else
                 {
-                    Console.WriteLine($"❌ 자녀 등록 실패: {message}");
+                    Console.WriteLine($" 자녀 등록 실패: {message}");
                     return (false, message);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"🔥 예외 발생: {ex.Message}");
+                Console.WriteLine($" 예외 발생: {ex.Message}");
                 return (false, "서버 응답 중 오류 발생");
             }
         }
@@ -171,10 +136,10 @@ namespace MalangDiary.Models
             Console.WriteLine($"[SetBabyVoice] 파일 크기: {payload.Length} bytes");
 
             JObject json = new JObject {
-        { "PROTOCOL", "SETTING_VOICE" },
-        { "CHILD_UID", childUid },
-        { "FILENAME", fileName }
-    };
+                { "PROTOCOL", "SETTING_VOICE" },
+                { "CHILD_UID", childUid },
+                { "FILENAME", fileName }
+            };
 
             Console.WriteLine($"[SetBabyVoice] 보낼 JSON: {json}");
 

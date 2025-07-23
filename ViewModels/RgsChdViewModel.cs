@@ -66,6 +66,19 @@ namespace MalangDiary.ViewModels
         }
 
         /* Member Methods */
+
+        public void ClearForm()
+        {
+            Name = string.Empty;
+            BirthYear = string.Empty;
+            BirthMonth = string.Empty;
+            BirthDay = string.Empty;
+            IsMale = false;
+            IsFemale = false;
+            SelectedProfileColor = "#FFACAC";
+            IsVoiceRecorded = false;
+        }
+
         [RelayCommand] private static void GoBack() {
             Console.WriteLine("[RgsChdViewModel] GoBack command executed.");
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Goback));
@@ -87,7 +100,7 @@ namespace MalangDiary.ViewModels
             string gender = IsMale ? "M" : IsFemale ? "F" : "";
             string birthdate = $"{BirthYear}-{BirthMonth}-{BirthDay}";
 
-                 // 입력값 검증
+            // 입력값 검증
             if (string.IsNullOrWhiteSpace(Name) ||
                 string.IsNullOrWhiteSpace(birthdate) ||
                 string.IsNullOrWhiteSpace(gender))
@@ -103,7 +116,7 @@ namespace MalangDiary.ViewModels
                 return;
             }
 
-                   //  자녀 등록
+            //  자녀 등록
             var (childSuccess, childMsg) = _rgsModel.RegisterChild(Name, birthdate, gender, SelectedProfileColor);
             if (!childSuccess)
             {
@@ -113,7 +126,7 @@ namespace MalangDiary.ViewModels
 
             Console.WriteLine($"자녀 등록 성공: {childMsg}");
 
-                    // 목소리 등록 (등록된 CHILD_UID 기반)
+            // 목소리 등록 (등록된 CHILD_UID 기반)
             string voiceFilePath = Path.Combine("recordings", "setting_voice.wav");
             var (voiceSuccess, voiceMsg) = _rgsModel.SetBabyVoice(voiceFilePath);
 
@@ -125,8 +138,9 @@ namespace MalangDiary.ViewModels
 
             Console.WriteLine($"목소리 등록 성공: {voiceMsg}");
 
-                 //  최종 완료
+            //  최종 완료
             MessageBox.Show("자녀와 목소리 등록이 모두 완료되었습니다!", "등록 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+            ClearForm();
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Home));
         }
 

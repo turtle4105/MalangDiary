@@ -141,6 +141,23 @@ namespace MalangDiary.Models
             };
 
             _socket.Send(sendItem);
+
+            /* [1] new json */
+            //JObject jsonData = new() {
+            //    { "PROTOCOL", "GEN_DIARY" },
+            //    //{ "ID", email },
+            //    //{ "PW", password }
+            //};
+
+            //var sendItem = new WorkItem
+            //{
+            //    json = JsonConvert.SerializeObject(jsonData),
+            //    payload = [],
+            //    path = ""
+            //};
+            //_socket.Send(sendItem);
+
+
             WorkItem response = _socket.Receive();
 
             jsonData = JObject.Parse(response.json);
@@ -190,5 +207,37 @@ namespace MalangDiary.Models
                 return false;
             }
         }
+
+        public void SetChildrenFromResponse(JObject resJson)
+        {
+            ChildrenInfo.Clear();
+
+            if (resJson["CHILDREN"] is not JArray childrenArray)
+            {
+                Console.WriteLine("[UserModel] CHILDREN 배열이 존재하지 않음");
+                return;
+            }
+
+            foreach (JObject child in childrenArray)
+            {
+                string birth = (string)child["BIRTH"]!;
+                if (string.IsNullOrWhiteSpace(birth)) birth = "00000000";
+
+                ChildInfo info = new()
+                {
+                    Uid = (int)child["CHILDUID"]!,
+                    Name = (string)child["NAME"]!,
+                    BirthDate = birth,
+                    Age = DateTime.Now.Year - int.Parse(birth[..4]),
+                    Gender = (string)child["GENDER"]!,
+                    IconColor = (string)child["ICON_COLOR"]!
+                };
+
+                ChildrenInfo.Add(info);
+            }
+
+            Console.WriteLine($"[UserModel] 자녀 {ChildrenInfo.Count}명 저장됨");
+        }
+
     }
 }

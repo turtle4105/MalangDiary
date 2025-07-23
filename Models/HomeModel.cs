@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using static System.Net.WebRequestMethods;
+using System.Threading;
 using File = System.IO.File;
 
 namespace MalangDiary.Models {
@@ -24,7 +25,6 @@ namespace MalangDiary.Models {
             _session = session;
 
         }
-
 
         /* Member Variables */
         private readonly SocketManager _socket;

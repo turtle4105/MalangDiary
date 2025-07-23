@@ -63,7 +63,6 @@ namespace MalangDiary.ViewModels {
 
             OnPropertyChanged(nameof(EmotionTags));
 
-            
 
             return;
         }
@@ -131,17 +130,31 @@ namespace MalangDiary.ViewModels {
         }
 
 
-        public void LoadChildrenFromModel() {
+        public void LoadChildrenFromModel()
+        {
+            var children = _usermodel.GetAllChildInfo();
+
+            if (children.Count == 0)
+            {
+                Console.WriteLine("[HomeViewModel] 자녀 정보가 없음 → LoadChildrenFromModel 생략");
+                return;
+            }
+
             Children.Clear();
-            foreach (var child in _usermodel.GetAllChildInfo()) {
+
+            foreach (var child in children)
+            {
                 var vm = new ChildViewModel(child);
                 if (child.Uid == _session.GetCurrentChildUid())
                     vm.IsSelected = true;
                 Children.Add(vm);
             }
 
-            SelectedChildIconColor = _usermodel.GetAllChildInfo()[0].IconColor;
+            // 최소 1명 이상 있을 때만 접근하도록 보장됨
+            SelectedChildIconColor = children[0].IconColor;
         }
+
+
 
 
         /* Methods Change Page */
