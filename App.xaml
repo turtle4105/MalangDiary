@@ -16,6 +16,7 @@
         <local:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <local:InverseBoolToVisConverter x:Key="InverseBoolToVis"/>
+        <local:PlayPauseTextConverter x:Key="PlayPauseTextConverter"/>
         
         <!-- ✅ 회색 Watermark 스타일 (회원가입 등) -->
         <Style x:Key="GrayWatermarkTextBoxStyle" TargetType="TextBox">
