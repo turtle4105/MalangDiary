@@ -66,14 +66,14 @@ namespace MalangDiary.ViewModels
         }
 
         /* Member Methods */
-        [RelayCommand]
-        private static void GoBack() {
+        [RelayCommand] private static void GoBack() {
             Console.WriteLine("[RgsChdViewModel] GoBack command executed.");
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Goback));
         }
 
-        [RelayCommand]
-        public void SetColor(string colorCode)
+
+        /* SetColor */
+        [RelayCommand] public void SetColor(string colorCode)
         {
             SelectedProfileColor = colorCode;
             Console.WriteLine($" 프로필 색상 선택됨: {colorCode}");
