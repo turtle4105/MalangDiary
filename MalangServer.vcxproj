@@ -102,14 +102,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit\include;C:\python_workspace\curl-8.15.0\include</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>mariadbcpp.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mariadbcpp.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\seonseo\source\repos\MalangDiary\MalangServer\x64\Debug;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit;C:\python_workspace\curl-8.15.0\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

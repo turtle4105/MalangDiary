@@ -178,6 +178,7 @@ nlohmann::json ProtocolHandler::handle_RegisterChild(const nlohmann::json& json,
         cout << u8"→ [REGISTER_CHILD] 자녀 등록 실패: "
              << toUTF8_safely(error_msg) << endl;
     }
+    cout << response.dump(2) << endl;
     return response;
 }
 
