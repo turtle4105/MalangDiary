@@ -156,12 +156,12 @@ void handleClient(SOCKET clientSocket) {
                 LINE
             }
 
-            else if (protocol == u8"PROCESS_VOICE") {
+            else if (protocol == u8"GEN_DIARY") {
                 LINE_LABEL("SETTING_VOICE")
                 db.connect();
 
                 // [1] JSON에서 필요한 데이터 추출 (이름, etc.)
-                string child_name = json.value("CHILD_NAME", "");  // 아이이름 
+                string child_name = json.value("CHILD_NAME", "전인우");  // 아이이름 
                 int child_uid = json.value("CHILD_UID", -1);       // 아이의 uid
 
                 // [2] Python 서버로 HTTP POST 요청 (multipart/form-data)
