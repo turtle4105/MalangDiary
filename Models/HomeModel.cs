@@ -67,11 +67,11 @@ namespace MalangDiary.Models {
 
             _socket.Send(sendingItem);
 
-            // 받는 작업( 임시 )
+            // 받는 작업
             jsonData = JObject.Parse(_socket.Receive().json);
 
             string protocol = jsonData["PROTOCOL"]!.ToString();
-            string response = jsonData["RESP"]!.ToString();   // null 아님
+            string response = jsonData["RESP"]!.ToString();   // not null
 
             if (protocol == "GET_LATEST_DIARY" && response == "SUCCESS") {
 
@@ -79,6 +79,7 @@ namespace MalangDiary.Models {
                 ResultDiaryInfo.IntWeather = jsonData["WEATHER"]!.ToObject<int>();
                 ResultDiaryInfo.Weather = WeatherConveter.ConvertWeatherCodeToText(ResultDiaryInfo.IntWeather);
                 ResultDiaryInfo.Date = jsonData["CREATE_AT"]!.ToString();
+                ResultDiaryInfo.Emotions = new();   // List<string> 초기화 필요
                 if (jsonData["EMOTIONS"] is not null) {
                     JArray? ArrEmotions = jsonData["EMOTIONS"]!.ToObject<JArray>();
 
@@ -88,7 +89,8 @@ namespace MalangDiary.Models {
                     while (iterator.MoveNext()) {
                         var emotion = iterator.Current as JObject;
                         if (emotion is not null) {
-                            ResultDiaryInfo.Emotions!.Append(emotion["EMOTION"]!.ToString());
+                            Console.WriteLine("emotion[\"EMOTION\"]!.ToString():" + emotion["EMOTION"]!.ToString());
+                            ResultDiaryInfo.Emotions!.Add(emotion["EMOTION"]!.ToString());
                         }
                     }
                 }

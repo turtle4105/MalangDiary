@@ -70,5 +70,5 @@ public struct DiaryInfo {
     public bool IsLiked;         // is_liked
     public string PhotoFileName; // photo_path
     public string Date;          // create_at
-    public string[] Emotions;    // 감정 태그 배열
+    public List<string> Emotions;    // 감정 태그 배열
 }

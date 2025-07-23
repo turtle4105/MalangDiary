@@ -14,21 +14,27 @@ using System.Windows.Media.Imaging;
 namespace MalangDiary.ViewModels {
     public partial class HomeViewModel : ObservableObject {
         /* Constructor */
-        public HomeViewModel(HomeModel homemodel, UserSession user_session) {
+        public HomeViewModel(UserModel usermodel,HomeModel homemodel, UserSession user_session) {
+            _usermodel = usermodel;
             _homemodel = homemodel;
-            _userSession = user_session;
+            _session = user_session;
             Console.WriteLine("[HomeModel] UpdateLatestDiary() executed");
+            LoadChildrenFromModel();
             UpdateLatestDiary();
         }
 
         /** Member Variables **/
+        private readonly UserModel _usermodel;
         private readonly HomeModel _homemodel;
-        private readonly UserSession _userSession;
+        private readonly UserSession _session;
+
+        /* For Top */
+        [ObservableProperty] private string? selectedChildIconColor;
 
         /* For Children StackPanel */
-        [ObservableProperty] private ObservableCollection<ChildInfo> children;  //자녀 목록 (동적 생성용)
+        public ObservableCollection<ChildViewModel> Children { get; } = new();  //자녀 목록 (동적 생성용)
         [ObservableProperty] private int selectedChildUid;          // 	현재 선택된 자녀의 UID
-        [ObservableProperty] private int selectedChildIndex;
+
 
         /* For Today's Diary */
         [ObservableProperty] private string dateText = DateTime.Now.ToString("yyyy-MM-dd");
@@ -57,8 +63,11 @@ namespace MalangDiary.ViewModels {
 
             OnPropertyChanged(nameof(EmotionTags));
 
+            
+
             return;
         }
+
 
         private static string EmotionTagger(string emotion) {
             string tagged_emotion;
@@ -66,6 +75,7 @@ namespace MalangDiary.ViewModels {
 
             return tagged_emotion;
         }
+
 
         private static ImageSource? LoadImageFromPath(string path) {
             Console.WriteLine("LoadImageFromPath Executed");
@@ -87,20 +97,93 @@ namespace MalangDiary.ViewModels {
             return image;
         }
 
-        /* Methods Change Page */
+
+        // 나머지 객체의 IsSelected를 false로, 선택한 객체의 IsSelected만 true로
         [RelayCommand]
-        public static void GoToRcdDiary() {
+        private void SelectChild(ChildViewModel selected) {
+            foreach (var child in Children)
+                child.IsSelected = false;
+
+            selected.IsSelected = true;
+            SelectedChildUid = selected.Uid;
+
+            // 세션 정보 갱신
+            _session.SetCurrentChildUid(selected.Uid);
+
+            // 유저 모델 갱신
+            ChildInfo selected_childinfo = new()
+            {
+                Uid = selected.Uid,
+                Name = selected.Name,
+                Age = selected.Age,
+                BirthDate = selected.BirthDate,
+                Gender = selected.Gender,
+                IconColor = selected.IconColor
+            };
+            _usermodel.SetSelectedChildInfo(selected_childinfo);
+
+            // 선택된 자녀색상 Binding 객체 값 변경
+            SelectedChildIconColor = _usermodel.GetSelectedChildInfo().IconColor;
+            Console.WriteLine("_usermodel.GetSelectedChildInfo().IconColor:" + _usermodel.GetSelectedChildInfo().IconColor);
+
+            // 오늘 일기 불러오기
+            UpdateLatestDiary();
+        }
+
+
+        public void LoadChildrenFromModel() {
+            Children.Clear();
+            foreach (var child in _usermodel.GetAllChildInfo()) {
+                var vm = new ChildViewModel(child);
+                if (child.Uid == _session.GetCurrentChildUid())
+                    vm.IsSelected = true;
+                Children.Add(vm);
+            }
+
+            SelectedChildIconColor = _usermodel.GetAllChildInfo()[0].IconColor;
+        }
+
+
+        /* Methods Change Page */
+        [RelayCommand] public static void GoToRcdDiary() {
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.RcdDiary));
         }
 
-        [RelayCommand]
-        public static void GoToChkCld() {
+
+        [RelayCommand] public static void GoToChkCld() {
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.ChkCld));
         }
 
-        [RelayCommand]
-        public static void GoToRgsChd() {
+
+        [RelayCommand] public static void GoToRgsChd() {
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.RgsChd));
+        }
+    }
+
+
+    public partial class ChildViewModel : ObservableObject {
+        // [OP] isSelected를 사용하기 위해 ChildViewModel Class 선언
+        // Struct ChildInfo를 생성자로 넣고, 현재 선택된 자녀 Uid와 param구조체의 Uid를 비교해,
+        // IsSelected bool값 조정
+        public int Uid { get; }
+        public string Name { get; }
+        public string BirthDate { get; }
+        public int Age { get; }
+        public string Gender { get; }
+        public string IconColor { get; }
+
+        [ObservableProperty]
+        private bool isSelected;
+
+        public ChildViewModel(ChildInfo child) {
+            // Struct ChildInfo를 Param으로 받아, 각 값을 할당
+            Uid = child.Uid;
+            Name = child.Name;
+            BirthDate = child.BirthDate;
+            Age = child.Age;
+            Gender = child.Gender;
+            IconColor = child.IconColor;
+            IsSelected = false;     // Default = false
         }
     }
 }

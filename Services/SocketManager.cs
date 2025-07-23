@@ -34,20 +34,33 @@ namespace MalangDiary.Services {
                 return;
 
             isConnecting = true;
-            try {
-                client = new TcpClient();
-                await client.ConnectAsync(ip, port);
+
+            client = new TcpClient();
+            await client.ConnectAsync(ip, port);
+            if( client.Connected is true ) {
                 stream = client.GetStream();
                 isConnected = true;
                 Console.WriteLine($"[SocketManager] 서버 연결 완료: {ip}:{port}");
             }
-            catch (Exception ex) {
-                Console.WriteLine($"[SocketManager] 연결 실패: {ex.Message}");
+            else if ( client.Connected is false ) {
+                Console.WriteLine($"[SocketManager] 연결 실패");
                 isConnected = false;
             }
-            finally {
-                isConnecting = false;
-            }
+
+                //try {
+                //    client = new TcpClient();
+                //    await client.ConnectAsync(ip, port);
+                //    stream = client.GetStream();
+                //    isConnected = true;
+                //    Console.WriteLine($"[SocketManager] 서버 연결 완료: {ip}:{port}");
+                //}
+                //catch (Exception ex) {
+                //    Console.WriteLine($"[SocketManager] 연결 실패: {ex.Message}");
+                //    isConnected = false;
+                //}
+                //finally {
+                //    isConnecting = false;
+                //}
         }
 
 

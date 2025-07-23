@@ -31,8 +31,11 @@ namespace MalangDiary.Models
 
         /*** ChildInfo 관련 메서드 ***/
 
-        public void SetAllChildInfo(List<ChildInfo> childInfos)
-        {
+
+        /** Member Methods **/
+        
+        /* SetAllChildInfo */
+        public void SetAllChildInfo(List<ChildInfo> childInfos) {
             ChildrenInfo = childInfos;
         }
 
@@ -113,11 +116,12 @@ namespace MalangDiary.Models
             }
         }
 
-        /*** 로그인 요청 (LOGIN) ***/
-        public bool LogIn(string email, string password)
-        {
-            var jsonData = new JObject
-            {
+
+        /* Method for Protocol-LogIn */
+        public /*async Task<*/bool/*>*/ LogIn(string email, string password) {
+
+            /* [1] new json */
+            JObject jsonData = new() {
                 { "PROTOCOL", "LOGIN" },
                 { "ID", email },
                 { "PW", password }

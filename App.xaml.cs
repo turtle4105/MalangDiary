@@ -16,6 +16,7 @@ namespace MalangDiary {
             Services = serviceCollection.BuildServiceProvider();
 
             var socket = Services.GetService<Services.SocketManager>();
+            Console.WriteLine("[App] EnsureConnectedAsync() Executed");
             _ = socket?.EnsureConnectedAsync();
         }
 

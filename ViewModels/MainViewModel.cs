@@ -57,8 +57,6 @@ public class MainViewModel {
                 break;
             case PageType.ChkCld:
                 _mainFrame.Navigate(new ChkCldView { DataContext = App.Services!.GetService(typeof(ChkCldViewModel)) });
-                var vm = App.Services!.GetService(typeof(ChkCldViewModel));
-                Console.WriteLine($"ChkCldViewModel resolved: {vm}");
                 break;
             case PageType.ChkGallery:
                 _mainFrame.Navigate(new ChkGalleryView { DataContext = App.Services!.GetService(typeof(ChkGalleryViewModel)) });
