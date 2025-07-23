@@ -56,7 +56,7 @@ logger.info("OpenAI 클라이언트 초기화 완료")
 # 3. Whisper 모델 로딩
 try:
     logger.info("Whisper 모델 로딩 시작 (small, cuda, float32)")
-    whisper_model = WhisperModel("small", device="cpu", compute_type="int8_float32") #int8_float32
+    whisper_model = WhisperModel("small", device="cuda", compute_type="int8_float32") #int8_float32
     logger.info("Whisper 모델 로딩 완료")
 except Exception as e:
     logger.error(f"Whisper 모델 로딩 실패: {e}")
@@ -87,7 +87,7 @@ def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
         return 0.0
     return np.dot(a, b) / (norm_a * norm_b)
 
-def process_segment_embedding(segment_audio: np.ndarray, sample_rate: int, child_embedding: np.ndarray, voice_encoder: VoiceEncoder, similarity_threshold: float = 0.65) -> float:
+def process_segment_embedding(segment_audio: np.ndarray, sample_rate: int, child_embedding: np.ndarray, voice_encoder: VoiceEncoder, similarity_threshold: float = 0.6) -> float:
     """단일 세그먼트의 임베딩 처리 및 유사도 계산 (메모리 기반)"""
     try:
         # 세그먼트가 너무 짧은 경우 패딩
@@ -113,7 +113,7 @@ def process_segment_embedding(segment_audio: np.ndarray, sample_rate: int, child
         return 0.0
 
 def split_audio(audio: np.ndarray, sample_rate: int, segment_duration: float = 2) -> List[Dict]:
-    """오디오를 2초 단위로 분할"""
+    """오디오를 1.8초 단위로 분할"""
     segment_samples = int(sample_rate * segment_duration)
     segments = []
     for i in range(0, len(audio), segment_samples):
@@ -151,7 +151,7 @@ def has_child_name_calling_pattern(text: str, child_name: str) -> bool:
     
     return False
 
-def identify_child_voice_optimized(audio_path: str, segments_list: List, child_name: str = None, child_embedding_param: np.ndarray = None, similarity_threshold: float = 0.75) -> List[str]:
+def identify_child_voice_optimized(audio_path: str, segments_list: List, child_name: str = None, child_embedding_param: np.ndarray = None, similarity_threshold: float = 0.6) -> List[str]:
     """아이의 음성 식별 (메모리 기반 + 병렬 처리 + 이름 호명 패턴 감지)"""
     if child_embedding_param is None:
         logger.warning("아이 음성 임베딩이 없어서 전체 텍스트 사용")
@@ -377,7 +377,7 @@ def generate_diary_with_emotions(child_text: str, full_context: str, child_name:
 
     # GPT에게 보낼 프롬프트 구성
     prompt = f"""
-    "이 대화는 아이와 보호자의  대화입니다. 등장 인물, 주요 사건, 대화 맥락{full_context}
+    이 대화는 아이와 보호자의  대화입니다. 등장 인물, 주요 사건, 대화 맥락{full_context}
 , 아이의 감정{child_text}과 행동을 포함해 일기 형태로 작성해줘."
 
  
@@ -523,7 +523,7 @@ async def transcribe(
         logger.info(f"[{request_id}] STEP 1: Whisper 전사 시작")
         step_logger.info(f"REQUEST {request_id}: STEP 1 - Whisper 전사 시작")
         
-        segments, _ = whisper_model.transcribe(tmp_audio_path, beam_size=3,vad_filter=True, language="ko")
+        segments, _ = whisper_model.transcribe(tmp_audio_path, beam_size=3,vad_filter=False, language="ko")
         segments_list = list(segments)
 
         
@@ -563,7 +563,7 @@ async def transcribe(
         # 아이의 음성만 식별 (최적화된 메모리 기반 방식 + 이름 호명 패턴 감지)
         if child_name:
             logger.info(f"[{request_id}] 아이 이름 설정: '{child_name}' - 호명 패턴 감지 활성화")
-        child_texts = identify_child_voice_optimized(tmp_audio_path, segments_list, child_name, request_child_embedding, similarity_threshold=0.65)
+        child_texts = identify_child_voice_optimized(tmp_audio_path, segments_list, child_name, request_child_embedding, similarity_threshold=0.6)
         child_only_text = " ".join(child_texts)
         child_only_text = simple_text_cleanup(child_only_text, child_name)  # 보정 추가
         

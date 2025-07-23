@@ -10,3 +10,6 @@ numpy
 torchaudio
 librosa
 scikit-learn
+python-Levenshtein
+py-hanspell
+
