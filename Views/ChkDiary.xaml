@@ -91,7 +91,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,10,0">
 
                 <!-- Restart -->
-                <Button Command="{Binding RestartAudioCommand}"
+                <Button Command="{Binding StopAudioCommand}"
                     Width="32" Height="32" Margin="4"
                     Style="{StaticResource RoundedButtonStyle}" Tag="16"
                     Background="#FFF9F5" BorderBrush="#FFACAC" BorderThickness="1">
@@ -137,78 +137,109 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="377">
                         <Border Background="Transparent" BorderBrush="Gray" BorderThickness="1" Width="60" Height="31">
                             <TextBlock Text="날짜" Background="Transparent" Foreground="Black" FontFamily="Noto Sans KR" HorizontalAlignment="Center"
-                                       TextAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                       TextAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"
+                                       FontSize="14"/>
                         </Border>
                         <Border Background="White" BorderBrush="Gray" BorderThickness="1"
                                 Width="156" Height="31">
                             <TextBlock Text="{Binding DateText}" Background="Transparent" Foreground="Black" 
-                                       HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Noto Sans KR"/>
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Noto Sans KR"
+                                       FontSize="14"/>
                         </Border>
                         <Border Width="60" Height="31" Background="Transparent" BorderBrush="Gray" BorderThickness="1">
                             <TextBlock Text="날씨" Background="Transparent" Foreground="Black" FontFamily="Noto Sans KR"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       FontSize="14"/>
                         </Border>
                         <Border BorderBrush="Gray" BorderThickness="1" Width="101" Height="31" VerticalAlignment="Center">
                             <TextBlock Text="{Binding WeatherText}" 
-                                   FontSize="12" 
                                    VerticalAlignment="Center" 
                                    HorizontalAlignment="Center"
                                    Foreground="Black"
-                                   FontFamily="Noto Sans KR"/>
+                                   FontFamily="Noto Sans KR"
+                                   FontSize="14"/>
                         </Border>
 
                     </StackPanel>
 
-                    <!-- 사진 + 감정 -->
                     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="0" Background="#FFFFFCFC" Height="256">
-                        <StackPanel>
+                        <Grid>
+                            <!-- 배경 이미지 -->
+                            <Image Source="{Binding ImageList[0]}" Stretch="UniformToFill" />
 
-                            <!-- 사진 먼저 -->
-                            <ItemsControl ItemsSource="{Binding ImageList}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel HorizontalAlignment="Center"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Image Source="{Binding}" Width="100" Height="100" Margin="5"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <!-- 우측 상단 하트 버튼 -->
+                            <Border Background="#FFF2CC"
+                                    Width="30" Height="30"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Right"
+                                    Margin="10"
+                                    CornerRadius="15">
+                                <Button 
+                                    Width="20"
+                                    Command="{Binding ChangeIsLikedCommand}"
+                                    VerticalAlignment="Center" HorizontalAlignment="Center"
+                                    Background="Transparent"
+                                    BorderThickness="0">
+                                    <Image Source="/Resources/Images/Icons/heart.png" Stretch="Uniform"
+                                           Visibility="{Binding IsLiked, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                </Button>
+                            </Border>
 
-                            <!-- 감정 아래 -->
-                            <ItemsControl ItemsSource="{Binding EmotionList}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel HorizontalAlignment="Center" Width="374"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Style="{StaticResource EmotionDeleteStyle}" CornerRadius="13">
-                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding}" Foreground="#FFACAC" FontWeight="Bold" Margin="5,0"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <!-- 하단 그라디언트 + 감정 태그 -->
+                            <Grid VerticalAlignment="Bottom" Height="60">
+                                <!-- 검은색 그라디언트 배경 -->
+                                <Rectangle Height="60">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#00000000" Offset="0.0" />
+                                            <GradientStop Color="#AA000000" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
 
-                        </StackPanel>
+                                <!-- 감정 태그 -->
+                                <ItemsControl ItemsSource="{Binding EmotionList}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                                       Margin="10"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="4" Padding="6,2"
+                                                Background="White" CornerRadius="10">
+                                                <TextBlock Text="{Binding}" Foreground="#FFACAC" FontWeight="Bold"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </Grid>
                     </Border>
+
 
 
 
 
                     <!-- 제목 -->
                     <DockPanel Margin="0" LastChildFill="True">
-                        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="0" Padding="5">
+                        <Border BorderBrush="Gray" Width="60"  BorderThickness="1" CornerRadius="0" Padding="5">
                             <TextBlock Text="제목" FontWeight="Bold" VerticalAlignment="Center"
-                                       FontFamily="Noto Sans KR"/>
+                                       HorizontalAlignment="Center"
+                                       FontFamily="Noto Sans KR"
+                                       FontSize="13"/>
                         </Border>
-                        <TextBox Text="{Binding TitleText}" BorderBrush="Gray" BorderThickness="1" Height="29"
-                             VerticalContentAlignment="Center"/>
+                        <Border BorderBrush="Gray"
+                                BorderThickness="1"
+                                Height="31">
+                        <TextBlock Text="{Binding TitleText}" 
+                                   TextAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="16"
+                                   FontFamily="Noto Sans KR"
+                                   />
+                        </Border>
                     </DockPanel>
 
                     <!-- 본문 내용 -->
@@ -233,7 +264,7 @@
                             <TextBlock Text="{Binding DiaryText}"
                                  TextWrapping="Wrap"
                                  Padding="10"
-                                 FontSize="13"
+                                 FontSize="15"
                                  Background="Transparent"
                                  FontFamily="Segoe UI"
                                  LineHeight="28"/>

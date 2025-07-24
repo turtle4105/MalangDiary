@@ -28,6 +28,7 @@ namespace MalangDiary {
             services.AddSingleton<Models.DiaryModel>();
             services.AddSingleton<Models.RgsModel>();
             services.AddSingleton<Models.ChkModel>();
+            services.AddSingleton<Models.BaseModel>();
 
             // Services
             services.AddSingleton<Services.SocketManager>();

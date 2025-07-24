@@ -6,8 +6,10 @@ using MalangDiary.Messages;
 using MalangDiary.Models;
 using MalangDiary.Structs;
 using Microsoft.Xaml.Behaviors.Core;
+using NAudio.CoreAudioApi;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
@@ -25,33 +27,30 @@ namespace MalangDiary.ViewModels {
             _session = usersession!;  // not null
 
             /* test */
-            List<string> test_emotions = ["#기쁨", "#놀람", "#사랑"];
-            EmotionList.Add(test_emotions[0]);
-            EmotionList.Add(test_emotions[1]);
-            EmotionList.Add(test_emotions[2]);
-            int test_uid = 1;
-            _session.SetCurrentDiaryUid(test_uid);
+            //int test_uid = 1;
+            //_session.SetCurrentDiaryUid(test_uid);
             /********/
 
             SetDiary();
         }
 
 
-        /* Member Variables */
+        /** Member Variables **/
         private readonly ChkModel _chkModel;
         private readonly UserSession _session;
 
-        public event PropertyChangedEventHandler ? PropertyChanged;
+        public new event PropertyChangedEventHandler ? PropertyChanged;
 
         [ObservableProperty] private string dateText;       // date text
         [ObservableProperty] private string weatherText;    // weather text
         [ObservableProperty] private string titleText;      // title text
         [ObservableProperty] private string diaryText;      // diary text
         [ObservableProperty] private bool isPlaying;       // whether playing audio or not
+        [ObservableProperty] private bool isLiked;
 
         private DiaryInfo CurrentDiaryInfo;   // diaryinfo
 
-        // 서버에서 받은 이미지 URL 목록
+        /* Img List from Server */
         private ObservableCollection<string> _imageList = [];
         public ObservableCollection<string> ImageList {
             get => _imageList;
@@ -61,7 +60,7 @@ namespace MalangDiary.ViewModels {
             }
         }
 
-        // 서버에서 받은 감정 태그 목록
+        /* Emotion Tags from Server */
         private ObservableCollection<string> _emotionList = [];
         public ObservableCollection<string> EmotionList {
             get => _emotionList;
@@ -72,11 +71,11 @@ namespace MalangDiary.ViewModels {
         }
 
 
+
         /** Member Methods **/
 
         /* Play Audio */
-        [RelayCommand]
-        private void PlayPause() {
+        [RelayCommand] private void PlayPause() {
             if( IsPlaying is true ) {
                 //PauseAudio();
             }
@@ -88,23 +87,51 @@ namespace MalangDiary.ViewModels {
         }
 
         /* Reset Audio */
-        [RelayCommand] private static void RestartAudio() {
+        [RelayCommand] private static void StopAudio() {
             Console.WriteLine("[ChkDiaryViewModel] ResetAudio command executed.");
         }
 
-        /* Share */
+        /* Share Diary */
         [RelayCommand] private static void ShareDiary() {
             System.Diagnostics.Debug.WriteLine("[ChkDiaryViewModel] Share command executed");
         }
 
-        /* Close */
-        [RelayCommand] private static void DeleteDiary() {
+        /* Delete Diary */
+        [RelayCommand] private void DeleteDiary() {
             System.Diagnostics.Debug.WriteLine("[ChkDiaryViewModel] Close command executed");
+            bool ChkDel = _chkModel.DeleteDiary();
+            if( ChkDel is true ) {
+                Console.WriteLine("[ChkDiaryViewModel] DeleteDiary Successed");
+                WeakReferenceMessenger.Default.Send<PageChangeMessage>(new PageChangeMessage(Enums.PageType.Goback));
+            }
+            else if ( ChkDel is true ) {
+                Console.WriteLine("[ChkDIaryViewModel] DeleteDiary Failed");
+            }
+        }
+
+        /* Change IsLiked */
+        [RelayCommand] private void ChangeIsLiked() {
+            bool ChkUpdate = false;
+            if( IsLiked is true ) {
+                IsLiked = false;
+                ChkUpdate = _chkModel.UpdateDiaryLike(IsLiked);
+            }
+            else if ( IsLiked is false ) {
+                IsLiked = true;
+                ChkUpdate = _chkModel.UpdateDiaryLike(IsLiked);
+            }
+            if (ChkUpdate is true) {
+                Console.WriteLine("[ChkDiaryViewModel] UpdateDiaryLike Successed");
+            }
+            else if (ChkUpdate is false) {
+                Console.WriteLine("[ChkDIaryViewModel] UpdateDiaryLike Failed");
+            }
+
+            return;
         }
 
         /* Go Back */
-        [RelayCommand]
-        private static void GoBack() {
+        [RelayCommand] private static void GoBack() {
             Console.WriteLine("[ChkDiaryViewModel] GoBack command executed.");
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(Enums.PageType.Goback));
         }
@@ -117,12 +144,42 @@ namespace MalangDiary.ViewModels {
         /* Set Diary */
         private void SetDiary() {
             int cur_diary_uid = _session.GetCurrentDiaryUid();
-            CurrentDiaryInfo = _chkModel.GetDiaryDetail(cur_diary_uid);
+            bool ImgExist = false;
+            (CurrentDiaryInfo, ImgExist) = _chkModel.GetDiaryDetail(cur_diary_uid);
 
             DateText    = CurrentDiaryInfo.Date;
             WeatherText = CurrentDiaryInfo.Weather;
             TitleText   = CurrentDiaryInfo.Title;
             DiaryText   = CurrentDiaryInfo.Text;
+            foreach (var diary in CurrentDiaryInfo.Emotions) {
+                EmotionList.Add(diary);
+            }
+
+            if( ImgExist ) {
+                /* Recv Image From Server */
+                _chkModel.GetDiaryImage();
+
+                /* Binding Image From Local */
+                LoadJpgFromLocal();
+            }
         }
+
+
+        /* Load JPG from local file and set to ImageList */
+        private bool LoadJpgFromLocal() {
+            string imagePath = System.IO.Path.GetFullPath("./Images/ChkDiaryImage.jpg");
+
+            if (File.Exists(imagePath)) {
+                ImageList.Clear();             // 기존 이미지 제거
+                ImageList.Add(imagePath);      // 새 이미지 추가
+                Console.WriteLine($"[ChkDiaryViewModel] Image loaded: {imagePath}");
+                return true;
+            }
+            else {
+                Console.WriteLine("[ChkDiaryViewModel] Image file not found.");
+                return false;
+            }
+        }
+
     }
 }
