@@ -126,26 +126,11 @@ namespace MalangDiary.Models
         /* Method for Protocol-LogIn */
         public /*async Task<*/bool/*>*/ LogIn(string email, string password) {
 
-            ///* [1] new json */
-            //JObject jsonData = new() {
-            //    { "PROTOCOL", "LOGIN" },
-            //    { "ID", email },
-            //    { "PW", password }
-            //};
-
-            //var sendItem = new WorkItem
-            //{
-            //    json = JsonConvert.SerializeObject(jsonData),
-            //    payload = [],
-            //    path = ""
-            //};e
-            //_socket.Send(sendItem);
-
             /* [1] new json */
             JObject jsonData = new() {
-                { "PROTOCOL", "GEN_DIARY" },
-                //{ "ID", email },
-                //{ "PW", password }
+                { "PROTOCOL", "LOGIN" },
+                { "ID", email },
+                { "PW", password }
             };
 
             var sendItem = new WorkItem
@@ -155,6 +140,21 @@ namespace MalangDiary.Models
                 path = ""
             };
             _socket.Send(sendItem);
+
+            /* [1] new json */
+            //JObject jsonData = new() {
+            //    { "PROTOCOL", "GEN_DIARY" },
+            //    //{ "ID", email },
+            //    //{ "PW", password }
+            //};
+
+            //var sendItem = new WorkItem
+            //{
+            //    json = JsonConvert.SerializeObject(jsonData),
+            //    payload = [],
+            //    path = ""
+            //};
+            //_socket.Send(sendItem);
 
 
             WorkItem response = _socket.Receive();
