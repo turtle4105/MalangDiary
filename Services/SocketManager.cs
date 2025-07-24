@@ -10,7 +10,7 @@ using System.Text.Json;
 
 namespace MalangDiary.Services {
     public interface ISocketManager {
-        Task EnsureConnectedAsync();          // 자동 연결 (중복 방지)
+        Task EnsureConnectedAsync();
         bool IsConnected { get; }
         void Send(string message);
         void Send(WorkItem item);
@@ -20,6 +20,8 @@ namespace MalangDiary.Services {
 
 
     public class SocketManager : ISocketManager {
+
+        /** Member Variables **/
         private TcpClient? client;
         private NetworkStream? stream;
         private bool isConnecting = false;
@@ -30,6 +32,11 @@ namespace MalangDiary.Services {
 
         public bool IsConnected => isConnected && client?.Connected == true;
 
+
+
+        /** Member Methods **/
+
+        /* Check Wether Connect to Server or Not */
         public async Task EnsureConnectedAsync() {
             if (IsConnected || isConnecting)
                 return;
@@ -65,10 +72,7 @@ namespace MalangDiary.Services {
         }
 
 
-        /// <summary>
-        /// 서버로 메시지를 보냅니다.
-        /// </summary>
-        /// <param name="message"></param>
+        /* Send byte[] to Server */
         public void Send(string message) {
             if (!IsConnected) {
                 Console.WriteLine("[SocketManager] 연결되지 않음");
@@ -79,13 +83,12 @@ namespace MalangDiary.Services {
             stream?.Write(data, 0, data.Length);
         }
 
-        /// <summary>
-        /// 서버로 WorkItem을 보냅니다.
-        /// </summary>
-        /// <param name="item"></param>
+
+        /* Send header + json + byte[] to Server */
         public void Send(WorkItem item) {
 
-            Console.WriteLine("Item:" + item.ToString());
+            Console.WriteLine("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            Console.WriteLine("[SocketManager] Executed public void Send(WorkItem item)");
             string jsonstring = JsonSerializer.Serialize(item.json);
 
             // JSON → 바이트
@@ -122,14 +125,14 @@ namespace MalangDiary.Services {
             //packet.AddRange(payloadBytes);
 
             //stream.Write(packet.ToArray(), 0, packet.Count);
+            Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
 
         }
 
-        /// <summary>
-            /// 서버로부터 WorkItem을 수신합니다.
-        /// </summary>
-        /// <returns></returns>
+
+        /* Recevie Header + json + byte[] form Server */
         public WorkItem Receive() {
+            Console.WriteLine("\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
             Console.WriteLine("[SocketManager] Executed public WorkItem Receive()");
             
             byte[] header = ReadExact(8); // 헤더 8바이트 읽기
@@ -157,6 +160,8 @@ namespace MalangDiary.Services {
             Console.WriteLine("payload 길이: " + payload.Length);
             Console.WriteLine("전체 길이: " + totalLen);
 
+            Console.WriteLine("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+
             return new WorkItem
             {
                 json = json,
@@ -164,12 +169,7 @@ namespace MalangDiary.Services {
             };
         }
 
-        /// <summary>
-        /// 'size' 크기만큼 정확히 데이터를 읽어옵니다.
-        /// </summary>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
+        /* Read Size of Bytes Exactly */
         private byte[] ReadExact(int size) {
             Console.WriteLine("[ReadExact] size:" + size);
             byte[] buffer = new byte[size];

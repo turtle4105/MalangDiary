@@ -39,7 +39,7 @@ namespace MalangDiary.Models {
 
             try {
                 File.WriteAllBytes(filePath, byteArray); // 파일이 없으면 자동 생성
-                Console.WriteLine($"Image has been saved into {filePath}");
+                Console.WriteLine($"Jpg has been saved into {filePath}");
                 return true;
             }
             catch (IOException ex) {
@@ -64,7 +64,7 @@ namespace MalangDiary.Models {
 
             try {
                 File.WriteAllBytes(filePath, byteArray); // 파일이 없으면 자동 생성
-                Console.WriteLine($"Image has been saved into {filePath}");
+                Console.WriteLine($"Wav has been saved into {filePath}");
                 return true;
             }
             catch (IOException ex) {

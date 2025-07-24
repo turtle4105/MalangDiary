@@ -7,16 +7,18 @@
     <Application.Resources>
         <!-- ShadowEffect 정의 추가 -->
         <DropShadowEffect x:Key="ShadowEffect" Color="#A7A7A7" ShadowDepth="1" />
-        
+
         <!-- 컨버터 등록 -->
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <local:SelectedChildBorderConverter x:Key="SelectedChildBorderConverter"/>
         <local:HtmlColorToBrushConverter x:Key="HtmlColorToBrushConverter" />
         <local:IntToVisibilityConverter x:Key="ZeroToVisibleConverter" />
         <local:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
-        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <local:InverseBoolToVisConverter x:Key="InverseBoolToVis"/>
         <local:PlayPauseTextConverter x:Key="PlayPauseTextConverter"/>
+        <local:WritedToBackgroundConverter x:Key="WritedToBackgroundConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
         
         <!-- ✅ 회색 Watermark 스타일 (회원가입 등) -->
         <Style x:Key="GrayWatermarkTextBoxStyle" TargetType="TextBox">

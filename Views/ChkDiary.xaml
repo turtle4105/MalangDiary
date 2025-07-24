@@ -207,11 +207,13 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Margin="4" Padding="6,2"
-                                                Background="White" CornerRadius="10">
-                                                <TextBlock Text="{Binding}" Foreground="#FFACAC" FontWeight="Bold"/>
+                                            <Border Margin="4" Padding="8,3" BorderBrush="#FFFFFF" BorderThickness="1.5"
+                                                Background="Transparent" CornerRadius="13">
+                                                <TextBlock Text="{Binding}"
+                                                           Foreground="#FFFFFF" FontWeight="Bold"
+                                                           FontFamily="Noto Sans KR" FontSize="13"/>
                                             </Border>
-                                        </DataTemplate>
+                                        </DataTemplate> 
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                             </Grid>
@@ -266,7 +268,7 @@
                                  Padding="10"
                                  FontSize="15"
                                  Background="Transparent"
-                                 FontFamily="Segoe UI"
+                                 FontFamily="Noto Sans KR"
                                  LineHeight="28"/>
                         </Grid>
                     </Border>

@@ -239,11 +239,11 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border Margin="4"
-                                                Padding="6,2"
+                                                Padding="8,3"
                                                 Background="Transparent"
-                                                BorderBrush="White"
-                                                BorderThickness="1"
-                                                CornerRadius="12">
+                                                BorderBrush="#FFFFFF"
+                                                BorderThickness="1.5"
+                                                CornerRadius="13">
                                                 <TextBlock Text="{Binding}"
                                                     Foreground="White"
                                                     FontSize="13"

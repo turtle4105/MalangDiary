@@ -7,8 +7,8 @@
       Height="800">
 
     <Page.Resources>
-        <!-- Boolean → Visibility -->
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <local:WritedToBackgroundConverter x:Key="WritedToBackgroundConverter"/>
     </Page.Resources>
 
     <Grid Width="400" Height="800">
@@ -28,22 +28,25 @@
         <!-- 뒤로가기 버튼 -->
         <DockPanel Grid.Row="0" Background="#FFACAC">
             <Button Content="&lt;" Width="40"
-                    Command="{Binding GoBackCommand}"
-                    Background="Transparent" 
-                    BorderThickness="0"
-                    FontSize="16" 
-                    Foreground="White"
-                    DockPanel.Dock="Left" 
-                    HorizontalAlignment="Left">
+                Command="{Binding GoBackCommand}"
+                Background="Transparent" 
+                BorderThickness="0"
+                FontSize="16" 
+                Foreground="White"
+                DockPanel.Dock="Left" 
+                HorizontalAlignment="Left">
             </Button>
         </DockPanel>
 
 
         <!-- 탭 버튼 -->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Background="#FFF9D9DC">
-            <Button Content="달력" Width="200" Height="40" Background="#FFF9D9DC" BorderThickness="0" FontWeight="Bold"/>
+            <Button Content="달력" 
+                    FontFamily="Noto Sans KR"
+                    Width="200" Height="40" Background="#FFF9D9DC" BorderThickness="0" FontWeight="Bold"/>
             <Button Content="사진"
                     Command="{Binding GoToChkGalleryCommand}"
+                     FontFamily="Noto Sans KR"
                     Width="200" Height="40" Background="Transparent" BorderThickness="0" Foreground="Gray"/>
         </StackPanel>
 
@@ -57,14 +60,16 @@
 
             <!-- 이전 달 -->
             <Button Content="&lt;" Grid.Column="0"
-            Command="{Binding PreviousMonthCommand}"
-            Background="Transparent" BorderThickness="0" FontSize="16"/>
+                Command="{Binding PreviousMonthCommand}"
+                Background="Transparent" BorderThickness="0" FontSize="16"/>
 
             <!-- 현재 월 -->
             <TextBlock Text="{Binding CurrentMonthText}"
-               Grid.Column="1"
-               HorizontalAlignment="Center" VerticalAlignment="Center"
-               FontWeight="Bold"/>
+                       Grid.Column="1"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       FontWeight="Bold"
+                       FontFamily="Noto Sans KR"
+                       />
 
             <!-- 다음 달 -->
             <Button Content="&gt;" Grid.Column="2"
@@ -75,13 +80,13 @@
 
         <!-- 요일 헤더 -->
         <UniformGrid Grid.Row="3" Columns="7">
-            <TextBlock Text="일" HorizontalAlignment="Center" Foreground="Red"/>
-            <TextBlock Text="월" HorizontalAlignment="Center"/>
-            <TextBlock Text="화" HorizontalAlignment="Center"/>
-            <TextBlock Text="수" HorizontalAlignment="Center"/>
-            <TextBlock Text="목" HorizontalAlignment="Center"/>
-            <TextBlock Text="금" HorizontalAlignment="Center"/>
-            <TextBlock Text="토" HorizontalAlignment="Center" Foreground="Blue"/>
+            <TextBlock Text="일" HorizontalAlignment="Center" Foreground="Red" FontFamily="Noto Sans KR"/>
+            <TextBlock Text="월" HorizontalAlignment="Center" FontFamily="Noto Sans KR"/>
+            <TextBlock Text="화" HorizontalAlignment="Center" FontFamily="Noto Sans KR"/>
+            <TextBlock Text="수" HorizontalAlignment="Center" FontFamily="Noto Sans KR"/>
+            <TextBlock Text="목" HorizontalAlignment="Center" FontFamily="Noto Sans KR"/>
+            <TextBlock Text="금" HorizontalAlignment="Center" FontFamily="Noto Sans KR"/>
+            <TextBlock Text="토" HorizontalAlignment="Center" Foreground="Blue" FontFamily="Noto Sans KR"/>
         </UniformGrid>
 
         <!-- 달력 날짜 -->
@@ -95,30 +100,32 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button Command="{Binding DataContext.DayClickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                CommandParameter="{Binding}"
-                Background="Transparent"
-                BorderThickness="0"
-                Padding="0"
-                >
-                        <Border BorderBrush="#FFE0E0E0" BorderThickness="1"
-                    CornerRadius="1" Background="White">
+                            CommandParameter="{Binding}"
+                            BorderThickness="0"
+                            Padding="0"
+                            IsEnabled="{Binding IsWrited}">
+                        <Border BorderBrush="#FFE0E0E0"
+                                BorderThickness="1"
+                                CornerRadius="1"
+                                Background="{Binding IsWrited, Converter={StaticResource WritedToBackgroundConverter}}">
                             <Grid Width="110" Height="110">
                                 <!-- 날짜 텍스트 -->
                                 <TextBlock Text="{Binding DayText}" 
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               Margin="2,1,0,0" 
-                               FontSize="12"
-                               Foreground="Black"
-                               FontWeight="SemiBold" />
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           Margin="2,1,0,0" 
+                                           FontSize="12"
+                                           Foreground="Black"
+                                           FontWeight="SemiBold" 
+                                           FontFamily="Noto Sans KR"/>
 
                                 <!-- 좋아요 하트 -->
-                                <Image Source="/Resources/Images/Icons/baby_icon_resized_70.png"
-                           Width="14" Height="14"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Top"
-                           Margin="4"
-                           Visibility="{Binding HasLike, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <Image Source="/Resources/Images/Icons/heart.png"
+                                       Width="14" Height="14"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Top"
+                                       Margin="4"
+                                       Visibility="{Binding IsLiked, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             </Grid>
                         </Border>
                     </Button>

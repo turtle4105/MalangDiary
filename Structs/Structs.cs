@@ -72,3 +72,37 @@ public struct DiaryInfo {
     public string Date;          // create_at
     public List<string> Emotions;    // 감정 태그 배열
 }
+
+
+public struct CalendarInfo {
+    /*
+     {
+      PROTOCOL : SEND_CALENDAR_REQ,
+      RESP : ,
+      DATA : [
+      { 
+        (int)DIARY_UID : "",
+        (int)DATE :  "",
+        (bool)IS_WRITED : "",
+        (bool)IS_LIKED : ""
+      },
+      { 
+        DIARY_UID : "",
+        DATE : "",
+        IS_WRITED : "" ,
+        IS_LIKED : "" 
+      },
+      { 
+        DIARY_UID : "",
+        DATE : "",
+        IS_WRITED : "",
+        IS_LIKED : ""
+      },
+    }
+     */
+    public int Uid;
+    public int Date;
+    public bool IsWrited;
+    public bool IsLiked;
+
+}
