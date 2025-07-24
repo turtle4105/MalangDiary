@@ -20,8 +20,6 @@ namespace MalangDiary.Models {
     {
 
         /** Constructor **/
-
-
         public DiaryModel(SocketManager socket, UserSession session, UserModel userModel)
         {
             Console.WriteLine("[RgsModel] RgsModel 인스턴스가 생성되었습니다.");
@@ -105,60 +103,76 @@ namespace MalangDiary.Models {
 
         public void StartListening()
         {
-            Console.WriteLine("[DiaryModel] StartListeningOnce() 호출됨");
-
-            try
+            Console.WriteLine("[DiaryModel] StartListening() 호출됨");
+            Task.Run(() =>
             {
-                Console.WriteLine("[DiaryModel] 서버 응답 대기 중...");
-                WorkItem item = _socket.Receive(); // 여기서 대기
-
-                Console.WriteLine("[DiaryModel] 서버 응답 수신: " + item.json);
-
-                var json = JObject.Parse(item.json);
-                string protocol = json["PROTOCOL"]?.ToString() ?? "";
-
-                if (protocol == "GEN_DIARY_RESULT")
+                while (true)
                 {
-                    Console.WriteLine("[DiaryModel] GEN_DIARY_RESULT 수신");
-
-                    resultTitle = json["TITLE"]?.ToString() ?? "";
-                    resultText = json["TEXT"]?.ToString() ?? "";
-
-                    resultEmotions = json["EMOTIONS"]?
-                        .Select(e => e?["EMOTION"]?.ToString() ?? "")
-                        .ToArray() ?? Array.Empty<string>();
-
-                    CurrentDiaryInfo = new DiaryInfo
+                    try
                     {
-                        Uid = json["DIARY_UID"]?.ToObject<int>() ?? 0,
-                        Title = resultTitle ?? "",
-                        Text = resultText ?? "",
-                        Emotions = resultEmotions.ToList(),
-                        Date = json["CREATE_AT"]?.ToString() ?? "",
-                        IntWeather = json["WEATHER"]?.ToObject<int>() ?? 0,
-                        Weather = json["WEATHER_STR"]?.ToString() ?? "",
-                        IsLiked = json["IS_LIKED"]?.ToObject<bool>() ?? false,
-                        PhotoFileName = json["PHOTO_PATH"]?.ToString() ?? ""
-                    };
+                        Console.WriteLine("[DiaryModel] 서버 응답 대기 중...");
+                        WorkItem item = _socket.Receive();
+                        Console.WriteLine("[DiaryModel] 서버 응답 수신: " + item.json);
 
-                    Application.Current.Dispatcher.Invoke(() =>
+                        var json = JObject.Parse(item.json);
+                        string protocol = json["PROTOCOL"]?.ToString() ?? "";
+
+                        if (protocol == "GEN_DIARY_RESULT")
+                        {
+                            Console.WriteLine("[DiaryModel] GEN_DIARY_RESULT 수신");
+
+                            // 값 추출
+                            int diaryUid = json["DIARY_UID"]?.ToObject<int>() ?? 0;
+                            string title = json["TITLE"]?.ToString() ?? "(제목 없음)";
+                            string text = json["TEXT"]?.ToString() ?? json["MESSAGE"]?.ToString() ?? "(내용 없음)";
+                            string[] emotions = json["EMOTIONS"]?
+                                .Select(e => e?["EMOTION"]?.ToString() ?? "")
+                                .ToArray() ?? Array.Empty<string>();
+
+                            // CurrentDiaryInfo 설정
+                            CurrentDiaryInfo = new DiaryInfo
+                            {
+                                Uid = diaryUid,
+                                Title = title,
+                                Text = text,
+                                Emotions = emotions.ToList(),
+                                Date = DateTime.Now.ToString("yyyy-MM-dd"),
+                                IntWeather = 0,
+                                Weather = "알 수 없음",
+                                IsLiked = false,
+                                PhotoFileName = ""
+                            };
+
+                            // 결과 저장
+                            resultTitle = title;
+                            resultText = text;
+                            resultEmotions = emotions;
+
+                            _session.SetCurrentDiaryUid(diaryUid);
+
+                            // 페이지 전환
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                Console.WriteLine("[DiaryModel] MdfDiary로 이동 메시지 전송");
+                                WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.MdfDiary));
+                            });
+
+                            break; // 수신 완료 후 루프 탈출
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[DiaryModel] 예상하지 못한 프로토콜 수신: {protocol}");
+                        }
+                    }
+                    catch (Exception ex)
                     {
-                        Console.WriteLine("[DiaryModel] MdfDiary로 이동 메시지 전송");
-                        WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.MdfDiary));
-                    });
+                        Console.WriteLine("[StartListening 예외] " + ex.Message);
+                        break;
+                    }
                 }
-                else
-                {
-                    Console.WriteLine($"[DiaryModel] 예상하지 못한 프로토콜: {protocol}");
-                }
-               
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("[StartListeningOnce 예외] " + ex.Message);
-            }
+            });
         }
+
 
     }
 }

@@ -18,7 +18,6 @@ namespace MalangDiary.Services {
         void Close();
     }
 
-
     public class SocketManager : ISocketManager {
         private TcpClient? client;
         private NetworkStream? stream;
