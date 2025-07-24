@@ -36,5 +36,13 @@ namespace MalangDiary.ViewModels
             Console.WriteLine("[ConfirmDiaryViewModel] 일기 생성 선택됨");
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.GenDiary));
         }
+
+        [RelayCommand]
+        private async Task CreateAndSendDiaryAsync()
+        {
+            CreateDiary();  // 현재 메시지 전송
+            await _diarymodel.SendDiaryAsync();  // 실제 송신
+        }
+
     }
 }

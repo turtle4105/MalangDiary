@@ -69,7 +69,7 @@
                             Background="#FFACAC"
                             Height="44">
                         <Button Content="일기 생성"
-                                Command="{Binding SendDiaryAsyncCommand}" 
+                                Command="{Binding CreateAndSendDiaryAsyncCommand}"
                                 Foreground="White"
                                 FontWeight="Bold"
                                 FontSize="14"
