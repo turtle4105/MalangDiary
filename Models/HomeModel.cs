@@ -14,21 +14,23 @@ using System.Xml.Linq;
 using static System.Net.WebRequestMethods;
 using System.Threading;
 using File = System.IO.File;
+using MalangDiary.ViewModels;
 
 namespace MalangDiary.Models {
     public class HomeModel {
-        public HomeModel(SocketManager socket, UserSession session) {
+        public HomeModel(SocketManager socket, UserSession session, BaseModel baseModel) {
             // 생성자에서 필요한 초기화 작업을 수행할 수 있습니다.
             Console.WriteLine("[HomeModel] HomeModel 인스턴스가 생성되었습니다.");
 
             _socket = socket;
             _session = session;
-
+            _base = baseModel;
         }
 
         /* Member Variables */
-        private readonly SocketManager _socket;
-        private readonly UserSession _session;
+        private readonly SocketManager  _socket;
+        private readonly UserSession    _session;
+        private readonly BaseModel      _base;
         private DiaryInfo LatestDiary;      // DiaryInfo of today's diary
 
 
@@ -107,49 +109,12 @@ namespace MalangDiary.Models {
                 _session.SetCurrentDiaryUid(ResultDiaryInfo.Uid);
 
                 string FixedImgPath = "./Images/TodaysDiaryImg.jpg";
-                WriteToFile(FixedImgPath, byteData);
+                _base.WriteJpgToFile(FixedImgPath, byteData);
             }
             else if ( protocol == "GET_LATEST_DIARY" && response == "FAIL" ) {
                 ResultDiaryInfo.Uid = 0;
             }
                 return ResultDiaryInfo;
-        }
-
-
-        public bool CheckImgDirExists(DirectoryInfo dir) {
-            if( dir.Exists is false ) {     // No Dir -> Create Dir -> return true
-                dir.Create(); 
-                return true;
-            }
-            else if( dir.Exists is true ) { // Yes Dir -> return true
-                return true;
-            }
-            else {
-                Console.WriteLine("Failed to Check Dir");
-                return false;               // Exception -> return false
-            }
-        }
-
-
-        public bool WriteToFile(string filePath, byte[] byteArray) {
-            string dirPath = "./Images";
-            DirectoryInfo dir = new DirectoryInfo(dirPath);
-            bool dirCheck = CheckImgDirExists(dir);
-
-            if (!dirCheck) {
-                Console.WriteLine("Failed to create Dir");
-                return false;
-            }
-
-            try {
-                File.WriteAllBytes(filePath, byteArray); // 파일이 없으면 자동 생성
-                Console.WriteLine($"Image has been saved into {filePath}");
-                return true;
-            }
-            catch (IOException ex) {
-                Console.WriteLine("파일 저장 중 오류: " + ex.Message);
-                return false;
-            }
         }
     }
 }
