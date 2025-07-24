@@ -70,7 +70,7 @@
                             Height="44">
                         
                         <Button Content="일기 생성"
-                                Command="{Binding CreateAndSendDiaryAsyncCommand}"
+                                Command="{Binding CreateAndSendDiaryCommand}"
                                 Foreground="White"
                                 FontWeight="Bold"
                                 FontSize="14"

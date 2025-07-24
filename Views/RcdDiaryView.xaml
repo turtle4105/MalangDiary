@@ -81,16 +81,18 @@
                        Margin="0,20,0,90" 
                        HorizontalAlignment="Center"/>
 
-            <!-- 다시 녹음 버튼 -->
+            <!-- 녹음 시작 또는 다시 녹음 버튼 -->
             <Border CornerRadius="25" BorderBrush="#FFACAC" BorderThickness="1" Background="#FFF6E5"
-                    Width="375" Height="50" Margin="0,40,0,10">
-                <Button Content="다시 녹음"
+            Width="375" Height="50" Margin="0,40,0,10">
+                <Button Content="{Binding StartRecordButtonText}"  
                         FontSize="16"
-                        FontWeight="Bold"
-                        Foreground="#FFACAC"
-                        Style="{StaticResource NoHighlightButtonStyle}"
-                        Command="{Binding ReRecordCommand}" />
+                FontWeight="Bold"
+                Foreground="#FFACAC"
+                Style="{StaticResource NoHighlightButtonStyle}"
+                Command="{Binding StartRecordCommand}" />
+
             </Border>
+
 
             <!-- 녹음 종료 버튼 -->
             <Border CornerRadius="25" Background="#FFACAC" Width="375" Height="50">

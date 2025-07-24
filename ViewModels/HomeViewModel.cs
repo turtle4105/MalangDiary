@@ -87,6 +87,7 @@ namespace MalangDiary.ViewModels {
                 return null;
             }
 
+
             BitmapImage image = new();
             image.BeginInit();
             image.CacheOption = BitmapCacheOption.OnLoad;

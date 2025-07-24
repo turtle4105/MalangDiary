@@ -7,6 +7,7 @@ using MalangDiary.Structs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,18 +20,21 @@ namespace MalangDiary.Models {
     {
 
         /** Constructor **/
-        public  DiaryModel(SocketManager socket, UserSession session) {
+
+
+        public DiaryModel(SocketManager socket, UserSession session, UserModel userModel)
+        {
             Console.WriteLine("[RgsModel] RgsModel 인스턴스가 생성되었습니다.");
 
             _socket = socket;
             _session = session;
+            _userModel = userModel;
         }
-
-
 
         /** Member Variables **/
         private readonly SocketManager _socket;
         private readonly UserSession _session;
+        private readonly UserModel _userModel;
         public string VoicePath { get; set; }
         public DiaryInfo CurrentDiaryInfo;
 
@@ -65,7 +69,7 @@ namespace MalangDiary.Models {
         }
 
         /* SendDiaryAsync */
-        [RelayCommand] public async Task SendDiaryAsync()
+        [RelayCommand] public void SendDiaryAsync()
         {
             if (string.IsNullOrEmpty(VoicePath) || !File.Exists(VoicePath))
             {
@@ -74,24 +78,25 @@ namespace MalangDiary.Models {
             }
 
             int childUid = _session.GetCurrentChildUid();
-            string fileName = Path.GetFileName(VoicePath);
 
-            var jsonObj = new {
+            // UserModel에서 자녀 이름 찾기
+            string childName = _userModel.GetAllChildInfo()
+                .FirstOrDefault(c => c.Uid == childUid).Name ?? "Unknown";
+
+            var jsonObj = new
+            {
                 PROTOCOL = "GEN_DIARY",
-                //CHILD_UID = childUid,
-                //FILENAME = fileName
+                CHILD_UID = childUid,
+                NAME = childName
             };
 
-
             string jsonStr = JsonConvert.SerializeObject(jsonObj);
-            byte[] fileBytes = await File.ReadAllBytesAsync(VoicePath);
+            byte[] fileBytes =  File.ReadAllBytes(VoicePath);
 
             WorkItem item = new WorkItem {
                 json = jsonStr,
-                payload = new byte[0],
-                path = ""
-                //payload = fileBytes,
-                //path = VoicePath
+                payload = fileBytes,
+                path = VoicePath
             };
 
             _socket.Send(item);
@@ -100,32 +105,59 @@ namespace MalangDiary.Models {
 
         public void StartListening()
         {
-            Task.Run(() =>
+            Console.WriteLine("[DiaryModel] StartListeningOnce() 호출됨");
+
+            try
             {
-                while (true)
+                Console.WriteLine("[DiaryModel] 서버 응답 대기 중...");
+                WorkItem item = _socket.Receive(); // 여기서 대기
+
+                Console.WriteLine("[DiaryModel] 서버 응답 수신: " + item.json);
+
+                var json = JObject.Parse(item.json);
+                string protocol = json["PROTOCOL"]?.ToString() ?? "";
+
+                if (protocol == "GEN_DIARY_RESULT")
                 {
-                    WorkItem item = _socket.Receive();
+                    Console.WriteLine("[DiaryModel] GEN_DIARY_RESULT 수신");
 
-                    var json = Newtonsoft.Json.Linq.JObject.Parse(item.json);
-                    string protocol = json["PROTOCOL"]?.ToString() ?? "";
+                    resultTitle = json["TITLE"]?.ToString() ?? "";
+                    resultText = json["TEXT"]?.ToString() ?? "";
 
-                    if (protocol == "GEN_DIARY_RESULT")
+                    resultEmotions = json["EMOTIONS"]?
+                        .Select(e => e?["EMOTION"]?.ToString() ?? "")
+                        .ToArray() ?? Array.Empty<string>();
+
+                    CurrentDiaryInfo = new DiaryInfo
                     {
-                        Console.WriteLine("[DiaryModel] GEN_DIARY_RESULT 수신");
+                        Uid = json["DIARY_UID"]?.ToObject<int>() ?? 0,
+                        Title = resultTitle ?? "",
+                        Text = resultText ?? "",
+                        Emotions = resultEmotions.ToList(),
+                        Date = json["CREATE_AT"]?.ToString() ?? "",
+                        IntWeather = json["WEATHER"]?.ToObject<int>() ?? 0,
+                        Weather = json["WEATHER_STR"]?.ToString() ?? "",
+                        IsLiked = json["IS_LIKED"]?.ToObject<bool>() ?? false,
+                        PhotoFileName = json["PHOTO_PATH"]?.ToString() ?? ""
+                    };
 
-                        resultTitle = json["TITLE"]?.ToString() ?? "";
-                        resultText = json["TEXT"]?.ToString() ?? "";
-
-                        resultEmotions = json["EMOTIONS"]?
-                            .Select(e => e?["EMOTION"]?.ToString() ?? "")
-                            .ToArray() ?? Array.Empty<string>();
-
-                                     // 페이지 전환
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Console.WriteLine("[DiaryModel] MdfDiary로 이동 메시지 전송");
                         WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.MdfDiary));
-                       
-                    }
+                    });
                 }
-            });
+                else
+                {
+                    Console.WriteLine($"[DiaryModel] 예상하지 못한 프로토콜: {protocol}");
+                }
+               
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("[StartListeningOnce 예외] " + ex.Message);
+            }
         }
 
     }

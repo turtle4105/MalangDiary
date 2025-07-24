@@ -72,5 +72,33 @@ namespace MalangDiary.Models {
                 return false;
             }
         }
+
+        public bool WriteWavToFile(string dirPath, string filePath, byte[] byteArray)
+        {
+            DirectoryInfo dir = new DirectoryInfo(dirPath);
+            bool dirCheck = CheckImgDirExists(dir);
+
+            if (!dirCheck)
+            {
+                Console.WriteLine("Failed to create Dir");
+                return false;
+            }
+
+            try
+            {
+                // ✅ filePath가 recordings 내부로 들어가도록 강제 조합
+                string fullPath = Path.Combine(dirPath, Path.GetFileName(filePath));
+
+                File.WriteAllBytes(fullPath, byteArray); // 파일이 없으면 자동 생성
+                Console.WriteLine($"Voice has been saved into {fullPath}");
+                return true;
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("파일 저장 중 오류: " + ex.Message);
+                return false;
+            }
+        }
+
     }
 }

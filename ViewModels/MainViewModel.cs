@@ -16,10 +16,11 @@ namespace MalangDiary.ViewModels;
 public class MainViewModel {
     private Frame? _mainFrame;
 
-    public MainViewModel() {
+    public MainViewModel(DiaryModel diaryModel) {
         WeakReferenceMessenger.Default.Register<PageChangeMessage>(this, (r, m) =>
         {
             Navigate(m.Value);
+
         });
     }
 
