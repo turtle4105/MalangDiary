@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MalangDiary.Helpers {
-    public class WeatherConveter {
-        public static string ConvertWeatherCodeToText(int weatherCode) {
-            return weatherCode switch {
+namespace MalangDiary.Helpers
+{
+    public class WeatherConveter
+    {
+        public static string ConvertWeatherCodeToText(int weatherCode)
+        {
+            return weatherCode switch
+            {
                 1 => "맑음",
                 2 => "구름 조금",
                 3 => "구름 많음",
@@ -21,3 +25,4 @@ namespace MalangDiary.Helpers {
         }
     }
 }
+

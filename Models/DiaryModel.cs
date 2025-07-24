@@ -29,12 +29,19 @@ namespace MalangDiary.Models {
             _userModel = userModel;
         }
 
+        public void SendModifyDiary(WorkItem item)
+        {
+            Console.WriteLine("[DiaryModel] MODIFY_DIARY 전송 중...");
+            _socket.Send(item);
+        }
+
         /** Member Variables **/
         private readonly SocketManager _socket;
         private readonly UserSession _session;
         private readonly UserModel _userModel;
         public string VoicePath { get; set; }
-        public DiaryInfo CurrentDiaryInfo;
+        public DiaryInfo? CurrentDiaryInfo;
+        //public DiaryInfo CurrentDiaryInfo;
 
         private string? resultTitle;
         private string? resultText;
@@ -121,7 +128,7 @@ namespace MalangDiary.Models {
                         {
                             Console.WriteLine("[DiaryModel] GEN_DIARY_RESULT 수신");
 
-                            // 값 추출
+                                            // 값 추출
                             int diaryUid = json["DIARY_UID"]?.ToObject<int>() ?? 0;
                             string title = json["TITLE"]?.ToString() ?? "(제목 없음)";
                             string text = json["TEXT"]?.ToString() ?? json["MESSAGE"]?.ToString() ?? "(내용 없음)";
@@ -129,7 +136,7 @@ namespace MalangDiary.Models {
                                 .Select(e => e?["EMOTION"]?.ToString() ?? "")
                                 .ToArray() ?? Array.Empty<string>();
 
-                            // CurrentDiaryInfo 설정
+                                            // CurrentDiaryInfo 설정
                             CurrentDiaryInfo = new DiaryInfo
                             {
                                 Uid = diaryUid,
@@ -143,14 +150,14 @@ namespace MalangDiary.Models {
                                 PhotoFileName = ""
                             };
 
-                            // 결과 저장
+                                            // 결과 저장
                             resultTitle = title;
                             resultText = text;
                             resultEmotions = emotions;
 
                             _session.SetCurrentDiaryUid(diaryUid);
 
-                            // 페이지 전환
+                                            // 페이지 전환
                             Application.Current.Dispatcher.Invoke(() =>
                             {
                                 Console.WriteLine("[DiaryModel] MdfDiary로 이동 메시지 전송");
@@ -159,6 +166,31 @@ namespace MalangDiary.Models {
 
                             break; // 수신 완료 후 루프 탈출
                         }
+                        else if (protocol == "MODIFY_DIARY")
+                        {
+                            string resp = json["RESP"]?.ToString() ?? "";
+                            string message = json["MESSAGE"]?.ToString() ?? "";
+
+                            Console.WriteLine($"[DiaryModel] MODIFY_DIARY 응답 수신: {resp} - {message}");
+
+                            if (resp == "SUCCESS")
+                            {
+                                                 // 홈 화면으로 전환
+                                Application.Current.Dispatcher.Invoke(() =>
+                                {
+                                    Console.WriteLine("[DiaryModel] 일기 수정 성공 → 홈 화면으로 이동");
+                                    WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Home));
+                                });
+                            }
+                            else
+                            {
+                                Console.WriteLine("[DiaryModel] 일기 수정 실패: " + message);
+                               
+                            }
+
+                            break; // 응답 처리 완료 후 루프 탈출
+                        }
+
                         else
                         {
                             Console.WriteLine($"[DiaryModel] 예상하지 못한 프로토콜 수신: {protocol}");

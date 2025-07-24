@@ -47,6 +47,7 @@ namespace MalangDiary {
             services.AddTransient<ChkGalleryViewModel>();
             services.AddTransient<ConfirmDiaryViewModel>();
             services.AddTransient<GenerateDiaryViewModel>();
+            services.AddTransient<MdfDiaryViewModel>();
         }
     }
 }

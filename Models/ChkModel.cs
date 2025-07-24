@@ -22,8 +22,6 @@ namespace MalangDiary.Models {
             _base = baseModel;
         }
 
-
-
         /** Member Variables **/
         private readonly SocketManager _socket;
         private readonly UserSession _session;
@@ -148,7 +146,6 @@ namespace MalangDiary.Models {
             }
             return ChkSaved;
         }
-
 
         public bool DeleteDiary() {
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MalangDiary.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,7 @@ namespace MalangDiary.Views
         public MdfDiaryView()
         {
             InitializeComponent();
+
         }
     }
 }
