@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <mariadb/conncpp.hpp>
 #include <memory>
 #include <string>
@@ -19,44 +19,44 @@ public:
     DBManager();
     ~DBManager();
 
-    // DB ¿¬°á
+    // DB ì—°ê²°
     bool connect();
 
-    // È¸¿ø °¡ÀÔ
+    // íšŒì› ê°€ì…
     bool registerParents(const string& id, const string& pw,
         const string& nickname, const string& phone,
         int& out_parents_uid, string& out_error_msg);
  
-    // ·Î±×ÀÎ Ã³¸®
+    // ë¡œê·¸ì¸ ì²˜ë¦¬
     bool login(const string& id, const string& pw,
         int& out_parents_uid, string& out_nickname,
         vector<std_child_info>& out_children, string& out_error_msg);
 
-    // ÀÚ³à µî·Ï
+    // ìë…€ ë“±ë¡
     bool registerChild(const int& parents_uid, const string& name,
         const string& birthdate, const string& gender, vector<std_child_info>& children,
         int& out_child_uid, const string& icon_color, string& out_error_msg);
 
-    // ÃÊ±âÈ­¸é ÀÏ±âÁ¶È¸
+    // ì´ˆê¸°í™”ë©´ ì¼ê¸°ì¡°íšŒ
     bool getLatestDiary(const int& child_uid, int& diary_uid,
         string& title, string& photo_path,
         int& weather,
         string& date,
         vector<string>& emotions, string& out_error_msg);
 
-    // ºÎ¸ğ ¾ÆÀÌµğ Á¶È¸
+    // ë¶€ëª¨ ì•„ì´ë”” ì¡°íšŒ
     bool getParentIdByUID(int uid, string& out_id);
 
-    // ÀÚ³à UID -> ºÎ¸ğ UID Á¶È¸
+    // ìë…€ UID -> ë¶€ëª¨ UID ì¡°íšŒ
     bool getParentsUidByChild(int child_uid, int& out_parents_uid);
 
-    // ÀÚ³à UID -> ÀÚ³à ÀÌ¸§ Á¶È¸
+    // ìë…€ UID -> ìë…€ ì´ë¦„ ì¡°íšŒ
     //bool getChildNameByUID(int child_uid, std::string& out_name);
 
-    // ¼¼ÆÃ À½¼ºÆÄÀÏ °æ·Î »ğÀÔ
+    // ì„¸íŒ… ìŒì„±íŒŒì¼ ê²½ë¡œ ì‚½ì…
     //bool setVoicePath(int child_uid, const string& path);
 
-    // ¸ñ¼Ò¸® º¤ÅÍ »ğÀÔ
+    // ëª©ì†Œë¦¬ ë²¡í„° ì‚½ì…
     bool setVoiceVectorRaw(int child_uid, const std::string& jsonStr, std::string& out_error);
 
 private:

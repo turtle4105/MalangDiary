@@ -1,8 +1,8 @@
-#define WIN32_LEAN_AND_MEAN     // À©µµ¿ì Çì´õ °æ·®È­ (ºÒÇÊ¿äÇÑ macro Á¦°Å)
-#include "TcpServer.h"          // TCP ¼­¹ö Å¬·¡½º Çì´õ
-#include "DBManager.h"          // DB ½ÇÇà Å¬·¡½º Çì´õ
-#include "ProtocolHandler.h"    // Protocol ÆÄ½Ì Å¬·¡½º Çì´õ 
-#include "FileUtils.h"          // µğ·ºÅä¸® »ı¼º Å¬·¡½º Çì´õ
+ï»¿#define WIN32_LEAN_AND_MEAN     // ìœˆë„ìš° í—¤ë” ê²½ëŸ‰í™” (ë¶ˆí•„ìš”í•œ macro ì œê±°)
+#include "TcpServer.h"          // TCP ì„œë²„ í´ë˜ìŠ¤ í—¤ë”
+#include "DBManager.h"          // DB ì‹¤í–‰ í´ë˜ìŠ¤ í—¤ë”
+#include "ProtocolHandler.h"    // Protocol íŒŒì‹± í´ë˜ìŠ¤ í—¤ë” 
+#include "FileUtils.h"          // ë””ë ‰í† ë¦¬ ìƒì„± í´ë˜ìŠ¤ í—¤ë”
 
 #include <iostream>
 #include <thread>
@@ -13,10 +13,14 @@
 #include <nlohmann/json.hpp>
 #include <fcntl.h>     // _O_U8TEXT
 #include <io.h>        // _setmode, _fileno
+#include <curl/curl.h>
+
+
+
 
 #define LINE_LABEL(label) cout << "=======================[" << label << "]=======================\n";
 #define LINE cout << "=====================================================\n";
-const std::string BASE_DIR = "user_data"; // ·çÆ® °æ·Î (Visual Studio ÇÁ·ÎÁ§Æ® ±âÁØÀ¸·Î »ó´ë °æ·Î)
+const std::string BASE_DIR = "user_data"; // ë£¨íŠ¸ ê²½ë¡œ (Visual Studio í”„ë¡œì íŠ¸ ê¸°ì¤€ìœ¼ë¡œ ìƒëŒ€ ê²½ë¡œ)
 
 
 using json = nlohmann::json;
@@ -24,31 +28,31 @@ using namespace std;
 
 bool CreateUserDirectory(const string& parentId, const int& uid);
 
-// UTF-8 -> UTF-16 º¯È¯ ¹× Ãâ·Â
+// UTF-8 -> UTF-16 ë³€í™˜ ë° ì¶œë ¥
 //static std::wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
 
-// UTF-8 ¹®ÀÚ¿­ ¡æ UTF-16 (wstring)
+// UTF-8 ë¬¸ìì—´ â†’ UTF-16 (wstring)
 wstring Utf8ToWstring(const string& utf8) {
     if (utf8.empty()) return L"";
 
     int len = MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, nullptr, 0);
     if (len == 0) {
-        // º¯È¯ ½ÇÆĞ ¡æ ¿¡·¯ Ãâ·Â ¶Ç´Â ±âº»°ª
-        return L"[º¯È¯½ÇÆĞ]";
+        // ë³€í™˜ ì‹¤íŒ¨ â†’ ì—ëŸ¬ ì¶œë ¥ ë˜ëŠ” ê¸°ë³¸ê°’
+        return L"[ë³€í™˜ì‹¤íŒ¨]";
     }
 
     wstring wide(len, L'\0');
     MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, &wide[0], len);
-    wide.pop_back();  // ¸¶Áö¸· null ¹®ÀÚ Á¦°Å
+    wide.pop_back();  // ë§ˆì§€ë§‰ null ë¬¸ì ì œê±°
     return wide;
 }
 
 // =======================================================================
-// [ÇÔ¼ö] Å¬¶óÀÌ¾ğÆ® ¸Ş½ÃÁö¿ë
-// UTF-8 ¡æ À¯´ÏÄÚµå(wstring) º¯È¯ ÇÔ¼ö
-// - Å¬¶óÀÌ¾ğÆ®·ÎºÎÅÍ ¼ö½ÅÇÑ ¹®ÀÚ¿­ÀÌ UTF-8ÀÎ °æ¿ì ÇÑ±Û ±úÁü ¹æÁö¸¦ À§ÇØ »ç¿ë
+// [í•¨ìˆ˜] í´ë¼ì´ì–¸íŠ¸ ë©”ì‹œì§€ìš©
+// UTF-8 â†’ ìœ ë‹ˆì½”ë“œ(wstring) ë³€í™˜ í•¨ìˆ˜
+// - í´ë¼ì´ì–¸íŠ¸ë¡œë¶€í„° ìˆ˜ì‹ í•œ ë¬¸ìì—´ì´ UTF-8ì¸ ê²½ìš° í•œê¸€ ê¹¨ì§ ë°©ì§€ë¥¼ ìœ„í•´ ì‚¬ìš©
 // =======================================================================
-// Å×½ºÆ®
+// í…ŒìŠ¤íŠ¸
 bool ReadExactBytes(SOCKET sock, char* buffer, int totalBytes) {
     int received = 0;
     while (received < totalBytes) {
@@ -60,53 +64,53 @@ bool ReadExactBytes(SOCKET sock, char* buffer, int totalBytes) {
 }
 
 // =======================================================================
-// [ÇÔ¼ö] Å¬¶óÀÌ¾ğÆ® ¿äÃ» Ã³¸® ÇÔ¼ö (¾²·¹µå·Î ½ÇÇà)
-// - Å¬¶óÀÌ¾ğÆ®°¡ º¸³½ ¸Ş½ÃÁö¸¦ ¼ö½ÅÇÏ°í, ÀÀ´äÀ» ¹İÈ¯ÇÏ´Â ¿ªÇÒ
-// - °¢ Å¬¶óÀÌ¾ğÆ®¸¶´Ù ÀÌ ÇÔ¼ö°¡ µ¶¸³ÀûÀ¸·Î ½ÇÇàµÊ
+// [í•¨ìˆ˜] í´ë¼ì´ì–¸íŠ¸ ìš”ì²­ ì²˜ë¦¬ í•¨ìˆ˜ (ì“°ë ˆë“œë¡œ ì‹¤í–‰)
+// - í´ë¼ì´ì–¸íŠ¸ê°€ ë³´ë‚¸ ë©”ì‹œì§€ë¥¼ ìˆ˜ì‹ í•˜ê³ , ì‘ë‹µì„ ë°˜í™˜í•˜ëŠ” ì—­í• 
+// - ê° í´ë¼ì´ì–¸íŠ¸ë§ˆë‹¤ ì´ í•¨ìˆ˜ê°€ ë…ë¦½ì ìœ¼ë¡œ ì‹¤í–‰ë¨
 // =======================================================================
 void handleClient(SOCKET clientSocket) {
 
-    //cout << u8"[DEBUG] handleClient ÁøÀÔ\n";
+    //cout << u8"[DEBUG] handleClient ì§„ì…\n";
 
     while (1) {
         DBManager db;
         string jsonStr;
         vector<char> payload;
 
-        // [1] JSON + payload ¼ö½Å (Çì´õ Æ÷ÇÔ)
+        // [1] JSON + payload ìˆ˜ì‹  (í—¤ë” í¬í•¨)
         if (!TcpServer::receivePacket(clientSocket, jsonStr, payload)) {
-            cerr << u8"[ÆĞÅ¶ ¼ö½Å ½ÇÆĞ] JSON ¼ö½Å ½ÇÆĞ\n";
+            cerr << u8"[íŒ¨í‚· ìˆ˜ì‹  ì‹¤íŒ¨] JSON ìˆ˜ì‹  ì‹¤íŒ¨\n";
             TcpServer::sendJsonResponse(clientSocket, R"({"PROTOCOL":"UNKNOWN","RESP":"FAIL","MESSAGE":"RECEIVE_FAIL"})");
             closesocket(clientSocket);
             return;
         }
-          // [2] JSON À¯È¿¼º °Ë»ç
+        // [2] JSON ìœ íš¨ì„± ê²€ì‚¬
         if (!nlohmann::json::accept(jsonStr)) {
-            cerr << u8"[JSON °ËÁõ ½ÇÆĞ] À¯È¿ÇÏÁö ¾ÊÀº JSONÀÔ´Ï´Ù.\n";
+            cerr << u8"[JSON ê²€ì¦ ì‹¤íŒ¨] ìœ íš¨í•˜ì§€ ì•Šì€ JSONì…ë‹ˆë‹¤.\n";
             TcpServer::sendJsonResponse(clientSocket, R"({"PROTOCOL":"UNKNOWN","RESP":"FAIL","MESSAGE":"INVALID_JSON"})");
             closesocket(clientSocket);
             return;
         }
 
         try {
-            //cout << u8"[STEP 1] JSON ÆÄ½Ì ½ÃÀÛ" << endl;
+            //cout << u8"[STEP 1] JSON íŒŒì‹± ì‹œì‘" << endl;
             nlohmann::json json = nlohmann::json::parse(jsonStr);
-            //cout << u8"[STEP 1-OK] JSON ÆÄ½Ì ¼º°ø" << endl;
+            //cout << u8"[STEP 1-OK] JSON íŒŒì‹± ì„±ê³µ" << endl;
 
             string protocol = json.value("PROTOCOL", "");
-            //cout << u8"[STEP 2] ÇÁ·ÎÅäÄİ: " << protocol << endl;
+            //cout << u8"[STEP 2] í”„ë¡œí† ì½œ: " << protocol << endl;
 
             if (protocol == u8"REGISTER_PARENTS") {
                 LINE_LABEL("REGISTER_PARENTS")
-                db.connect();
+                    db.connect();
 
-                //cout << u8"[STEP 4] ProtocolHandler ½ÇÇà" << endl;
+                //cout << u8"[STEP 4] ProtocolHandler ì‹¤í–‰" << endl;
                 nlohmann::json response = ProtocolHandler::handle_RegisterParents(json, db);
 
-                //cout << u8"[STEP 5] ÀÀ´ä Àü¼Û ½ÃÀÛ" << endl;
+                //cout << u8"[STEP 5] ì‘ë‹µ ì „ì†¡ ì‹œì‘" << endl;
                 TcpServer::sendJsonResponse(clientSocket, response.dump());
 
-                // °èÁ¤ µğ·ºÅä¸® ¿©±â¼­ »ı°Ü¿ä ~! 
+                // ê³„ì • ë””ë ‰í† ë¦¬ ì—¬ê¸°ì„œ ìƒê²¨ìš” ~! 
                 if (response.value("RESP", "") == "SUCCESS") {
                     string id = json.value("ID", "");
                     int uid = response.value("PARENTS_UID", -1);
@@ -117,7 +121,7 @@ void handleClient(SOCKET clientSocket) {
 
             else if (protocol == u8"LOGIN") {
                 LINE_LABEL("LOGIN")
-                db.connect();
+                    db.connect();
                 nlohmann::json response = ProtocolHandler::handle_Login(json, db);
                 TcpServer::sendJsonResponse(clientSocket, response.dump());
                 LINE
@@ -125,7 +129,7 @@ void handleClient(SOCKET clientSocket) {
 
             else if (protocol == u8"REGISTER_CHILD") {
                 LINE_LABEL("REGISTER_CHILD")
-                db.connect();
+                    db.connect();
                 nlohmann::json response = ProtocolHandler::handle_RegisterChild(json, db);
                 TcpServer::sendJsonResponse(clientSocket, response.dump());
                 LINE
@@ -135,10 +139,10 @@ void handleClient(SOCKET clientSocket) {
                 LINE_LABEL("GET_LATEST_DIARY")
                     db.connect();
 
-                // [1] ÀÏ±â + »çÁø ¸ŞÅ¸ Á¤º¸ Á¶È¸
+                // [1] ì¼ê¸° + ì‚¬ì§„ ë©”íƒ€ ì •ë³´ ì¡°íšŒ
                 nlohmann::json response = ProtocolHandler::handle_LatestDiary(json, db);
 
-                // [2] »çÁø ¹ÙÀÌ³Ê¸® ·Îµù
+                // [2] ì‚¬ì§„ ë°”ì´ë„ˆë¦¬ ë¡œë”©
                 std::vector<char> payload;
                 if (response.value("HAS_PHOTO", false)) {
                     std::string abs_path = "user_data" + response.value("PHOTO_PATH", "");
@@ -151,70 +155,264 @@ void handleClient(SOCKET clientSocket) {
                     }
                 }
 
-                // [3] JSON + payload ÅëÇÕ Àü¼Û (1È¸ Àü¼Û!)
+                // [3] JSON + payload í†µí•© ì „ì†¡ (1íšŒ ì „ì†¡!)
                 TcpServer::sendPacket(clientSocket, response.dump(), payload);
 
                 LINE
             }
             
+            else if (protocol == u8"GEN_DIARY") {
+                LINE_LABEL("GEN_DIARY")
+                    cout << u8"[GEN_DIARY] ìš”ì²­:\n" << json.dump(2) << endl;
+
+                try {
+                    // ë¡œì»¬ í…ŒìŠ¤íŠ¸ ë°ì´í„°
+                    string child_name = "ì „ì¸ìš°";
+                    int child_uid = 1001;
+                    string embedding_data = "[0.10536525398492813,0.0,0.0,0.0,0.0,0.0,0.0,0.14744506776332855]";
+
+                    std::string audio_path = "C:/workspace/python/MalangDiary/data/inwoo_diary.wav";
+
+                    cout << u8"[GEN_DIARY] í…ŒìŠ¤íŠ¸ ë°ì´í„° ì‚¬ìš© - child_name: " << child_name << ", child_uid: " << child_uid << endl;
+                    cout << u8"[GEN_DIARY] ì˜¤ë””ì˜¤ íŒŒì¼: " << audio_path << endl;
+
+                    // íŒŒì¼ ì¡´ì¬ í™•ì¸
+                    std::ifstream test_file(audio_path, std::ios::binary);
+                    if (!test_file.is_open()) {
+                        cout << u8"[GEN_DIARY] ê²½ê³ : ì˜¤ë””ì˜¤ íŒŒì¼ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŒ" << endl;
+                    }
+                    else {
+                        test_file.close();
+                        cout << u8"[GEN_DIARY] ì˜¤ë””ì˜¤ íŒŒì¼ í™•ì¸ ì™„ë£Œ" << endl;
+                    }
+
+                    // Python ì„œë²„ ì—°ê²° í…ŒìŠ¤íŠ¸ ë¨¼ì €
+                    cout << u8"[GEN_DIARY] Python ì„œë²„ ì—°ê²° í…ŒìŠ¤íŠ¸ ì¤‘..." << endl;
+
+                    CURL* curl = curl_easy_init();
+                    if (!curl) {
+                        cout << u8"[GEN_DIARY] CURL ì´ˆê¸°í™” ì‹¤íŒ¨" << endl;
+                        TcpServer::sendJsonResponse(clientSocket, R"({"PROTOCOL":"GEN_DIARY","RESP":"FAIL","MESSAGE":"CURL_INIT_FAIL"})");
+                        LINE
+                            return;
+                    }
+
+                    std::string response_str;
+
+                    // ë” ì§§ì€ íƒ€ì„ì•„ì›ƒìœ¼ë¡œ ì—°ê²° í…ŒìŠ¤íŠ¸
+                    curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:8000/");
+                    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 5L);        // 5ì´ˆ íƒ€ì„ì•„ì›ƒ
+                    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 3L);  // 3ì´ˆ ì—°ê²° íƒ€ì„ì•„ì›ƒ
+                    curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);          // HEAD ìš”ì²­ë§Œ
+
+                    CURLcode test_res = curl_easy_perform(curl);
+                    curl_easy_cleanup(curl);
+
+                    if (test_res != CURLE_OK) {
+                        cout << u8"[GEN_DIARY] Python ì„œë²„ ì—°ê²° ì‹¤íŒ¨: " << curl_easy_strerror(test_res) << endl;
+                        cout << u8"[GEN_DIARY] Python ì„œë²„ê°€ ì‹¤í–‰ ì¤‘ì¸ì§€ í™•ì¸í•˜ì„¸ìš” (localhost:8000)" << endl;
+                        TcpServer::sendJsonResponse(clientSocket, R"({"PROTOCOL":"GEN_DIARY","RESP":"FAIL","MESSAGE":"PYTHON_SERVER_NOT_RUNNING"})");
+                        LINE
+                            return;
+                    }
+
+                    cout << u8"[GEN_DIARY] Python ì„œë²„ ì—°ê²° í…ŒìŠ¤íŠ¸ ì„±ê³µ" << endl;
+
+                    // ì‹¤ì œ ìš”ì²­ ì „ì†¡
+                    curl = curl_easy_init();
+                    if (curl) {
+                        struct curl_httppost* formpost = nullptr;
+                        struct curl_httppost* lastptr = nullptr;
+
+                        // Form ë°ì´í„° êµ¬ì„±
+                        curl_formadd(&formpost, &lastptr,
+                            CURLFORM_COPYNAME, "child_name",
+                            CURLFORM_COPYCONTENTS, child_name.c_str(),
+                            CURLFORM_END);
+
+                        curl_formadd(&formpost, &lastptr,
+                            CURLFORM_COPYNAME, "file",
+                            CURLFORM_FILE, audio_path.c_str(),
+                            CURLFORM_FILENAME, "audio.wav",
+                            CURLFORM_CONTENTTYPE, "audio/wav",
+                            CURLFORM_END);
+
+                        curl_formadd(&formpost, &lastptr,
+                            CURLFORM_COPYNAME, "embedding_file",
+                            CURLFORM_COPYCONTENTS, embedding_data.c_str(),
+                            CURLFORM_CONTENTTYPE, "application/json",
+                            CURLFORM_END);
+                        
+
+
+                        curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:8000/transcribe");
+                        curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost);
+                        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 300L);        // 5ë¶„ìœ¼ë¡œ ëŠ˜ë¦¼
+                        curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 10L); // 10ì´ˆ ì—°ê²° íƒ€ì„ì•„ì›ƒ
+                        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);         // ë””ë²„ê·¸ ì •ë³´ ì¶œë ¥
+
+                        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, [](void* contents, size_t size, size_t nmemb, void* userp) -> size_t {
+                            if (!contents || !userp) {
+                                fprintf(stderr, "[GEN_DIARY] ì½œë°± ì˜¤ë¥˜: contents ë˜ëŠ” userp null\n");
+                                return 0;
+                            }
+
+
+                            size_t totalSize = size * nmemb;
+                            std::string* str = static_cast<std::string*>(userp);
+                            try {
+                                str->append(static_cast<char*>(contents), totalSize);
+                                fprintf(stderr, "[GEN_DIARY] ì½œë°±: %zu bytes ì¶”ê°€\n", totalSize);
+                                return totalSize;
+                            }
+                            catch (const std::exception& e) {
+                                fprintf(stderr, "[GEN_DIARY] ì½œë°± ì˜ˆì™¸: %s\n", e.what());
+                                return CURL_WRITEFUNC_ERROR;
+                            }
+                            });
+
+                        // userpë¡œ response_str ë„˜ê²¨ì¤˜ì•¼ í•¨
+                        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_str);
+
+                        // (ì„ íƒ) ì••ì¶• í—ˆìš©
+                        curl_easy_setopt(curl, CURLOPT_ACCEPT_ENCODING, "");
+
+                        // ì‹¤ì œ ìš”ì²­ ìˆ˜í–‰
+                        CURLcode res = curl_easy_perform(curl);
+
+
+                        cout << u8"[GEN_DIARY] ì‹¤ì œ ìš”ì²­ ì „ì†¡ ì¤‘... (ìµœëŒ€ 300ì´ˆ ëŒ€ê¸°)" << endl;
+                        CURLcode res = curl_easy_perform(curl);
+
+
+                        cout << "[GEN_DIARY] CURL ë¦¬í„´ ì½”ë“œ: " << res << " (" << curl_easy_strerror(res) << ")" << endl;
+
+                        if (res == CURLE_OK) {
+
+                            cout << u8"[GEN_DIARY] ì„œë²„ ì‘ë‹µ (ê¸¸ì´: " << response_str.length() << "): " << response_str.substr(0, 100) << "..." << endl;
+                            try {
+
+                                nlohmann::json py_response = nlohmann::json::parse(response_str);
+                                cout << u8"[GEN_DIARY] ì‘ë‹µ íŒŒì‹± ì„±ê³µ. ë‚´ìš©:\n" << py_response.dump(2) << endl;
+
+                                nlohmann::json response;
+                                response["PROTOCOL"] = "GEN_DIARY";
+                                response["RESP"] = "SUCCESS";
+                                response["DIARY_DATA"] = py_response;
+                                TcpServer::sendJsonResponse(clientSocket, response.dump());
+
+                            }
+                            catch (const nlohmann::json::parse_error& e) {
+                                cout << u8"[GEN_DIARY] JSON íŒŒì‹± ì˜¤ë¥˜: " << e.what() << endl;
+                                cout << u8"[GEN_DIARY] ì‘ë‹µ ì›ë¬¸: " << response_str.substr(0, 100) << "..." << endl;
+                                TcpServer::sendJsonResponse(clientSocket, R"({"PROTOCOL":"GEN_DIARY","RESP":"FAIL","MESSAGE":"JSON_PARSE_ERROR"})");
+
+                            }
+                        }
+                        else {
+                            cout << u8"[GEN_DIARY] ìš”ì²­ ì‹¤íŒ¨: " << curl_easy_strerror(res) << endl;
+                            TcpServer::sendJsonResponse(clientSocket, R"({"PROTOCOL":"GEN_DIARY","RESP":"FAIL","MESSAGE":"REQUEST_FAILED"})");
+                        }
+                        curl_formfree(formpost);
+                        curl_easy_cleanup(curl);
+                    }
+                    //
+                    else {
+                        cout << u8"[GEN_DIARY] CURL ì´ˆê¸°í™” ì‹¤íŒ¨" << endl;
+                        TcpServer::sendJsonResponse(clientSocket, R"({"PROTOCOL":"GEN_DIARY","RESP":"FAIL","MESSAGE":"CURL_INIT_FAIL"})");
+                    }
+                    // ì„ì‹œ íŒŒì¼ ì •ë¦¬
+                  /*  if (std::remove(audio_path.c_str()) == 0) {
+                        cout << u8"[GEN_DIARY] ì„ì‹œ ì˜¤ë””ì˜¤ íŒŒì¼ ì‚­ì œ: " << audio_path << endl;
+                    }
+                    else {
+                        cout << u8"[GEN_DIARY] ì„ì‹œ ì˜¤ë””ì˜¤ íŒŒì¼ ì‚­ì œ ì‹¤íŒ¨: " << audio_path << endl;
+                    }*/
+
+                }
+                catch (const std::exception& e) {
+                    cout << u8"[GEN_DIARY] ì˜ˆì™¸ ë°œìƒ" << endl;
+                    TcpServer::sendJsonResponse(clientSocket, R"({"PROTOCOL":"GEN_DIARY","RESP":"FAIL","MESSAGE":"EXCEPTION"})");
+                }
+                catch (...) {
+                    cout << u8"[GEN_DIARY] ì•Œ ìˆ˜ ì—†ëŠ” ì˜ˆì™¸ ë°œìƒ" << endl;
+                    TcpServer::sendJsonResponse(clientSocket, R"({"PROTOCOL":"GEN_DIARY","RESP":"FAIL","MESSAGE":"UNKNOWN_EXCEPTION"})");
+                }
+                curl_global_cleanup();
+                LINE
+
+
+
+
+
+
+
+
+
+
+
+     
+            }
+
+
             else if (protocol == u8"SETTING_VOICE") {
                 LINE_LABEL("SETTING_VOICE")
-                db.connect();
+                    db.connect();
                 nlohmann::json response = ProtocolHandler::handle_SettingVoice(json, payload, db);
                 TcpServer::sendJsonResponse(clientSocket, response.dump());
                 LINE
             }
 
             else {
-                cerr << u8"[¿¡·¯] ¾Ë ¼ö ¾ø´Â ÇÁ·ÎÅäÄİ: " << protocol << endl;
+                cerr << u8"[ì—ëŸ¬] ì•Œ ìˆ˜ ì—†ëŠ” í”„ë¡œí† ì½œ: " << protocol << endl;
                 TcpServer::sendJsonResponse(clientSocket, R"({"PROTOCOL":"UNKNOWN","RESP":"FAIL","MESSAGE":"UNSUPPORTED_PROTOCOL"})");
             }
         }
         catch (const nlohmann::json::parse_error& e) {
-            cerr << u8"[¿¡·¯] JSON ÆÄ½Ì ½ÇÆĞ (parse_error): " << e.what() << endl;
+            cerr << u8"[ì—ëŸ¬] JSON íŒŒì‹± ì‹¤íŒ¨ (parse_error): " << e.what() << endl;
         }
         catch (const nlohmann::json::type_error& e) {
-            cerr << u8"[¿¡·¯] JSON Å¸ÀÔ ¿À·ù (type_error): " << e.what() << endl;
+            cerr << u8"[ì—ëŸ¬] JSON íƒ€ì… ì˜¤ë¥˜ (type_error): " << e.what() << endl;
         }
         catch (const exception& e) {
-            cerr << u8"[¿¡·¯] ±âÅ¸ ¿¹¿Ü: " << e.what() << endl;
+            cerr << u8"[ì—ëŸ¬] ê¸°íƒ€ ì˜ˆì™¸: " << e.what() << endl;
         }
     }
 }
 
 // =======================================================================
-// [main ÇÔ¼ö] 
-// - TcpServer °´Ã¼¸¦ »ı¼ºÇÏ°í, ´ÙÁß Å¬¶óÀÌ¾ğÆ®¸¦ ºñµ¿±âÀûÀ¸·Î Ã³¸®
+// [main í•¨ìˆ˜] 
+// - TcpServer ê°ì²´ë¥¼ ìƒì„±í•˜ê³ , ë‹¤ì¤‘ í´ë¼ì´ì–¸íŠ¸ë¥¼ ë¹„ë™ê¸°ì ìœ¼ë¡œ ì²˜ë¦¬
 // =======================================================================
 
 int main() {
-    // ÄÜ¼Ö ÇÑ±Û ±úÁü ¹æÁö ¼³Á¤
-    SetConsoleOutputCP(CP_UTF8);                // UTF-8 Ãâ·Â ÀÎÄÚµù ¼³Á¤
-    TcpServer server(5556);                     // Æ÷Æ® 5556À¸·Î ¼­¹ö ½ÃÀÛ
+    // ì½˜ì†” í•œê¸€ ê¹¨ì§ ë°©ì§€ ì„¤ì •
+    SetConsoleOutputCP(CP_UTF8);                // UTF-8 ì¶œë ¥ ì¸ì½”ë”© ì„¤ì •
+    TcpServer server(5556);                     // í¬íŠ¸ 5556ìœ¼ë¡œ ì„œë²„ ì‹œì‘
     DBManager db;
 
-    // DB ¿¬°á ½Ãµµ
+    // DB ì—°ê²° ì‹œë„
     if (!db.connect()) {
-        cout << u8"[¼­¹ö] DB ¿¬°á ½ÇÆĞ!" << endl;
+        cout << u8"[ì„œë²„] DB ì—°ê²° ì‹¤íŒ¨!" << endl;
         return 1;
     }
 
-    // ¼­¹ö ¹ÙÀÎµù ¹× ¸®½¼
+    // ì„œë²„ ë°”ì¸ë”© ë° ë¦¬ìŠ¨
     if (!server.start()) {
-        cout << u8"[¼­¹ö] ¼ÒÄÏ ¹ÙÀÎµù ¶Ç´Â ¸®½¼ ½ÇÆĞ!" << endl;
+        cout << u8"[ì„œë²„] ì†Œì¼“ ë°”ì¸ë”© ë˜ëŠ” ë¦¬ìŠ¨ ì‹¤íŒ¨!" << endl;
         return 1;
     }
 
-    cout << u8"[¼­¹ö] Å¬¶óÀÌ¾ğÆ® ¼ö½Å ´ë±â ½ÃÀÛ..." << endl;
+    cout << u8"[ì„œë²„] í´ë¼ì´ì–¸íŠ¸ ìˆ˜ì‹  ëŒ€ê¸° ì‹œì‘..." << endl;
 
-    // Å¬¶óÀÌ¾ğÆ® ¼ö½Å ·çÇÁ
+    // í´ë¼ì´ì–¸íŠ¸ ìˆ˜ì‹  ë£¨í”„
     while (true) {
         SOCKET clientSocket = server.acceptClient();
 
         if (clientSocket != INVALID_SOCKET) {
-            cout << u8"[¼­¹ö] »õ Å¬¶óÀÌ¾ğÆ® ¿¬°áµÊ!" << endl;
+            cout << u8"[ì„œë²„] ìƒˆ í´ë¼ì´ì–¸íŠ¸ ì—°ê²°ë¨!" << endl;
             thread th(handleClient, clientSocket);
-            th.detach();  // µ¶¸³ÀûÀ¸·Î ½ÇÇà
+            th.detach();  // ë…ë¦½ì ìœ¼ë¡œ ì‹¤í–‰
         }
     }
     return 0;

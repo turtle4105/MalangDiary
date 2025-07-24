@@ -11,11 +11,13 @@ DBManager::~DBManager() {}
 bool DBManager::connect() {
     try {
         sql::Driver* driver = sql::mariadb::get_driver_instance();
-        sql::SQLString url("jdbc:mariadb://10.10.20.112:3306/malang_diary");
+        /*sql::SQLString url("jdbc:mariadb://10.10.20.112:3306/malang_diary?useSSL=false");*/
+        sql::SQLString url("jdbc:mariadb://10.10.20.116:3306/malang_diary?sslMode=DISABLED");
 
         sql::Properties properties({
-            {"user", "seonseo"},
-            {"password", "1234"}
+            {"user", "root"},
+            {"password", "1234"} ,
+        {"sslMode", "DISABLED"}
             });
 
         conn_.reset(driver->connect(url, properties));
