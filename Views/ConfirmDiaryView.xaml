@@ -68,12 +68,14 @@
                     <Border CornerRadius="25"
                             Background="#FFACAC"
                             Height="44">
+                        
                         <Button Content="일기 생성"
                                 Command="{Binding CreateAndSendDiaryAsyncCommand}"
                                 Foreground="White"
                                 FontWeight="Bold"
                                 FontSize="14"
                                 Style="{StaticResource NoHighlightButtonStyle}"/>
+                        
                     </Border>
                 </StackPanel>
             </Grid>

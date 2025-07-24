@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MalangDiary.Models;
+using MalangDiary.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,11 @@ namespace MalangDiary.Views
     /// </summary>
     public partial class ConfirmDiaryView : Page
     {
-        public ConfirmDiaryView()
+        public ConfirmDiaryView(DiaryModel diaryModel)
         {
             InitializeComponent();
+            DataContext = new ConfirmDiaryViewModel(diaryModel);
         }
     }
+
 }

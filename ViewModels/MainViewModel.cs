@@ -1,14 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using MalangDiary.Enums;
 using MalangDiary.Messages;
+using MalangDiary.Models;
+using MalangDiary.Views;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-
-using MalangDiary.Views;
 using System.Windows.Forms;
 namespace MalangDiary.ViewModels;
 
@@ -29,6 +30,7 @@ public class MainViewModel {
 
     private void Navigate(PageType page) {
         if (_mainFrame == null) return;
+        Console.WriteLine($"[MainViewModel] 페이지 전환 요청: {page}");
 
         switch (page) {
             case PageType.Start:
@@ -68,11 +70,12 @@ public class MainViewModel {
                 _mainFrame.GoBack();
                 break;
             case PageType.ConfirmDiary:
-                _mainFrame.Navigate(new ConfirmDiaryView { DataContext = App.Services!.GetService(typeof(ConfirmDiaryViewModel)) });
+                var diaryModel = App.Services!.GetService<DiaryModel>(); _mainFrame.Navigate(new ConfirmDiaryView(diaryModel!));  //  생성자에 전달
                 break;
             case PageType.GenDiary:
-                _mainFrame.Navigate(new GenerateDiaryView{DataContext = App.Services!.GetService(typeof(GenerateDiaryViewModel)) });
+                var diaryModel2 = App.Services!.GetService<DiaryModel>(); _mainFrame.Navigate(new GenerateDiaryView { DataContext = new GenerateDiaryViewModel(diaryModel2!)});
                 break;
+
 
         }
     }

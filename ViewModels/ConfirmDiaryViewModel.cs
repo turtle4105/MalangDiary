@@ -12,11 +12,13 @@ using System.Threading.Tasks;
 
 namespace MalangDiary.ViewModels
 {
+
     public partial class ConfirmDiaryViewModel : ObservableObject
     {
 
         public ConfirmDiaryViewModel(DiaryModel diarymodel)
         {
+            Console.WriteLine("[ConfirmDiaryViewModel] 생성자 호출됨");
             _diarymodel = diarymodel;
         }
         DiaryModel _diarymodel;
@@ -37,12 +39,17 @@ namespace MalangDiary.ViewModels
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.GenDiary));
         }
 
+
         [RelayCommand]
-        private async Task CreateAndSendDiaryAsync()
+        private void CreateAndSendDiaryAsync()
         {
-            CreateDiary();  // 현재 메시지 전송
-            await _diarymodel.SendDiaryAsync();  // 실제 송신
+            Console.WriteLine("[ConfirmDiaryViewModel] 일기 생성 → 페이지 전환 → 서버 전송");
+
+            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.GenDiary));
+
+            _diarymodel.SendDiaryAsync();
         }
+
 
     }
 }
