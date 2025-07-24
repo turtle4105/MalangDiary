@@ -1,25 +1,30 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using MalangDiary.Enums;
 using MalangDiary.Messages;
+using MalangDiary.Models;
+using MalangDiary.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-
-using MalangDiary.Views;
 using System.Windows.Forms;
 namespace MalangDiary.ViewModels;
 
 public class MainViewModel {
     private Frame? _mainFrame;
+    private readonly DiaryModel _diaryModel;
 
-    public MainViewModel() {
+    public MainViewModel(DiaryModel diaryModel) {
+        _diaryModel = diaryModel;
+        _diaryModel.StartListening();
+
         WeakReferenceMessenger.Default.Register<PageChangeMessage>(this, (r, m) =>
         {
             Navigate(m.Value);
         });
+        
     }
 
     public void SetFrame(Frame frame) {  // 메인 프레임 설정(예: MainWindow.xaml.cs에서 호출)

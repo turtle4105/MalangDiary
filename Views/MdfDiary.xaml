@@ -109,13 +109,12 @@
                     <Button Content="오늘 날짜" Width="156" Height="31" Background="White" Foreground="Black" BorderBrush="Gray"/>
                     <Button Content="날씨" Width="60" Height="31" Background="White" Foreground="Black" BorderBrush="Gray"/>
                     <Border CornerRadius="0" BorderBrush="Gray" BorderThickness="1">
-                        <ComboBox Width="100" Height="30" FontSize="12" BorderBrush="Gray">
-                            <ComboBoxItem Content="맑음"/>
-                            <ComboBoxItem Content="흐림"/>
-                            <ComboBoxItem Content="비"/>
-                            <ComboBoxItem Content="눈"/>
-                        </ComboBox>
-                    </Border>
+                            <ComboBox Width="100" Height="30" FontSize="12"
+                              ItemsSource="{Binding WeatherList}"
+                              SelectedItem="{Binding SelectedWeather, Mode=TwoWay}"
+                              BorderBrush="Gray">
+                            </ComboBox>
+                        </Border>
                 </StackPanel>
 
                 <!-- 사진 + 감정 -->

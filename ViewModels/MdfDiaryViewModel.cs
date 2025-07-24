@@ -19,7 +19,19 @@ namespace MalangDiary.ViewModels {
 
         DiaryModel _diaryModel;
 
-        
+        public static readonly Dictionary<int, string> WeatherOptions = new()
+        {
+            { 1, "맑음" },
+            { 2, "구름 조금" },
+            { 3, "구름 많음" },
+            { 4, "흐림" },
+            { 5, "비" },
+            { 6, "눈" },
+            { 7, "비/눈" },
+            { 8, "안개" },
+        };
+
+
         [RelayCommand] private static void RecAgain() {
             // 녹음 다시하기 버튼 클릭 시 실행되는 메서드
         }

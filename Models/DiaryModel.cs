@@ -70,8 +70,8 @@ namespace MalangDiary.Models {
             var jsonObj = new
             {
                 PROTOCOL = "GEN_DIARY",
-                //CHILD_UID = childUid,
-                //FILENAME = fileName
+                CHILD_UID = childUid,
+                FILENAME = fileName
             };
 
 
@@ -81,10 +81,8 @@ namespace MalangDiary.Models {
             WorkItem item = new WorkItem
             {
                 json = jsonStr,
-                payload = new byte[0],
-                path = ""
-                //payload = fileBytes,
-                //path = VoicePath
+                payload = fileBytes,
+                path = VoicePath
             };
 
             _socket.Send(item);
