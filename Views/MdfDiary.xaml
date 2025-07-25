@@ -128,7 +128,7 @@
 
                             <TextBlock Text="{Binding PhotoFileName}" FontSize="12" HorizontalAlignment="Center" Foreground="Gray"/>
 
-                            <ItemsControl ItemsSource="{Binding EmotionList}">
+                            <!--<ItemsControl ItemsSource="{Binding EmotionList}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <WrapPanel HorizontalAlignment="Center" Width="374"/>
@@ -140,6 +140,33 @@
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding}" Foreground="#FFACAC" FontWeight="Bold" Margin="5,0"/>
                                                 <TextBlock Text="✕" Foreground="#FFACAC" FontWeight="Bold" Margin="0,0,5,0" Cursor="Hand"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>-->
+                            <ItemsControl ItemsSource="{Binding EmotionList}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel HorizontalAlignment="Center" Width="374"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Style="{StaticResource EmotionDeleteStyle}" CornerRadius="13" Height="26" Margin="2">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding}" Foreground="#FFACAC" FontWeight="Bold" Margin="5,0"/>
+                                                <Button Content="✕"
+                            Command="{Binding DataContext.DeleteEmotionCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                            CommandParameter="{Binding}"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Foreground="#FFACAC"
+                            FontWeight="Bold"
+                            Padding="0"
+                            Width="20" Height="20"
+                            Margin="0,0,5,0"
+                            Cursor="Hand"/>
                                             </StackPanel>
                                         </Border>
                                     </DataTemplate>

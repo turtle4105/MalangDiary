@@ -100,7 +100,7 @@ namespace MalangDiary.Models
                     }
 
                     _session.SetCurrentChildIndex(0);
-                    _session.SetCurrentChildUid(allChildren[0].Uid);
+                    //_session.SetCurrentChildUid(allChildren[0].Uid);
 
                     return (true, message);
                 }

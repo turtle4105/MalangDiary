@@ -51,12 +51,10 @@ namespace MalangDiary.Models {
         public string[] GetResultEmotions() => resultEmotions;
 
 
-        // 임시 경로 저장 필드 추가
+            // 임시 경로 저장 필드 추가
         private string? tempAudioFilePath;
 
-
         /** Member Methods **/
-
         /* Set Temporary Audio Path */
         public void SetTempAudioPath(string path) {
             tempAudioFilePath = path;

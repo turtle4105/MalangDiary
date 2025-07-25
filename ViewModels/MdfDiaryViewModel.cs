@@ -173,12 +173,24 @@ namespace MalangDiary.ViewModels {
                 }
             }
         }
+
         [RelayCommand]
         private void GoToHome()
         {
             Console.WriteLine("GoToHome Command Executed");
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Home));
         }
+
+        [RelayCommand]
+        private void DeleteEmotion(string emotion)
+        {
+            if (EmotionList.Contains(emotion))
+            {
+                EmotionList.Remove(emotion);
+                Console.WriteLine($"[DeleteEmotion] '{emotion}' 감정 삭제됨");
+            }
+        }
+
     }
 
 }

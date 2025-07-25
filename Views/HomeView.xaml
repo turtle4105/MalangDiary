@@ -316,7 +316,7 @@
         <TextBlock Grid.Row="4"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   Text="Tip.말을 10분 넘게 하면 말랑 일기가 나오는 데 시간이 조금 더 걸릴 수 있어요."
+                   Text="Tip.녹음이 10분을 넘어가면 일기 생성에 시간이 걸려요."
                    FontSize="11"
                    Foreground="#FFACAC"
                    FontFamily="Noto Sans KR" Height="16" Width="266"/>

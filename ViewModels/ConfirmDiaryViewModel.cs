@@ -36,17 +36,10 @@ namespace MalangDiary.ViewModels
 
         // 일기 생성
         [RelayCommand]
-        private void CreateDiary()
-        {
-            Console.WriteLine("[ConfirmDiaryViewModel] 일기 생성 선택됨");
-            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.GenDiary));
-        }
-
-
-        [RelayCommand]
         private void CreateAndSendDiary()
         {
             Console.WriteLine("[ConfirmDiaryViewModel] 일기 생성 요청 + 수신 대기 시작");
+            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.GenDiary));
 
             _diarymodel.SendDiaryAsync();         // 음성 + JSON 전송
             _diarymodel.StartListening();         // 수신하고 페이지 전환

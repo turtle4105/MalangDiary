@@ -32,7 +32,7 @@ namespace MalangDiary.ViewModels
         private readonly string recordingPath = Path.Combine("recordings", "diary_voice.wav");
 
         [ObservableProperty]
-        private string recordingStatus = "듣는 중";
+        private string recordingStatus = "";
 
         [ObservableProperty]
         private string stopButtonText = "녹음 종료";
