@@ -100,7 +100,7 @@ namespace MalangDiary.Models {
                     // JArray의 열거자(반복가능객체) 생성
                     var iterator = ArrEmotions?.GetEnumerator();
 
-                    while (iterator.MoveNext()) {
+                    while (iterator!.MoveNext()) {
                         var emotion = iterator.Current as JObject;
                         if (emotion is not null) {
                             Console.WriteLine("emotion[\"EMOTION\"]!.ToString():" + emotion["EMOTION"]!.ToString());

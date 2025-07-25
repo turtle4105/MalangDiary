@@ -42,8 +42,6 @@ namespace MalangDiary.ViewModels {
         private readonly ChkModel _chkModel;
         private readonly UserSession _session;
 
-        public new event PropertyChangedEventHandler ? PropertyChanged;
-
         [ObservableProperty] private string dateText    = "";      // date text
         [ObservableProperty] private string weatherText = "";      // weather text
         [ObservableProperty] private string titleText   = "";      // title text

@@ -14,10 +14,10 @@ using System.Windows.Media.Imaging;
 namespace MalangDiary.ViewModels {
     public partial class HomeViewModel : ObservableObject {
         /* Constructor */
-        public HomeViewModel(UserModel usermodel,HomeModel homemodel, UserSession user_session) {
-            _usermodel = usermodel;
-            _homemodel = homemodel;
-            _session = user_session;
+        public HomeViewModel(UserModel ? usermodel,HomeModel ? homemodel, UserSession ? user_session) {
+            _usermodel = usermodel  !;
+            _homemodel = homemodel  !;
+            _session = user_session !;
             Console.WriteLine("[HomeModel] UpdateTodaysDiary() executed");
             LoadChildrenFromModel();
             UpdateTodaysDiary();

@@ -28,7 +28,6 @@ namespace MalangDiary.Models {
         private readonly SocketManager _socket;
         private readonly UserSession _session;
         private readonly BaseModel _base;
-        private CalendarInfo CalendarInfo;
 
 
 
@@ -75,14 +74,14 @@ namespace MalangDiary.Models {
                 int cnt = 0;
                 JArray jArrayData = new();
                 if (jsonData["DATA"] is not null) {
-                    jArrayData = jsonData["DATA"]!.ToObject<JArray>();
+                    jArrayData = jsonData["DATA"]!.ToObject<JArray>()!;
                 }
 
                 foreach (var InfoOfDay in jArrayData) {
                     CalendarInfo tmp_cal_info = new()
                     {
                         Uid = InfoOfDay["DIARY_UID"]!.ToObject<int>(),
-                        Date = int.Parse(InfoOfDay["DATE"]!.ToObject<string>()),
+                        Date = int.Parse(InfoOfDay["DATE"]!.ToObject<string>()!),
                         IsWrited = InfoOfDay["IS_WRITED"]!.ToObject<bool>(),
                         IsLiked = InfoOfDay["IS_LIKED"]!.ToObject<bool>()
                     };

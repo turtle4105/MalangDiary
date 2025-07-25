@@ -20,13 +20,13 @@ namespace MalangDiary.Models {
     {
 
         /** Constructor **/
-        public DiaryModel(SocketManager socket, UserSession session, UserModel userModel)
+        public DiaryModel(SocketManager ?socket, UserSession ?session, UserModel ?userModel)
         {
             Console.WriteLine("[RgsModel] RgsModel 인스턴스가 생성되었습니다.");
 
-            _socket = socket;
-            _session = session;
-            _userModel = userModel;
+            _socket    = socket    !;
+            _session   = session   !;
+            _userModel = userModel !;
         }
 
         public void SendModifyDiary(WorkItem item)
@@ -39,7 +39,7 @@ namespace MalangDiary.Models {
         private readonly SocketManager _socket;
         private readonly UserSession _session;
         private readonly UserModel _userModel;
-        public string VoicePath { get; set; }
+        public string ? VoicePath { get; set; }
         public DiaryInfo? CurrentDiaryInfo;
 
         private string? resultTitle;

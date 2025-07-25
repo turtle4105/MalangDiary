@@ -28,6 +28,12 @@ namespace MalangDiary.Models {
 
         /* Write to File Path */
         public bool WriteJpgToFile(string filePath, byte[] byteArray) {
+
+            if (byteArray.Length == 0) {
+                Console.WriteLine("[WriteJpgToFile] No byte[]");
+                return false;
+            }
+
             string dirPath = "./Images";
             DirectoryInfo dir = new DirectoryInfo(dirPath);
             bool dirCheck = CheckImgDirExists(dir);
@@ -53,6 +59,12 @@ namespace MalangDiary.Models {
 
         /* Write to File Path */
         public bool WriteWavToFile(string filePath, byte[] byteArray) {
+
+            if (byteArray.Length == 0) {
+                Console.WriteLine("[WriteWavToFile] No byte[]");
+                return false;
+            }
+
             string dirPath = "./Audio";
             DirectoryInfo dir = new DirectoryInfo(dirPath);
             bool dirCheck = CheckImgDirExists(dir);
@@ -77,6 +89,13 @@ namespace MalangDiary.Models {
         /* Write .wav file To path */
         public bool WriteWavToFile(string dirPath, string filePath, byte[] byteArray)
         {
+
+            if (byteArray.Length == 0) {
+                Console.WriteLine("[WriteWavToFile] No byte[]");
+                return false;
+            }
+
+
             DirectoryInfo dir = new DirectoryInfo(dirPath);
             bool dirCheck = CheckImgDirExists(dir);
 
