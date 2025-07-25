@@ -166,8 +166,9 @@ namespace MalangDiary.Models {
                 ResultDiaryInfo.Uid = jsonData["DIARY_UID"]!.ToObject<int>();
                 ResultDiaryInfo.Title = jsonData["TITLE"]!.ToString();
                 ResultDiaryInfo.Text = jsonData["TEXT"]!.ToString();
-                ResultDiaryInfo.IntWeather = jsonData["WEATHER"]!.ToObject<int>();
-                ResultDiaryInfo.Weather = WeatherConveter.ConvertWeatherCodeToText(ResultDiaryInfo.IntWeather);
+                ResultDiaryInfo.Weather = jsonData["WEATHER"]!.ToString();
+                //ResultDiaryInfo.IntWeather = jsonData["WEATHER"]!.ToObject<int>();
+                //ResultDiaryInfo.Weather = WeatherConveter.ConvertWeatherCodeToText(ResultDiaryInfo.IntWeather);
                 ResultDiaryInfo.IsLiked = jsonData["IS_LIKED"]!.ToObject<Boolean>();
                 ResultDiaryInfo.PhotoFileName = jsonData["PHOTO_PATH"]!.ToString();
                 ResultDiaryInfo.Date = jsonData["CREATE_AT"]!.ToString();

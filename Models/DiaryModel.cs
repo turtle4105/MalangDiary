@@ -153,7 +153,7 @@ namespace MalangDiary.Models {
                                 emotions = Array.Empty<string>();
                             }
 
-
+                            string weatherText = json["WEATHER"]?.ToString() ?? "알 수 없음";
                             // CurrentDiaryInfo 설정
                             CurrentDiaryInfo = new DiaryInfo
                             {
@@ -162,8 +162,7 @@ namespace MalangDiary.Models {
                                 Text = text,
                                 Emotions = emotions.ToList(),
                                 Date = date,
-                                IntWeather = 0,
-                                Weather = "알 수 없음",
+                                Weather = weatherText,
                                 IsLiked = false,
                                 PhotoFileName = ""
                             };

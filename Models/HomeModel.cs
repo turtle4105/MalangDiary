@@ -87,8 +87,7 @@ namespace MalangDiary.Models {
             if (protocol == "GET_LATEST_DIARY" && response == "SUCCESS") {
 
                 ResultDiaryInfo.Uid = jsonData["DIARY_UID"]!.ToObject<int>();
-                ResultDiaryInfo.IntWeather = jsonData["WEATHER"]!.ToObject<int>();
-                ResultDiaryInfo.Weather = WeatherConveter.ConvertWeatherCodeToText(ResultDiaryInfo.IntWeather);
+                ResultDiaryInfo.Weather = jsonData["WEATHER"]!.ToString(); 
                 ResultDiaryInfo.Date = jsonData["CREATE_AT"]!.ToString();
                 ResultDiaryInfo.Emotions = new();   // List<string> 초기화 필요
                 if (jsonData["EMOTIONS"] is not null) {

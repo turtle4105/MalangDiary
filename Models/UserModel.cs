@@ -176,7 +176,9 @@ namespace MalangDiary.Models
                 }
 
                 _session.SetCurrentParentUid(parentInfo.Uid);
-                _session.SetCurrentChildUid(ChildrenInfo[0].Uid);
+                if(ChildrenInfo.Count > 0 ) {
+                    _session.SetCurrentChildUid(ChildrenInfo[0].Uid);
+                }
 
                 Console.WriteLine($"[UserModel] LogIn Completed");
                 return true;

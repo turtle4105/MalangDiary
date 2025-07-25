@@ -42,10 +42,12 @@ namespace MalangDiary.ViewModels {
             _session = usersession ?? throw new ArgumentNullException(nameof(usersession)); 
             EmotionList = new ObservableCollection<string>();
 
-            for (int i = 1; i <= 8; i++)
+            string[] weatherOptions = { "맑음", "구름 조금", "구름 많음", "흐림", "비", "눈", "비/눈", "안개" };
+            foreach (var w in weatherOptions)
             {
-                WeatherList.Add(WeatherConveter.ConvertWeatherCodeToText(i));
+                WeatherList.Add(w);
             }
+
 
             SelectedWeather = WeatherList.FirstOrDefault() ?? string.Empty;
 
@@ -89,16 +91,13 @@ namespace MalangDiary.ViewModels {
 
         partial void OnSelectedWeatherChanged(string value)
         {
-            int code = Enumerable.Range(1, 8)
-                                 .FirstOrDefault(i => WeatherConveter.ConvertWeatherCodeToText(i) == value);
-
             if (_diaryModel.CurrentDiaryInfo is not null)
             {
                 var diary = _diaryModel.CurrentDiaryInfo.Value;
-                diary.IntWeather = code;
                 diary.Weather = value;
                 _diaryModel.CurrentDiaryInfo = diary;
             }
+
         }
 
         [RelayCommand] private void RecAgain() {
@@ -159,7 +158,7 @@ namespace MalangDiary.ViewModels {
             };
 
             _diaryModel.SendModifyDiary(item);
-            //WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Home));
+            WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Home));
         }
         
         [RelayCommand]

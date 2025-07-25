@@ -65,7 +65,6 @@ public struct DiaryInfo {
     public int Uid;              // diary_uid
     public string Title;         // title
     public string Text;          // refined_text
-    public int IntWeather;       // weather
     public string Weather;       // weather (문자열로 변환된 값)
     public bool IsLiked;         // is_liked
     public string PhotoFileName; // photo_path
