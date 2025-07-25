@@ -45,7 +45,7 @@ namespace MalangDiary.ViewModels {
         [ObservableProperty] private string weatherText;    // weather text
         [ObservableProperty] private string titleText;      // title text
         [ObservableProperty] private string diaryText;      // diary text
-        [ObservableProperty] private bool isPlaying;       // whether playing audio or not
+        [ObservableProperty] private bool isPlaying;        // whether playing audio or not
         [ObservableProperty] private bool isLiked;
 
         private DiaryInfo CurrentDiaryInfo;   // diaryinfo
@@ -126,7 +126,7 @@ namespace MalangDiary.ViewModels {
             else if (ChkUpdate is false) {
                 Console.WriteLine("[ChkDIaryViewModel] UpdateDiaryLike Failed");
             }
-
+            Console.WriteLine("[ChkDIaryViewModel]IsLiked:" + IsLiked);
             return;
         }
 
@@ -147,15 +147,17 @@ namespace MalangDiary.ViewModels {
             bool ImgExist = false;
             (CurrentDiaryInfo, ImgExist) = _chkModel.GetDiaryDetail(cur_diary_uid);
 
-            DateText    = CurrentDiaryInfo.Date;
+            /* ObservableProperties Assignment */
+            DateText = CurrentDiaryInfo.Date;
             WeatherText = CurrentDiaryInfo.Weather;
             TitleText   = CurrentDiaryInfo.Title;
             DiaryText   = CurrentDiaryInfo.Text;
+            IsLiked     = CurrentDiaryInfo.IsLiked;
             foreach (var diary in CurrentDiaryInfo.Emotions) {
                 EmotionList.Add(diary);
             }
-
-            if( ImgExist ) {
+            
+            if( ImgExist is true ) {
                 /* Recv Image From Server */
                 _chkModel.GetDiaryImage();
 
@@ -180,6 +182,5 @@ namespace MalangDiary.ViewModels {
                 return false;
             }
         }
-
     }
 }

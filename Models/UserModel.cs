@@ -142,22 +142,6 @@ namespace MalangDiary.Models
 
             _socket.Send(sendItem);
 
-            /* [1] new json */
-            //JObject jsonData = new() {
-            //    { "PROTOCOL", "GEN_DIARY" },
-            //    //{ "ID", email },
-            //    //{ "PW", password }
-            //};
-
-            //var sendItem = new WorkItem
-            //{
-            //    json = JsonConvert.SerializeObject(jsonData),
-            //    payload = [],
-            //    path = ""
-            //};
-            //_socket.Send(sendItem);
-
-
             WorkItem response = _socket.Receive();
 
             jsonData = JObject.Parse(response.json);
@@ -197,12 +181,10 @@ namespace MalangDiary.Models
                 Console.WriteLine($"[UserModel] LogIn Completed");
                 return true;
             }
-            else if (protocol == "LOGIN" && result == "FAIL")
-            {
+            else if (protocol == "LOGIN" && result == "FAIL") {
                 return false;
             }
-            else
-            {
+            else {
                 Console.WriteLine($"[UserModel] 로그인 응답 오류: {result}");
                 return false;
             }

@@ -167,23 +167,30 @@
                             <!-- 배경 이미지 -->
                             <Image Source="{Binding ImageList[0]}" Stretch="UniformToFill" />
 
-                            <!-- 우측 상단 하트 버튼 -->
+                            <TextBlock Text="{Binding DataContext.GetHashCode, RelativeSource={RelativeSource Self}}" Foreground="Black"/>
+
                             <Border Background="#FFF2CC"
+                                Width="30" Height="30"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Right"
+                                Margin="10"
+                                CornerRadius="15">
+
+                                <Button Command="{Binding ChangeIsLikedCommand}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Background="#FFF2CC"
+                                    BorderThickness="0"
                                     Width="30" Height="30"
-                                    VerticalAlignment="Top"
-                                    HorizontalAlignment="Right"
-                                    Margin="10"
-                                    CornerRadius="15">
-                                <Button 
-                                    Width="20"
-                                    Command="{Binding ChangeIsLikedCommand}"
-                                    VerticalAlignment="Center" HorizontalAlignment="Center"
-                                    Background="Transparent"
-                                    BorderThickness="0">
-                                    <Image Source="/Resources/Images/Icons/heart.png" Stretch="Uniform"
-                                           Visibility="{Binding IsLiked, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    ToolTip="좋아요 토글">
+
+
+                                   Stretch="Uniform"
+                                   Width="20"
+                                   Height="20"/>
                                 </Button>
                             </Border>
+
 
                             <!-- 하단 그라디언트 + 감정 태그 -->
                             <Grid VerticalAlignment="Bottom" Height="60">
@@ -207,11 +214,13 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Margin="4" Padding="6,2"
-                                                Background="White" CornerRadius="10">
-                                                <TextBlock Text="{Binding}" Foreground="#FFACAC" FontWeight="Bold"/>
+                                            <Border Margin="4" Padding="8,3" BorderBrush="#FFFFFF" BorderThickness="1.5"
+                                                Background="Transparent" CornerRadius="13">
+                                                <TextBlock Text="{Binding}"
+                                                           Foreground="#FFFFFF" FontWeight="Bold"
+                                                           FontFamily="Noto Sans KR" FontSize="13"/>
                                             </Border>
-                                        </DataTemplate>
+                                        </DataTemplate> 
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                             </Grid>
@@ -266,7 +275,7 @@
                                  Padding="10"
                                  FontSize="15"
                                  Background="Transparent"
-                                 FontFamily="Segoe UI"
+                                 FontFamily="Noto Sans KR"
                                  LineHeight="28"/>
                         </Grid>
                     </Border>

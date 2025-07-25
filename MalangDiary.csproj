@@ -13,6 +13,7 @@
     <None Remove="Resources\Images\Icons\baby_70.png" />
     <None Remove="Resources\Images\Icons\creating.png" />
     <None Remove="Resources\Images\Icons\heart.png" />
+    <None Remove="Resources\Images\Icons\heart_outline.png" />
     <None Remove="Resources\Images\Icons\pen.png" />
     <None Remove="Resources\Images\logo\malang_logo.png" />
   </ItemGroup>
@@ -43,6 +44,9 @@
     <Resource Include="Resources\Images\Icons\heart.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\Icons\heart_outline.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Images\Icons\pen.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -54,5 +58,7 @@
   <ItemGroup>
     <Folder Include="Resources\Images\TodayDiaryImage\" />
   </ItemGroup>
+	
+	
 
 </Project>

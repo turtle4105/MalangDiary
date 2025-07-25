@@ -124,7 +124,6 @@ namespace MalangDiary.ViewModels {
 
             // 선택된 자녀색상 Binding 객체 값 변경
             SelectedChildIconColor = _usermodel.GetSelectedChildInfo().IconColor;
-            Console.WriteLine("_usermodel.GetSelectedChildInfo().IconColor:" + _usermodel.GetSelectedChildInfo().IconColor);
 
             // 오늘 일기 불러오기
             UpdateLatestDiary();
