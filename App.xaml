@@ -20,6 +20,24 @@
         <local:HeartImageConverter              x:Key="HeartImageConverter"/>
 
 
+        <!-- ChkDiary - Play&Pause Button Style -->
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="16">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
         <!-- 회색 Watermark 스타일 (회원가입 등) -->
         <Style x:Key="GrayWatermarkTextBoxStyle" TargetType="TextBox">
             <Setter Property="Foreground" Value="Black"/>

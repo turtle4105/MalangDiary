@@ -99,8 +99,8 @@ using CommunityToolkit.Mvvm.Input;
             }
         }
 
-            public event PropertyChangedEventHandler? PropertyChanged;
-            private void OnPropertyChanged([CallerMemberName] string name = null) {
+            public new event PropertyChangedEventHandler? PropertyChanged;
+            private new void OnPropertyChanged([CallerMemberName] string? name = null) {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
             }
 

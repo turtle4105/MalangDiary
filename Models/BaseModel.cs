@@ -73,6 +73,8 @@ namespace MalangDiary.Models {
             }
         }
 
+
+        /* Write .wav file To path */
         public bool WriteWavToFile(string dirPath, string filePath, byte[] byteArray)
         {
             DirectoryInfo dir = new DirectoryInfo(dirPath);

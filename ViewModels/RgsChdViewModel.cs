@@ -29,12 +29,12 @@ namespace MalangDiary.ViewModels
             });
         }
 
-        [ObservableProperty] private string name;
-        [ObservableProperty] private string birthYear;
-        [ObservableProperty] private string birthMonth;
-        [ObservableProperty] private string birthDay;
-        [ObservableProperty] private string selectedProfileColor;
-        [ObservableProperty] private bool isVoiceRecorded;
+        [ObservableProperty] private string name = "";
+        [ObservableProperty] private string birthYear = "";
+        [ObservableProperty] private string birthMonth = "";
+        [ObservableProperty] private string birthDay = "";
+        [ObservableProperty] private string selectedProfileColor = "";
+        [ObservableProperty] private bool isVoiceRecorded = false;
 
         /* Member Variables */
         private readonly RgsModel _rgsModel;

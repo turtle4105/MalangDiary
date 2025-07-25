@@ -36,14 +36,16 @@ namespace MalangDiary.Models {
 
         /* Member Mehtods */
         public void LoadData() {
-            GetLatestDiary();
+            GetTodaysDiary();
         }
 
         public DiaryInfo GetDiaryInfo() {
             return LatestDiary;
         }
 
-        public DiaryInfo GetLatestDiary() {
+
+        /* Protocol - GET_LATEST_DIARY */
+        public DiaryInfo GetTodaysDiary() {
 
             DiaryInfo ResultDiaryInfo = new();
             ResultDiaryInfo.Uid = 0;    // Default uid = 0 (No Diary)
@@ -86,6 +88,7 @@ namespace MalangDiary.Models {
 
             if (protocol == "GET_LATEST_DIARY" && response == "SUCCESS") {
 
+                ResultDiaryInfo.Title = jsonData["TITLE"]!.ToString();
                 ResultDiaryInfo.Uid = jsonData["DIARY_UID"]!.ToObject<int>();
                 ResultDiaryInfo.IntWeather = jsonData["WEATHER"]!.ToObject<int>();
                 ResultDiaryInfo.Weather = WeatherConveter.ConvertWeatherCodeToText(ResultDiaryInfo.IntWeather);
