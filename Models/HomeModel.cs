@@ -91,7 +91,7 @@ namespace MalangDiary.Models {
                 ResultDiaryInfo.Title = jsonData["TITLE"]!.ToString();
                 ResultDiaryInfo.Uid = jsonData["DIARY_UID"]!.ToObject<int>();
                 ResultDiaryInfo.Weather = jsonData["WEATHER"]!.ToString(); 
-                ResultDiaryInfo.Date = jsonData["CREATE_AT"]!.ToString();
+                ResultDiaryInfo.Date = jsonData["CREATE_AT"]!.ToString()[..10];  // Substring: 문자열 자르기, [..10]: 범위연산자 (0~10)
                 ResultDiaryInfo.Emotions = new();   // List<string> 초기화 필요
                 if (jsonData["EMOTIONS"] is not null) {
                     JArray? ArrEmotions = jsonData["EMOTIONS"]!.ToObject<JArray>();

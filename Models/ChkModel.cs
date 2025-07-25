@@ -164,15 +164,13 @@ namespace MalangDiary.Models {
 
             if (protocol == "SEND_DIARY_DETAIL" && result == "SUCCESS") {
 
-                ResultDiaryInfo.Uid = jsonData["DIARY_UID"]!.ToObject<int>();
-                ResultDiaryInfo.Title = jsonData["TITLE"]!.ToString();
-                ResultDiaryInfo.Text = jsonData["TEXT"]!.ToString();
-                ResultDiaryInfo.Weather = jsonData["WEATHER"]!.ToString();
-                //ResultDiaryInfo.IntWeather = jsonData["WEATHER"]!.ToObject<int>();
-                //ResultDiaryInfo.Weather = WeatherConveter.ConvertWeatherCodeToText(ResultDiaryInfo.IntWeather);
-                ResultDiaryInfo.IsLiked = jsonData["IS_LIKED"]!.ToObject<Boolean>();
+                ResultDiaryInfo.Uid           = jsonData["DIARY_UID"]!.ToObject<int>();
+                ResultDiaryInfo.Title         = jsonData["TITLE"]!.ToString();
+                ResultDiaryInfo.Text          = jsonData["TEXT"]!.ToString();
+                ResultDiaryInfo.Weather       = jsonData["WEATHER"]!.ToString();
+                ResultDiaryInfo.IsLiked       = jsonData["IS_LIKED"]!.ToObject<Boolean>();
                 ResultDiaryInfo.PhotoFileName = jsonData["PHOTO_PATH"]!.ToString();
-                ResultDiaryInfo.Date          = jsonData["CREATE_AT"]!.ToString();
+                ResultDiaryInfo.Date          = jsonData["CREATE_AT"]!.ToString()[..10];    // 범위 연산자 [..int] (0~int)
 
                 if (jsonData["EMOTIONS"] is not null) {
                     JArray? ArrEmotions = jsonData["EMOTIONS"]!.ToObject<JArray>();

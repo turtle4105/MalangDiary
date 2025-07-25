@@ -235,7 +235,6 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="{Binding DateText}"
                                            FontSize="15"
-                                           FontWeight="Bold"
                                            FontFamily="Noto Sans KR"
                                            Foreground="White"/>
                                 <TextBlock Grid.Column="1"

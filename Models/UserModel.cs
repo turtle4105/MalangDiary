@@ -10,6 +10,7 @@ namespace MalangDiary.Models
 {
     public class UserModel
     {
+
         /*** Member Variables ***/
 
         private void PrintHex(string title, byte[] bytes)
@@ -35,7 +36,10 @@ namespace MalangDiary.Models
             _session = session;
         }
 
+
+
         /*** ChildInfo 관련 메서드 ***/
+
 
 
         /** Member Methods **/
