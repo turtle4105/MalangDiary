@@ -1,5 +1,8 @@
 #pragma once
 #include <nlohmann/json.hpp>
+#include <winsock2.h>
+#pragma comment(lib, "ws2_32.lib")
+
 class DBManager;
 
 class ProtocolHandler {
@@ -14,7 +17,20 @@ public:
     static nlohmann::json handle_LatestDiary(const nlohmann::json& json, DBManager& db);
     // 목소리 세팅 파일
     static nlohmann::json handle_SettingVoice(const nlohmann::json& json, const std::vector<char>& payload, DBManager& db);
+    // 특정 일기 조회
+    static nlohmann::json handle_SendDiaryDetail(const nlohmann::json& json, DBManager& db, SOCKET clientSocket);
+    // 일기 삭제
+    static nlohmann::json handle_DiaryDel(const nlohmann::json& json, DBManager& db);
+    // 일기 좋아요
+    static nlohmann::json handle_UpdateLike(const nlohmann::json& json, DBManager& db);
+    // 일기 수정
+    static nlohmann::json handle_ModifyDiary(const nlohmann::json& json, const std::vector<char>& payload, DBManager& db);
+
+    static nlohmann::json handle_Calendar(const nlohmann::json& json, DBManager& db);
+
+    static nlohmann::json handle_GenDiary(const nlohmann::json& json, const std::vector<char>& payload, DBManager& db);
+
+    static nlohmann::json handle_GenDiary_SaveVoice(const std::string& json_str, const std::vector<char>& payload, DBManager& db);
 };
 
-/*“헤더로 길이 파악 → json 파싱 → 프로토콜 분기 → DBManager로 로직 실행
-→ 결과를 ProtocolHandler로 전달 → 응답 JSON 구성 → send로 클라이언트에 반환”*/
+

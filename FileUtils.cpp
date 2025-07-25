@@ -64,9 +64,6 @@ bool SaveBinaryFile(const std::string& path, const std::vector<char>& data) {
     return true;
 }
 
-
-
-
 std::string FindPhotoByDate(const std::string& parentId, int parentUid, int childUid, const std::string& date) {
     std::string basePath = GetChildFolderPath(parentId, parentUid, childUid) + "\\image";
     std::string pattern = basePath + "\\" + date + "*.jpg";  // ¿¹: 2025-07-23*.jpg

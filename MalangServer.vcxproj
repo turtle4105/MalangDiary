@@ -108,7 +108,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>mariadbcpp.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mariadbcpp.lib;libcurl.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Users\seonseo\source\repos\MalangDiary\MalangServer\x64\Debug;C:\Program Files\MariaDB\MariaDB C++ Connector 64-bit;C:\python_workspace\curl-8.15.0\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -130,6 +130,7 @@
     <ClCompile Include="DBManager.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="DiaryGenerator.cpp" />
     <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ProtocolHandler.cpp" />
@@ -137,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DBManager.h" />
+    <ClInclude Include="DiaryGenerator.h" />
     <ClInclude Include="FileUtils.h" />
     <ClInclude Include="ProtocolHandler.h" />
     <ClInclude Include="TcpServer.h" />

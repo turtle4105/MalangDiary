@@ -96,7 +96,7 @@ bool TcpServer::readExact(SOCKET sock, char* buffer, int totalBytes) {
     int received = 0;
     while (received < totalBytes) {
         int len = recv(sock, buffer + received, totalBytes - received, 0);
-        cout << "[readExact] recv returned: " << len << "\n";
+        //cout << "[readExact] recv returned: " << len << "\n";
         if (len <= 0) return false;  // 연결 끊김 or 오류
         received += len;
     }
@@ -147,29 +147,10 @@ bool TcpServer::receivePacket(SOCKET clientSocket, string& out_json, vector<char
     try {
         out_json = string(buffer.begin(), buffer.begin() + jsonSize);
 
-        //// 덤프 확인
-        //cout << u8"[DEBUG] JSON 첫 바이트 HEX: ";
-        //for (int i = 0; i < 10 && i < out_json.size(); ++i)
-        //    printf("%02X ", (unsigned char)out_json[i]);
-        //printf("\n");
-
-        //// 1. BOM 제거
-        //if (out_json.size() >= 3 &&
-        //    (unsigned char)out_json[0] == 0xEF &&
-        //    (unsigned char)out_json[1] == 0xBB &&
-        //    (unsigned char)out_json[2] == 0xBF) {
-        //    out_json = out_json.substr(3);
-        //}
-
-        //cout << u8"[DEBUG] out_json 전체 HEX: ";
-        //for (int i = 0; i < out_json.size(); ++i)
-        //    printf("%02X ", (unsigned char)out_json[i]);
-        //printf("\n");
-
         // 2. UTF-8 비정상 바이트 제거
-        while (!out_json.empty() && ((unsigned char)out_json[0] == 0xC0 || (unsigned char)out_json[0] == 0xC1 || (unsigned char)out_json[0] < 0x20)) {
-            cerr << "[경고] JSON 앞에 비정상 바이트(0x" << hex << (int)(unsigned char)out_json[0] << ") 발견 → 제거\n";
-            out_json = out_json.substr(1);
+        while (!out_json.empty() && (static_cast<unsigned char>(out_json[0]) < 0x20 || static_cast<unsigned char>(out_json[0]) == 0xC0 || static_cast<unsigned char>(out_json[0]) == 0xC1)) {
+            cerr << "[경고] JSON 앞에 비정상 바이트 0x" << hex << (int)(unsigned char)out_json[0] << " → 제거됨\n";
+            out_json.erase(0, 1);
         }
     }
     catch (const exception& e) {
@@ -204,25 +185,6 @@ void TcpServer::sendJsonResponse(SOCKET sock, const string& jsonStr) {
 }
 
 // =======================================================================
-// [sendBinary]
-// - 클라이언트에게 보낼 바이너리 파일 생성
-// =======================================================================
-
-//void TcpServer::sendBinary(SOCKET sock, const std::string& filePath) {
-//    std::ifstream file(filePath, std::ios::binary);
-//    if (!file.is_open()) {
-//        std::cerr << u8"→ [sendBinary] 바이너리 파일 열기 실패: " << filePath << std::endl;
-//        return;
-//    }
-//
-//    std::vector<char> buffer((std::istreambuf_iterator<char>(file)),
-//        std::istreambuf_iterator<char>());
-//
-//    send(sock, buffer.data(), buffer.size(), 0);
-//    std::cout << u8"→ [sendBinary] 바이너리 전송 완료 (" << buffer.size() << " bytes)\n";
-//}
-//
-// =======================================================================
 // [sendPacket]
 // - 클라이언트에게 보낼 바이너리 파일 생성
 // =======================================================================
@@ -256,5 +218,5 @@ void TcpServer::sendPacket(SOCKET sock, const std::string& jsonStr, const std::v
     std::cout << "Total Size : " << totalSize << " bytes\n";
     std::cout << "JSON Size  : " << jsonSize << " bytes\n";
     std::cout << "Payload Size: " << payloadSize << " bytes\n";
-    cout << u8" → [sendPacket]  전송 완료 ";
+    cout << u8" → [sendPacket]  전송 완료 "<< endl;
 }
