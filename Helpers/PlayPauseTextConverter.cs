@@ -10,6 +10,7 @@ namespace MalangDiary.Helpers {
     public class PlayPauseTextConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             bool isPlaying = (bool)value;
+            Console.WriteLine($"[Converter] IsPlaying = {isPlaying}");
             return isPlaying ? "❚❚" : "▶";
         }
 

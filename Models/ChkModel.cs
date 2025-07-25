@@ -22,11 +22,12 @@ namespace MalangDiary.Models {
             _base = baseModel;
         }
 
+
+
         /** Member Variables **/
         private readonly SocketManager _socket;
         private readonly UserSession _session;
         private readonly BaseModel _base;
-        private CalendarInfo CalendarInfo;
 
 
 
@@ -73,14 +74,14 @@ namespace MalangDiary.Models {
                 int cnt = 0;
                 JArray jArrayData = new();
                 if (jsonData["DATA"] is not null) {
-                    jArrayData = jsonData["DATA"]!.ToObject<JArray>();
+                    jArrayData = jsonData["DATA"]!.ToObject<JArray>()!;
                 }
 
                 foreach (var InfoOfDay in jArrayData) {
                     CalendarInfo tmp_cal_info = new()
                     {
                         Uid = InfoOfDay["DIARY_UID"]!.ToObject<int>(),
-                        Date = int.Parse(InfoOfDay["DATE"]!.ToObject<string>()),
+                        Date = int.Parse(InfoOfDay["DATE"]!.ToObject<string>()!),
                         IsWrited = InfoOfDay["IS_WRITED"]!.ToObject<bool>(),
                         IsLiked = InfoOfDay["IS_LIKED"]!.ToObject<bool>()
                     };
@@ -171,7 +172,7 @@ namespace MalangDiary.Models {
                 //ResultDiaryInfo.Weather = WeatherConveter.ConvertWeatherCodeToText(ResultDiaryInfo.IntWeather);
                 ResultDiaryInfo.IsLiked = jsonData["IS_LIKED"]!.ToObject<Boolean>();
                 ResultDiaryInfo.PhotoFileName = jsonData["PHOTO_PATH"]!.ToString();
-                ResultDiaryInfo.Date = jsonData["CREATE_AT"]!.ToString();
+                ResultDiaryInfo.Date          = jsonData["CREATE_AT"]!.ToString();
 
                 if (jsonData["EMOTIONS"] is not null) {
                     JArray? ArrEmotions = jsonData["EMOTIONS"]!.ToObject<JArray>();
@@ -189,22 +190,23 @@ namespace MalangDiary.Models {
 
 
                 /* Save Audio File  */
-                if ( byteData.Length > 0 ) {
-                    string FixedImgPath = "./Audio/DiaryAudio.wav";        // set file path
-                    _base.WriteWavToFile(FixedImgPath, byteData);          // save wav file
+                if ( byteData.Length > 0 ) {        // If byte[] contains data
+                    string FixedWavPath = "./Audio/DiaryAudio.wav";        // set file path
+                    _base.WriteWavToFile(FixedWavPath, byteData);          // save wav file
                 }
-                else if( byteData.Length == 0 ) {
+                else if( byteData.Length == 0 ) {   // else If byte[] doesn't contain data
                     Console.WriteLine("[ChkModel] No byteData(Audio)");
                 }
 
 
                 /* Check Image File */
-                bool ChkImg = false;
+                bool ChkImg;
                 if( ResultDiaryInfo.PhotoFileName.Length > 0 ) {
                     ChkImg = true;
                     return (ResultDiaryInfo, ChkImg);
                 }
                 else if( ResultDiaryInfo.PhotoFileName.Length == 0 ) {
+                    ChkImg = false;
                     return (ResultDiaryInfo, ChkImg);
                 }
             }

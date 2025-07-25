@@ -37,9 +37,9 @@ namespace MalangDiary.Helpers {
         private static void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e) {
             var passwordBox = sender as PasswordBox;
 
-            SetIsUpdating(passwordBox, true);
+            SetIsUpdating(passwordBox!, true);
 
-            SetBoundPassword(passwordBox, passwordBox.Password);
+            SetBoundPassword(passwordBox!, passwordBox!.Password);
 
             SetIsUpdating(passwordBox, false);
 

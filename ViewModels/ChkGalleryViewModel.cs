@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace MalangDiary.ViewModels {
     public class PhotoItem {
-        public string ImagePath { get; set; }
+        public string ? ImagePath { get; set; }
     }
 
     public partial class ChkGalleryViewModel : ObservableObject {

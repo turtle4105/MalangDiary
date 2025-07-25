@@ -36,14 +36,16 @@ namespace MalangDiary.Models {
 
         /* Member Mehtods */
         public void LoadData() {
-            GetLatestDiary();
+            GetTodaysDiary();
         }
 
         public DiaryInfo GetDiaryInfo() {
             return LatestDiary;
         }
 
-        public DiaryInfo GetLatestDiary() {
+
+        /* Protocol - GET_LATEST_DIARY */
+        public DiaryInfo GetTodaysDiary() {
 
             DiaryInfo ResultDiaryInfo = new();
             ResultDiaryInfo.Uid = 0;    // Default uid = 0 (No Diary)
@@ -86,6 +88,7 @@ namespace MalangDiary.Models {
 
             if (protocol == "GET_LATEST_DIARY" && response == "SUCCESS") {
 
+                ResultDiaryInfo.Title = jsonData["TITLE"]!.ToString();
                 ResultDiaryInfo.Uid = jsonData["DIARY_UID"]!.ToObject<int>();
                 ResultDiaryInfo.Weather = jsonData["WEATHER"]!.ToString(); 
                 ResultDiaryInfo.Date = jsonData["CREATE_AT"]!.ToString();
@@ -96,7 +99,7 @@ namespace MalangDiary.Models {
                     // JArray의 열거자(반복가능객체) 생성
                     var iterator = ArrEmotions?.GetEnumerator();
 
-                    while (iterator.MoveNext()) {
+                    while (iterator!.MoveNext()) {
                         var emotion = iterator.Current as JObject;
                         if (emotion is not null) {
                             Console.WriteLine("emotion[\"EMOTION\"]!.ToString():" + emotion["EMOTION"]!.ToString());

@@ -12,43 +12,46 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace MalangDiary.ViewModels {
-    public partial class ChkDiaryViewModel : ObservableObject, INotifyPropertyChanged {
+    public partial class ChkDiaryViewModel : ObservableObject {
 
-        /* Constructor */
+
         /** Constructor: 서버에서 데이터 불러오기 (테스트) -> 사진 안 됨 **/
         public ChkDiaryViewModel( ChkModel ? chkmodel, UserSession ? usersession) {
             Console.WriteLine("ChkDiaryViewModel 생성됨");
             // 서버에서 받은 데이터 예시
             ImageList.Add("/Resources/logo/malang_logo.png");
-
-            _chkModel = chkmodel!;  // not null
-            _session = usersession!;  // not null
-
-            /* test */
-            //int test_uid = 1;
-            //_session.SetCurrentDiaryUid(test_uid);
-            /********/
+            
+            _chkModel = chkmodel!;      // not null
+            _session = usersession!;    // not null
 
             SetDiary();
+
+            string WavFilePath = "./Audio/DiaryAudio.wav";
+
+            mediaPlayer = new MediaPlayer();
+
+            mediaPlayer.Open(new Uri(WavFilePath, UriKind.RelativeOrAbsolute));
         }
+
 
 
         /** Member Variables **/
         private readonly ChkModel _chkModel;
         private readonly UserSession _session;
 
-        public new event PropertyChangedEventHandler ? PropertyChanged;
-
-        [ObservableProperty] private string dateText;       // date text
-        [ObservableProperty] private string weatherText;    // weather text
-        [ObservableProperty] private string titleText;      // title text
-        [ObservableProperty] private string diaryText;      // diary text
-        [ObservableProperty] private bool isPlaying;        // whether playing audio or not
-        [ObservableProperty] private bool isLiked;
+        [ObservableProperty] private string dateText    = "";      // date text
+        [ObservableProperty] private string weatherText = "";      // weather text
+        [ObservableProperty] private string titleText   = "";      // title text
+        [ObservableProperty] private string diaryText   = "";      // diary text
+        [ObservableProperty] public bool isPlaying      = false;   // whether playing audio or not
+        [ObservableProperty] public bool isLiked        = false;   // Check whether Diary is Liked or Not
 
         private DiaryInfo CurrentDiaryInfo;   // diaryinfo
+
+        readonly MediaPlayer mediaPlayer;
 
         /* Img List from Server */
         private ObservableCollection<string> _imageList = [];
@@ -76,25 +79,34 @@ namespace MalangDiary.ViewModels {
 
         /* Play Audio */
         [RelayCommand] private void PlayPause() {
-            if( IsPlaying is true ) {
-                //PauseAudio();
-            }
-            else if( IsPlaying is false ) {
-                //PlayAudio();
-            }
+            IsPlaying = !IsPlaying; // 우선 상태부터 바꿔줌
 
-            IsPlaying = !IsPlaying;
+            if (IsPlaying) {
+                mediaPlayer.Play();
+                Console.WriteLine("[ChkDiaryViewModel][PlayPause] Now Playing");
+            }
+            else {
+                mediaPlayer.Pause();
+                Console.WriteLine("[ChkDiaryViewModel][PlayPause] Paused");
+            }
+            Console.WriteLine("IsPlaying: " + IsPlaying);
+            OnPropertyChanged(nameof(IsPlaying));
         }
+
+
 
         /* Reset Audio */
-        [RelayCommand] private static void StopAudio() {
+        [RelayCommand] private void StopAudio() {
             Console.WriteLine("[ChkDiaryViewModel] ResetAudio command executed.");
+            mediaPlayer.Stop();
         }
+
 
         /* Share Diary */
         [RelayCommand] private static void ShareDiary() {
             System.Diagnostics.Debug.WriteLine("[ChkDiaryViewModel] Share command executed");
         }
+
 
         /* Delete Diary */
         [RelayCommand] private void DeleteDiary() {
@@ -109,26 +121,21 @@ namespace MalangDiary.ViewModels {
             }
         }
 
+
         /* Change IsLiked */
         [RelayCommand] private void ChangeIsLiked() {
-            bool ChkUpdate = false;
-            if( IsLiked is true ) {
-                IsLiked = false;
-                ChkUpdate = _chkModel.UpdateDiaryLike(IsLiked);
+            bool newValue = !IsLiked; // 토글 시도 값
+            bool result = _chkModel.UpdateDiaryLike(newValue); // 서버에 전송
+
+            if (result) {
+                IsLiked = newValue; // 서버 응답이 성공이면 진짜로 반영
+                Console.WriteLine("[ChkDiaryViewModel] UpdateDiaryLike Success → IsLiked: " + IsLiked);
             }
-            else if ( IsLiked is false ) {
-                IsLiked = true;
-                ChkUpdate = _chkModel.UpdateDiaryLike(IsLiked);
+            else {
+                Console.WriteLine("[ChkDiaryViewModel] UpdateDiaryLike Failed");
             }
-            if (ChkUpdate is true) {
-                Console.WriteLine("[ChkDiaryViewModel] UpdateDiaryLike Successed");
-            }
-            else if (ChkUpdate is false) {
-                Console.WriteLine("[ChkDIaryViewModel] UpdateDiaryLike Failed");
-            }
-            Console.WriteLine("[ChkDIaryViewModel]IsLiked:" + IsLiked);
-            return;
         }
+
 
         /* Go Back */
         [RelayCommand] private static void GoBack() {
@@ -136,15 +143,13 @@ namespace MalangDiary.ViewModels {
             WeakReferenceMessenger.Default.Send(new PageChangeMessage(Enums.PageType.Goback));
         }
 
-        /* ONPC */
-        [RelayCommand] protected new void OnPropertyChanged(string name) {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
 
         /* Set Diary */
         private void SetDiary() {
             int cur_diary_uid = _session.GetCurrentDiaryUid();
+
             bool ImgExist = false;
+
             (CurrentDiaryInfo, ImgExist) = _chkModel.GetDiaryDetail(cur_diary_uid);
 
             /* ObservableProperties Assignment */

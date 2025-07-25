@@ -92,20 +92,24 @@
 
                 <!-- Restart -->
                 <Button Command="{Binding StopAudioCommand}"
-                    Width="32" Height="32" Margin="4"
-                    Style="{StaticResource RoundedButtonStyle}" Tag="16"
-                    Background="#FFF9F5" BorderBrush="#FFACAC" BorderThickness="1">
+                        Width="32" Height="32" Margin="4"
+                        Style="{StaticResource RoundedButtonStyle}" Tag="16"
+                        Background="#FFF9F5" BorderBrush="#FFACAC" BorderThickness="1">
                     <TextBlock Text="■" FontSize="14" Foreground="#FFACAC" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,3"/>
                 </Button>
                 <!-- Play & Pause -->
                 <Button Width="32" Height="32"
-                    Command="{Binding PlayPauseCommand}"
-                    Style="{StaticResource RoundedButtonStyle}"
-                    Background="#FFF9F5" BorderBrush="#FFACAC" BorderThickness="1">
+                        Command="{Binding PlayPauseCommand}"
+                        Style="{StaticResource RoundedButtonStyle}"
+                        Background="#FFF9F5"
+                        BorderBrush="#FFACAC"
+                        BorderThickness="1">
                     <TextBlock Text="{Binding IsPlaying, Converter={StaticResource PlayPauseTextConverter}}"
-                       FontSize="14" Foreground="#FFACAC"
-                       VerticalAlignment="Center" HorizontalAlignment="Center"
-                       Margin="2,0,0,3"/>
+                               FontSize="14"
+                               Foreground="#FFACAC"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Margin="2,0,0,3"/>
                 </Button>
 
                 <!-- 공유 버튼 -->
@@ -167,28 +171,34 @@
                             <!-- 배경 이미지 -->
                             <Image Source="{Binding ImageList[0]}" Stretch="UniformToFill" />
 
-                            <TextBlock Text="{Binding DataContext.GetHashCode, RelativeSource={RelativeSource Self}}" Foreground="Black"/>
-
                             <Border Background="#FFF2CC"
-                                Width="30" Height="30"
-                                VerticalAlignment="Top"
-                                HorizontalAlignment="Right"
-                                Margin="10"
-                                CornerRadius="15">
+                                    Width="30" Height="30"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Right"
+                                    Margin="10"
+                                    CornerRadius="15">
 
                                 <Button Command="{Binding ChangeIsLikedCommand}"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"
-                                    Background="#FFF2CC"
-                                    BorderThickness="0"
-                                    Width="30" Height="30"
-                                    ToolTip="좋아요 토글">
-
-
-                                   Stretch="Uniform"
-                                   Width="20"
-                                   Height="20"/>
+                                        VerticalAlignment="Stretch"
+                                        HorizontalAlignment="Stretch"
+                                        Margin="5"
+                                        Background="#FFF2CC"
+                                        BorderThickness="0"
+                                        ToolTip="좋아요 토글">
+                                    <Image Source="/Resources/Images/Icons/heart.png">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Opacity" Value="0.4"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsLiked}" Value="True">
+                                                        <Setter Property="Opacity" Value="1.0"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
                                 </Button>
+
                             </Border>
 
 
@@ -214,9 +224,9 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Margin="4" Padding="8,3" BorderBrush="#FFFFFF" BorderThickness="1.5"
+                                            <Border Margin="4" Padding="8,3" BorderBrush="#FFFFFF" BorderThickness="1.3"
                                                 Background="Transparent" CornerRadius="13">
-                                                <TextBlock Text="{Binding}"
+                                                <TextBlock Text="{Binding ., StringFormat='# {0}'}"
                                                            Foreground="#FFFFFF" FontWeight="Bold"
                                                            FontFamily="Noto Sans KR" FontSize="13"/>
                                             </Border>

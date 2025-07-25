@@ -14,13 +14,13 @@ using System.Windows.Media.Imaging;
 namespace MalangDiary.ViewModels {
     public partial class HomeViewModel : ObservableObject {
         /* Constructor */
-        public HomeViewModel(UserModel usermodel,HomeModel homemodel, UserSession user_session) {
-            _usermodel = usermodel;
-            _homemodel = homemodel;
-            _session = user_session;
-            Console.WriteLine("[HomeModel] UpdateLatestDiary() executed");
+        public HomeViewModel(UserModel ? usermodel,HomeModel ? homemodel, UserSession ? user_session) {
+            _usermodel = usermodel  !;
+            _homemodel = homemodel  !;
+            _session = user_session !;
+            Console.WriteLine("[HomeModel] UpdateTodaysDiary() executed");
             LoadChildrenFromModel();
-            UpdateLatestDiary();
+            UpdateTodaysDiary();
         }
 
         /** Member Variables **/
@@ -43,6 +43,7 @@ namespace MalangDiary.ViewModels {
         [ObservableProperty] private DiaryInfo latestDiary = new();
         [ObservableProperty] private bool hasDiary;
         [ObservableProperty] private ImageSource? diaryImageSource;
+        [ObservableProperty] private string title;
 
         public ObservableCollection<string> EmotionTags => new(LatestDiary.Emotions?.ToList() ?? []);
 
@@ -50,11 +51,14 @@ namespace MalangDiary.ViewModels {
         /** Member Methods **/
 
         /* Methods Related to UI */
-        public void UpdateLatestDiary() {
-            DiaryInfo result = _homemodel.GetLatestDiary();
+
+        /* Update Today's Diary */
+        public void UpdateTodaysDiary() {
+            DiaryInfo result = _homemodel.GetTodaysDiary();
 
             LatestDiary = result;
             HasDiary = result.Uid != 0;
+            Title = result.Title;
 
             DateText = LatestDiary.Date ?? DateTime.Now.ToString("yyyy-MM-dd");
             WeatherText = LatestDiary.Weather ?? "날씨 정보 없음";
@@ -76,22 +80,20 @@ namespace MalangDiary.ViewModels {
         }
 
 
+        /* Load Image From Local(path) */
         private static ImageSource? LoadImageFromPath(string path) {
             Console.WriteLine("LoadImageFromPath Executed");
             Console.WriteLine("path:" + path);
             Console.WriteLine("File.Exists(path):" + File.Exists(path));
-            if (!File.Exists(path)) {
 
-                Console.WriteLine("path:" + path);
-                Console.WriteLine("File.Exists(path):" + File.Exists(path));
+            if (!File.Exists(path))
                 return null;
-            }
 
-
+            using FileStream stream = new(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             BitmapImage image = new();
             image.BeginInit();
             image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = new Uri(Path.GetFullPath(path), UriKind.Absolute);
+            image.StreamSource = stream;
             image.EndInit();
             image.Freeze(); // for thread-safety
             return image;
@@ -126,7 +128,7 @@ namespace MalangDiary.ViewModels {
             SelectedChildIconColor = _usermodel.GetSelectedChildInfo().IconColor;
 
             // 오늘 일기 불러오기
-            UpdateLatestDiary();
+            UpdateTodaysDiary();
         }
 
 
