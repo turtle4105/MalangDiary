@@ -55,16 +55,6 @@ namespace MalangDiary.ViewModels {
             Console.WriteLine("[MdfDiaryViewModel] 생성자 실행됨");
             LoadDiaryInfo();
 
-            // 추가 부분 // (확인 필요)
-            //WeakReferenceMessenger.Default.Register<PageChangeMessage>(this, (r, msg) =>
-            //{
-            //    if (msg.Value == PageType.MdfDiary)
-            //    {
-            //        Console.WriteLine("[PageChangeMessage] LoadDiaryInfo 호출");
-            //        LoadDiaryInfo();
-            //    }
-            //});
-
         }
 
         public void LoadDiaryInfo()
