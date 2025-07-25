@@ -30,7 +30,8 @@ public:
 
     static nlohmann::json handle_GenDiary(const nlohmann::json& json, const std::vector<char>& payload, DBManager& db);
 
-    static nlohmann::json handle_GenDiary_SaveVoice(const std::string& json_str, const std::vector<char>& payload, DBManager& db);
+    static nlohmann::json handle_GenDiary_SaveVoice(const nlohmann::json& json, const std::vector<char>& payload, DBManager& db);
+
 };
 
 

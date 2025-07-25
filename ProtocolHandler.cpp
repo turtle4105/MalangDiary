@@ -611,84 +611,104 @@ nlohmann::json ProtocolHandler::handle_GenDiary(const nlohmann::json& json, cons
     nlohmann::json response;
     response["PROTOCOL"] = "GEN_DIARY_RESULT";
 
-    // 음성 저장 단계
-    nlohmann::json saveResp = handle_GenDiary_SaveVoice(json.dump(), payload, db);
-    if (saveResp.value("RESP", "") != "SUCCESS") {
-        return saveResp; //실패 메시지 그대로 클라한테 주려고
-    }
-    cout << u8"[1단계 완료] 음성 저장 성공. VOICE_PATH: " << saveResp.value("VOICE_PATH", "") << endl;
-
     // 요청 필드 파싱 ~ DB꺼
     int child_uid = json.value("CHILD_UID", -1);
     string child_name = json.value("NAME", "");
     string out_error_msg;
+
+    // 음성 저장 단계
+    nlohmann::json saveResp = handle_GenDiary_SaveVoice(json, payload, db);
+    if (saveResp.value("RESP", "") != "SUCCESS") {
+        return saveResp; //실패 메시지 그대로 클라한테 주려고
+    }
+    cout << u8"[handle_GenDiary-1] 음성 저장 성공. VOICE_PATH: " << saveResp.value("VOICE_PATH", "") << endl;
     // 요청 필드 파싱 ~ 파이썬꺼
     string audio_path = saveResp.value("VOICE_PATH", "");
     string embedding_data;
 
-    cout << u8"[2단계] DB에서 임베딩 벡터 불러오는 중..." << endl;
-    if (!db.getVoiceVector(child_uid, embedding_data, out_error_msg)) {
+    bool getVoiceVector_result = db.getVoiceVector(child_uid, embedding_data, out_error_msg);
+
+    cout << "[handle_GenDiary] getVoiceVector_result: " << getVoiceVector_result << endl;
+
+    cout << u8"[handle_GenDiary-2] DB에서 임베딩 벡터 불러오는 중..." << endl;
+    if (!getVoiceVector_result) {
         response["RESP"] = "FAIL";
-        response["MESSAGE"] = u8"임베딩 로딩 실패: " + out_error_msg;
+        response["MESSAGE"] = u8"임베딩 DB 로딩 실패: " + out_error_msg;
         return response;
     }
-    cout << u8"[2단계 완료] 임베딩 불러오기 성공, 길이: " << embedding_data.size() << " bytes" << endl;
+
+    string embedding_only_str;
+    if (!DiaryGenerator::extract_embedding_array(embedding_data, embedding_only_str, out_error_msg)) {  // 괄호 닫힘, 세미콜론 추가
+        response["RESP"] = "FAIL";
+        response["MESSAGE"] = u8"임베딩 문자열 변환 실패: " + out_error_msg;
+        return response; // return 누락되었음
+    }
+
+    cout << u8"[handle_GenDiary-3] 임베딩 불러오기 성공, 길이: " << embedding_data.size() << " bytes" << endl;
 
     if (child_uid == -1 || child_name.empty() || audio_path.empty() || embedding_data.empty()) {
         response["RESP"] = "FAIL";
         response["MESSAGE"] = u8"필수 필드 누락 (CHILD_UID, CHILD_NAME, AUDIO_PATH, EMBEDDING)";
         return response;
     }
-    cout << u8"[3단계 완료] 파라미터 유효성 통과" << endl;
+    cout << u8"[handle_GenDiary-4] 파라미터 유효성 통과" << endl;
 
     // Python 서버에 전송
-    cout << u8"[4단계] Python 서버 호출 시작" << endl;
+    cout << u8"[handle_GenDiary-5] Python 서버 호출 시작" << endl;
 
     nlohmann::json diary_data;
     string error_msg;
-    if (!DiaryGenerator::sendToPythonDiaryServer(audio_path, embedding_data, child_name, diary_data, error_msg)) {
+    if (!DiaryGenerator::sendToPythonDiaryServer(audio_path, embedding_only_str, child_name, diary_data, error_msg)) {
         response["RESP"] = "FAIL";
         response["MESSAGE"] = error_msg;
         return response;
     }
-    cout << u8"[4단계 완료] Python 응답 성공\n→ title: " << diary_data.value("title", "");
+    cout << u8"[handle_GenDiary-6] Python 응답 성공\n→ title: " << diary_data.value("title", "");
 
     // 응답 구성
     response["RESP"] = "SUCCESS";
     response["TITLE"] = diary_data.value("title", "");
     response["TEXT"] = diary_data.value("content", "");
     response["EMOTIONS"] = diary_data.value("emotion", "");
-    cout << u8"[5단계 완료] 최종 응답 구성 완료" << endl;
+    cout << u8"[handle_GenDiary() Done]" << endl;
 
     return response;
 }
 
-nlohmann::json ProtocolHandler::handle_GenDiary_SaveVoice(const std::string& json_str, const std::vector<char>& payload, DBManager& db) {
+nlohmann::json ProtocolHandler::handle_GenDiary_SaveVoice(const nlohmann::json& json, const std::vector<char>& payload, DBManager& db) {
     nlohmann::json response;
     response["PROTOCOL"] = "GEN_DIARY_RESULT";
+    cout << u8"[handle_GenDiary_SaveVoice] 실행" << endl;
 
-    nlohmann::json req = nlohmann::json::parse(json_str);
-
-    int child_uid = req.value("CHILD_UID", -1);
-    std::string name = req.value("NAME", "");
+    int child_uid = json.value("CHILD_UID", -1);
+    string child_name = json.value("NAME", "");
     std::string filename;  // 나중에 날짜 기반으로 채울 예정
 
-    if (child_uid < 0 || name.empty()) {
+    cout << u8"[handle_GenDiary_SaveVoice] 필드 파싱 완료" << endl;
+
+
+    if (child_uid < 0 || child_name.empty()) {
         response["RESP"] = "FAIL";
         response["MESSAGE"] = u8"CHILD_UID 또는 NAME 누락";
         return response;
     }
+    
     // 2) 부모 ID → parentId 조회
     int parents_uid;
     std::string parentId;
     if (!db.getParentsUidByChild(child_uid, parents_uid) ||
         !db.getParentIdByUID(parents_uid, parentId))
-    {
+    {   
         response["RESP"] = "FAIL";
         response["MESSAGE"] = u8"부모 정보 조회 실패";
         return response;
     }
+    cout << u8"[handle_GenDiary_SaveVoice -1] 부모 정보 조회" << endl;
+
     // 3) child voice 디렉토리 경로
+
+    cout << u8"parentsuid"<<parents_uid<<"parentsid" << parentId << "child_uid" << child_uid << endl;
+
     std::string childPath = GetChildFolderPath(parentId, parents_uid, child_uid);
     std::string voiceDir = childPath + "\\voice";
 
@@ -710,6 +730,7 @@ nlohmann::json ProtocolHandler::handle_GenDiary_SaveVoice(const std::string& jso
         response["MESSAGE"] = u8"음성 파일 저장 실패";
         return response;
     }
+    cout << u8"[handle_GenDiary_SaveVoice-2] 음성 파일 저장" << endl;
 
     // 7) DB에 voice_path 업데이트
     string out_error_msg;
@@ -718,10 +739,13 @@ nlohmann::json ProtocolHandler::handle_GenDiary_SaveVoice(const std::string& jso
         response["MESSAGE"] = out_error_msg;
         return response;
     }
+    cout << u8"[handle_GenDiary_SaveVoice-3] updateVoicePath" << endl;
+
     // **여기서 성공 리턴**
     response["RESP"] = "SUCCESS";
     response["VOICE_PATH"] = fullPath;
     cout << u8"→ [VOICE_PATH] 음성파일 저장 완료!! >0<" << endl;
+    cout << "handle_GenDiary_SaveVoice() Done" << endl;
 
     return response;
 }

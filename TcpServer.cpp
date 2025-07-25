@@ -118,28 +118,30 @@ bool TcpServer::receivePacket(SOCKET clientSocket, string& out_json, vector<char
     // 1. 8바이트 헤더 수신
     char header[8];
     if (!readExact(clientSocket, header, 8)) {
-        cerr << u8"[ERROR] 헤더 수신 실패\n";
+        cerr << u8"[receivePacket] 헤더 수신 실패\n";
         closesocket(clientSocket); //  반드시 소켓 닫아야 함
         return false;
     }
 
     // 2. 헤더 파싱
     uint32_t totalSize = 0, jsonSize = 0;
+    uint32_t payloadSize = static_cast<uint32_t>(out_payload.size());
+
     memcpy(&totalSize, header, 4);
     memcpy(&jsonSize, header + 4, 4);
 
-    cout << u8"[DEBUG] totalSize: " << totalSize << u8", jsonSize: " << jsonSize << "\n";
+    cout << u8"[receivePacket] totalSize: " << totalSize << u8", jsonSize: " << jsonSize << "PayloadSize: " << payloadSize <<endl;
 
     // 3. 헤더 유효성 검증
     if (jsonSize == 0 || jsonSize > totalSize || totalSize > 10 * 1024 * 1024) {
-        cerr << u8"[ERROR] 헤더 정보 비정상: jsonSize=" << jsonSize << u8", totalSize=" << totalSize << "\n";
+        cerr << u8"[receivePacket] 헤더 정보 비정상: jsonSize=" << jsonSize << u8", totalSize=" << totalSize << "\n";
         return false;
     }
 
     // 4. 바디 수신
     vector<char> buffer(totalSize);
     if (!readExact(clientSocket, buffer.data(), totalSize)) {
-        cerr << "[ERROR] 바디 수신 실패\n";
+        cerr << "[receivePacket] 바디 수신 실패\n";
         return false;
     }
 
@@ -167,6 +169,7 @@ bool TcpServer::receivePacket(SOCKET clientSocket, string& out_json, vector<char
     return true;
 }
 
+// 
 // =======================================================================
 // [sendJsonResponse]
 // - 클라이언트에게 보낼 json 생성

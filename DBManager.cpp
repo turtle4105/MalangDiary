@@ -639,7 +639,7 @@ bool DBManager::updateVoicePath(
         std::unique_ptr<sql::PreparedStatement> UpdateVoicePath(
             conn_->prepareStatement(
                 "UPDATE diary SET voice_path = ? WHERE child_id = ?"
-            )
+            ) // 다이어리 uid 몰라도 됨? 
         );
         UpdateVoicePath->setString(1, voice_path);
         UpdateVoicePath->setInt(2, child_uid);
@@ -684,7 +684,8 @@ bool DBManager::getVoiceVector(int child_uid, string& out_vector_json, string& o
             return false;
         }
 
-        out_vector_json = res->getString("voice_vector");
+        out_vector_json = res->getString(u8"voice_vector");
+        
         return true;
     }
     catch (sql::SQLException& e) {
@@ -721,3 +722,4 @@ bool DBManager::getVoicePath(int child_uid, std::string& out_path, std::string& 
         return false;
     }
 }
+
