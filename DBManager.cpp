@@ -301,7 +301,7 @@ bool DBManager::registerChild(
 //    ============ [오늘의 일기 조회] ============
 /*    child_uid -> title, weather, date, emotions   */
 bool DBManager::getLatestDiary(const int& child_uid, int& diary_uid, string& photo_path, std::string& title,
-    int& weather, std::string& date, std::vector<std::string>& emotions, std::string& out_error_msg) {
+    string& weather, std::string& date, std::vector<std::string>& emotions, std::string& out_error_msg) {
 
     if (!conn_) {
         out_error_msg = u8"→ [DB 오류] DB 연결 실패";
@@ -342,7 +342,7 @@ bool DBManager::getLatestDiary(const int& child_uid, int& diary_uid, string& pho
 
         diary_uid = res->getInt("diary_uid");
         title = res->getString("title");
-        weather = res->getInt("weather");
+        weather = res->getString("weather");
         date = res->getString("create_at");
         photo_path = res-> getString("photo_path");
 
@@ -380,9 +380,11 @@ bool DBManager::getDiaryDetailByUID(
     const int diary_uid,
     std::string& title,
     std::string& text,
-    int& weather,
+    std::string& weather,
     int& is_liked,
     std::string& photo_path,
+    std::string& voice_path,    // ← 추가
+
     std::string& create_at,
     std::vector<std::string>& emotions,
     std::string& out_error_msg
@@ -398,7 +400,7 @@ bool DBManager::getDiaryDetailByUID(
         // [1] 일기 상세 조회
         std::unique_ptr<sql::PreparedStatement> stmt(
             conn_->prepareStatement(R"(
-                SELECT title, refined_text, weather, is_liked, photo_path, create_at
+                SELECT title, refined_text, weather, is_liked, photo_path, voice_path, create_at
                 FROM diary
                 WHERE diary_uid = ? AND is_deleted = 0
             )")
@@ -413,10 +415,11 @@ bool DBManager::getDiaryDetailByUID(
 
         title = res->getString("title");
         text = res->getString("refined_text");
-        weather = res->getInt("weather");
+        weather = res->getString("weather");
         is_liked = res->getInt("is_liked");
         photo_path = res->getString("photo_path");
         create_at = res->getString("create_at");
+        voice_path = res->getString("voice_path");
 
         // [2] 감정 조회
         std::unique_ptr<sql::PreparedStatement> emo_stmt(
@@ -446,6 +449,7 @@ bool DBManager::getDiaryDetailByUID(
         return false;
     }
 }
+
 //    ============ [일기 삭제] ============
 /*       diary_uid -> resp       */
 bool DBManager::deleteDiaryByUid(int diary_uid, std::string& out_error_msg) {
@@ -512,7 +516,7 @@ bool DBManager::Update_DiaryLiked(int diary_uid, int is_liked, string& out_error
 /*         create_at , emotions, photo_binary, out_error_msg           */
 
 bool DBManager::Modify_diary(int diary_uid, const string& title,
-    const string& text, int weather,
+    const string& text, string& weather,
     int is_liked, const string& create_at,
     const vector<string>& emotions,
     const string& photo_path, string& out_error_msg) {
@@ -531,7 +535,7 @@ bool DBManager::Modify_diary(int diary_uid, const string& title,
         );
         UpdateDiary->setString(1, title);
         UpdateDiary->setString(2, text);
-        UpdateDiary->setInt(3, weather);
+        UpdateDiary->setString(3, weather);
         UpdateDiary->setInt(4, is_liked);
         UpdateDiary->setString(5, photo_path);
         UpdateDiary->setString(6, create_at);
@@ -540,9 +544,10 @@ bool DBManager::Modify_diary(int diary_uid, const string& title,
         int affected = UpdateDiary->executeUpdate();
 
         if (affected == 0) {
-            out_error_msg = u8"→ [DB 오류] 일기 없음 또는 이미 삭제됨";
-            return false;
+            // 그래도 diary_uid는 존재하므로 성공으로 간주해도 됨
+            cout << "[INFO] UPDATE 영향 없음 (값 동일), diary_uid는 유효함" << endl;
         }
+    
 
         // [2-1] 감정 삭제
         std::unique_ptr<sql::PreparedStatement> del_emo(
@@ -684,7 +689,7 @@ bool DBManager::getVoiceVector(int child_uid, string& out_vector_json, string& o
             return false;
         }
 
-        out_vector_json = res->getString(u8"voice_vector");
+        out_vector_json = res->getString("voice_vector");
         
         return true;
     }
@@ -723,3 +728,81 @@ bool DBManager::getVoicePath(int child_uid, std::string& out_path, std::string& 
     }
 }
 
+bool DBManager::insertGeneratedDiary(
+    int child_uid,
+    const std::string& title,
+    const std::string& text,
+    const string& weather,
+    const std::string& voice_path,
+    const std::vector<std::string>& emotions,
+    const std::string& create_at,
+    std::string& out_error_msg,
+    int& out_diary_uid) {
+    if (!conn_) {
+        out_error_msg = u8"DB 연결 안 됨";
+        return false;
+    }
+
+    try {
+        // [1] diary INSERT
+        std::unique_ptr<sql::PreparedStatement> stmt(
+            conn_->prepareStatement(R"(
+                INSERT INTO diary (child_id, title, refined_text, weather, voice_path, is_liked, create_at)
+                VALUES (?, ?, ?, ?, ?, 0, ?)
+            )")
+        );
+        stmt->setInt(1, child_uid);
+        stmt->setString(2, title);
+        stmt->setString(3, text);
+        stmt->setString(4, weather);
+        stmt->setString(5, voice_path);
+        stmt->setString(6, create_at);
+        stmt->executeUpdate();
+
+        // [2] diary_uid 얻기
+        int diary_uid = -1;
+        {
+            std::unique_ptr<sql::Statement> getLastId(conn_->createStatement());
+            std::unique_ptr<sql::ResultSet> rs(getLastId->executeQuery("SELECT LAST_INSERT_ID()"));
+            if (rs->next()) {
+                diary_uid = rs->getInt(1);
+            }
+            else {
+                out_error_msg = "diary_uid 조회 실패";
+                return false;
+            }
+        }
+
+        // [3] 감정 없을 때 방어 처리
+        // 감정 최대 5개까지만 저장
+        std::string emo1, emo2, emo3, emo4, emo5;
+        if (emotions.size() > 0) emo1 = emotions[0];
+        if (emotions.size() > 1) emo2 = emotions[1];
+        if (emotions.size() > 2) emo3 = emotions[2];
+        if (emotions.size() > 3) emo4 = emotions[3];
+        if (emotions.size() > 4) emo5 = emotions[4];
+
+        std::unique_ptr<sql::PreparedStatement> emoStmt(
+            conn_->prepareStatement(R"(
+        INSERT INTO emotions (diary_uid, emotion_1, emotion_2, emotion_3, emotion_4, emotion_5)
+        VALUES (?, ?, ?, ?, ?, ?)
+    )")
+        );
+
+        emoStmt->setInt(1, diary_uid);
+        emoStmt->setString(2, emo1);
+        emoStmt->setString(3, emo2);
+        emoStmt->setString(4, emo3);
+        emoStmt->setString(5, emo4);
+        emoStmt->setString(6, emo5);
+        emoStmt->executeUpdate();
+
+        out_diary_uid = diary_uid;
+
+        return true;
+    }
+    catch (const sql::SQLException& e) {
+        out_error_msg = u8"SQL 오류: " + std::string(e.what());
+        return false;
+    }
+}

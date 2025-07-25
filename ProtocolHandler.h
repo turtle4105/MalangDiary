@@ -18,7 +18,7 @@ public:
     // 목소리 세팅 파일
     static nlohmann::json handle_SettingVoice(const nlohmann::json& json, const std::vector<char>& payload, DBManager& db);
     // 특정 일기 조회
-    static nlohmann::json handle_SendDiaryDetail(const nlohmann::json& json, DBManager& db, SOCKET clientSocket);
+    static void handle_SendDiaryDetail(const nlohmann::json& json, DBManager& db, SOCKET clientSocket);
     // 일기 삭제
     static nlohmann::json handle_DiaryDel(const nlohmann::json& json, DBManager& db);
     // 일기 좋아요
@@ -31,6 +31,7 @@ public:
     static nlohmann::json handle_GenDiary(const nlohmann::json& json, const std::vector<char>& payload, DBManager& db);
 
     static nlohmann::json handle_GenDiary_SaveVoice(const nlohmann::json& json, const std::vector<char>& payload, DBManager& db);
+
 
 };
 

@@ -47,7 +47,7 @@ public:
     // 초기화면 일기조회
     bool getLatestDiary(const int& child_uid, int& diary_uid,
         string& title, string& photo_path,
-        int& weather,
+        string& weather,
         string& date,
         vector<string>& emotions, string& out_error_msg);
 
@@ -68,8 +68,8 @@ public:
 
     // 일기 조회
     bool getDiaryDetailByUID(
-        int diary_uid, string& title, string& text, int& weather,
-        int& is_liked, string& photo_path, string& create_at, vector<string>& emotions, string& out_error_msg
+        int diary_uid, string& title, string& text, string& weather,
+        int& is_liked, string& photo_path, std::string& voice_path, string& create_at, vector<string>& emotions, string& out_error_msg
     );
 
     // 일기 삭제
@@ -81,7 +81,7 @@ public:
     // 일기 수정 저장
     bool Modify_diary(int diary_uid,
         const string& title, const string& text,
-        int weather, int is_liked,
+        string& weather, int is_liked,
         const string& create_at,
         const vector<string>& emotions,
         const string& photo_path,
@@ -92,8 +92,8 @@ public:
         std::vector<CalendarData>& out_data, string& out_error_msg);
 
     // 일기 생성 결과
-    bool GenDiaryResult(int child_uid, string& name, int diary_uid,
-        string& title, const vector<string>& emotions, string& out_error_msg);
+    //bool GenDiaryResult(int child_uid, string& name, int diary_uid,
+    //    string& title, const vector<string>& emotions, string& out_error_msg);
 
     // 일기 음성 저장
     bool updateVoicePath(
@@ -104,6 +104,17 @@ public:
 
     bool getVoicePath(int child_uid, std::string& out_path, std::string& out_error_msg);
 
+    bool insertGeneratedDiary(
+        int child_uid,
+        const std::string& title,
+        const std::string& text,
+        const std::string& weather, const string& voice_path,
+        const std::vector<std::string>& emotions,
+        const std::string& create_at,  // 오늘 날짜
+        std::string& out_error_msg,
+        int& out_diary_uid // 추가
+
+    );
 
 
 

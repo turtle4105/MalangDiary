@@ -203,7 +203,7 @@ nlohmann::json ProtocolHandler::handle_LatestDiary(const nlohmann::json& json, D
     // [1] 관련 변수 선언
     // - 일기
     string title;
-    int weather;
+    string weather;
     int diary_uid;
     string create_at;
     vector<string> emotions;
@@ -370,40 +370,46 @@ nlohmann::json ProtocolHandler::handle_SettingVoice(const nlohmann::json& json, 
 }
 
 // [특정 일기 조회 handler]
-nlohmann::json ProtocolHandler::handle_SendDiaryDetail(const nlohmann::json& json, DBManager& db, SOCKET clientSocket) {
+void ProtocolHandler::handle_SendDiaryDetail(const nlohmann::json& json, DBManager& db, SOCKET clientSocket) {
     nlohmann::json response;
     response["PROTOCOL"] = "SEND_DIARY_DETAIL";
     cout << u8"[SEND_DIARY_DETAIL] 요청:\n" << json.dump(2) << endl;
 
+    // [1] 필드 선언
     int diary_uid = json.value("DIARY_UID", -1);
     string title;
     string text;
-    int weather = 0;
+    string weather;
     int is_liked = 0;
     string photo_path;
+    string voice_path;
     string create_at;
     vector<string> emotions;
     string out_error_msg;
 
+    // [2] 필수 파라미터 확인
     if (diary_uid == -1) {
         response["RESP"] = "FAIL";
         response["MESSAGE"] = u8"DIARY_UID 누락됨";
-        return response;
+        TcpServer::sendJsonResponse(clientSocket, response.dump());
+        return;
     }
 
-    if (!db.getDiaryDetailByUID(diary_uid, title, text, weather, is_liked, photo_path, create_at, emotions, out_error_msg)) {
+    // [3] DB에서 일기 상세 조회 (voice_path 포함되도록 getDiaryDetailByUID 수정 필요)
+    if (!db.getDiaryDetailByUID(diary_uid, title, text, weather, is_liked, photo_path, voice_path, create_at, emotions, out_error_msg)) {
         response["RESP"] = "FAIL";
         response["MESSAGE"] = out_error_msg;
-        return response;
+        TcpServer::sendJsonResponse(clientSocket, response.dump());
+        return;
     }
 
-    // 감정 배열 구성
+    // [4] 감정 배열 구성
     nlohmann::json emotion_array = nlohmann::json::array();
     for (const auto& emo : emotions) {
         emotion_array.push_back({ {"EMOTION", emo} });
     }
 
-    // 메타 응답 구성
+    // [5] JSON 응답 데이터 구성
     response["RESP"] = "SUCCESS";
     response["DIARY_UID"] = diary_uid;
     response["TITLE"] = title;
@@ -415,10 +421,40 @@ nlohmann::json ProtocolHandler::handle_SendDiaryDetail(const nlohmann::json& jso
     response["EMOTIONS"] = emotion_array;
     response["MESSAGE"] = u8"조회 성공";
 
-    // [1] 메타 정보 먼저 전송
-    TcpServer::sendJsonResponse(clientSocket, response.dump()); 
+    // [6] 음성 파일 경로 생성 및 로드
+    std::vector<char> voice_payload;
 
-    // [2] 이미지 전송 (photo_path 있을 경우)
+    if (!voice_path.empty()) {
+        // [1] 앞에 '/' 제거 (상대 경로로 만들기)
+        std::string cleanVoicePath = (voice_path[0] == '/') ? voice_path.substr(1) : voice_path;
+
+        // [2] 절대 경로 생성
+        std::string abs_voice_path =  cleanVoicePath;
+        std::replace(abs_voice_path.begin(), abs_voice_path.end(), '/', '\\');
+
+        // [3] 파일 로드 시도
+        std::ifstream voice_file(abs_voice_path, std::ios::binary);
+        if (voice_file) {
+            voice_payload.assign(std::istreambuf_iterator<char>(voice_file), std::istreambuf_iterator<char>());
+            cout << u8"→ [SEND_DIARY_DETAIL] 음성 파일 로드 완료 (" << voice_payload.size() << " bytes)" << endl;
+        }
+        else {
+            cerr << u8"[오류] 음성 파일 열기 실패: " << abs_voice_path << endl;
+        }
+    }
+    else {
+        cout << u8"[INFO] voice_path 비어 있음. 음성 파일 전송 생략됨." << endl;
+    }
+
+    // [7] 메타 JSON + 음성 payload 전송
+    if (voice_payload.empty()) {
+        TcpServer::sendJsonResponse(clientSocket, response.dump());
+    }
+    else {
+        TcpServer::sendPacket(clientSocket, response.dump(), voice_payload);
+    }
+
+    // [8] 사진이 존재할 경우 두 번째 전송
     if (!photo_path.empty()) {
         std::string cleanPath = photo_path;
         if (!cleanPath.empty() && cleanPath[0] == '/')
@@ -445,10 +481,9 @@ nlohmann::json ProtocolHandler::handle_SendDiaryDetail(const nlohmann::json& jso
         }
     }
 
+    // [9] 디버깅용 출력
     cout << response.dump(2) << endl;
-    return response;
 }
-
 // [일기 삭제 handler]
 nlohmann::json ProtocolHandler::handle_DiaryDel(const nlohmann::json& json, DBManager& db) {
     nlohmann::json response;
@@ -520,11 +555,14 @@ nlohmann::json ProtocolHandler::handle_ModifyDiary(const nlohmann::json& json, c
     response["PROTOCOL"] = "MODIFY_DIARY";
 
     // [1] 필드 파싱
+    int child_uid = json.value("CHILD_UID", -1);
     int diary_uid = json.value("DIARY_UID", -1);
     std::string title = json.value("TITLE", "");
     std::string text = json.value("TEXT", "");
-    int weather = json.value("WEATHER", 0);
     int is_liked = json.value("IS_LIKED", 0);
+
+    std::string weatherStr = json.value("WEATHER", "");
+
     std::string photo_filename = json.value("PHOTO_FILENAME", "");
     std::string create_at = json.value("CREATE_AT", "");
 
@@ -534,33 +572,54 @@ nlohmann::json ProtocolHandler::handle_ModifyDiary(const nlohmann::json& json, c
         emotions.push_back(e.value("EMOTION", ""));
     }
 
-    // [3] 사진 경로 및 저장
-    std::string photo_path = "/image/" + photo_filename;
-    std::string abs_path = "user_data/image/" + photo_filename;     // 실제 저장용
-    std::replace(abs_path.begin(), abs_path.end(), '/', '\\');
-
-    if (!SaveBinaryFile(abs_path, payload)) {
+    // [3] 부모 ID 조회
+    int parent_uid;
+    std::string parent_id;
+    if (!db.getParentsUidByChild(child_uid, parent_uid) ||
+        !db.getParentIdByUID(parent_uid, parent_id)) {
         response["RESP"] = "FAIL";
-        response["MESSAGE"] = u8"사진 저장 실패";
+        response["MESSAGE"] = u8"부모 정보 조회 실패";
         return response;
     }
-    // [4] DB 수정
+
+    // [4] 경로 생성
+    std::string abs_path = GetChildFolderPath(parent_id, parent_uid, child_uid) + "\\image\\" + photo_filename;
+    std::string photo_path = "/" + parent_id + "_" + std::to_string(parent_uid) + "/" +
+        std::to_string(child_uid) + "/image/" + photo_filename;
+    std::replace(abs_path.begin(), abs_path.end(), '/', '\\');
+
+    // [5] 사진 저장 (payload가 있을 경우만)
+    if (!payload.empty()) {
+        cout << u8"→ [사진 저장 경로] " << abs_path << endl;
+        if (!SaveBinaryFile(abs_path, payload)) {
+            response["RESP"] = "FAIL";
+            response["MESSAGE"] = u8"사진 저장 실패";
+            return response;
+        }
+    }
+
+    else {
+        cout << u8"→ [사진 저장 건너뜀] payload 없음" << endl;
+    }
+
+    // [6] DB 수정
     std::string error_msg;
-    bool result = db.Modify_diary(diary_uid, title, text, weather, is_liked, create_at, emotions, photo_path, error_msg);
+    bool result = db.Modify_diary(diary_uid, title, text, weatherStr, is_liked, create_at, emotions, photo_path, error_msg);
 
     if (!result) {
         response["RESP"] = "FAIL";
         response["MESSAGE"] = toUTF8_safely(error_msg);
         return response;
     }
-    // [5] 성공 응답
+
+    // [7] 성공 응답
     response["RESP"] = "SUCCESS";
     response["MESSAGE"] = u8"일기 수정 성공";
-    cout << u8"→ [MESSAGE] 일기 수정 반영 완료" << endl;
 
+    cout << u8"→ [MESSAGE] 일기 수정 반영 완료" << endl;
+    cout << response.dump(2);
     return response;
 }
-
 // [달력 조회 handler]
 nlohmann::json ProtocolHandler::handle_Calendar(const nlohmann::json& json, DBManager& db) {
     cout << u8"[handle_Calendar] 요청:\n" << json.dump(2) << endl;
@@ -605,7 +664,6 @@ nlohmann::json ProtocolHandler::handle_Calendar(const nlohmann::json& json, DBMa
     return response;
 }
 
-
 nlohmann::json ProtocolHandler::handle_GenDiary(const nlohmann::json& json, const std::vector<char>& payload, DBManager& db) {
     cout << u8"[handle_GenDiary] 요청:\n" << json.dump(2) << endl;
     nlohmann::json response;
@@ -615,6 +673,15 @@ nlohmann::json ProtocolHandler::handle_GenDiary(const nlohmann::json& json, cons
     int child_uid = json.value("CHILD_UID", -1);
     string child_name = json.value("NAME", "");
     string out_error_msg;
+    std::time_t t = std::time(nullptr);
+    std::tm tm;
+    localtime_s(&tm, &t);
+    int out_diary_uid;
+    std::ostringstream oss;
+    oss << std::put_time(&tm, "%Y-%m-%d");
+    string today_str = oss.str();
+
+    response["DATE"] = today_str;
 
     // 음성 저장 단계
     nlohmann::json saveResp = handle_GenDiary_SaveVoice(json, payload, db);
@@ -664,12 +731,40 @@ nlohmann::json ProtocolHandler::handle_GenDiary(const nlohmann::json& json, cons
         return response;
     }
     cout << u8"[handle_GenDiary-6] Python 응답 성공\n→ title: " << diary_data.value("title", "");
+    // 오늘 날짜 얻기
 
+    // 감정 리스트 파싱
+    std::vector<std::string> emotion_list;
+    for (const auto& e : diary_data["emotion"]) {
+        emotion_list.push_back(e);
+    }
+
+    bool insert_result = db.insertGeneratedDiary(
+        child_uid,
+        diary_data.value("title", ""),
+        diary_data.value("content", ""),
+        diary_data.value("weather", ""),  // weather 초기값 또는 선택값으로 설정
+        audio_path,
+        emotion_list,
+        today_str,
+        out_error_msg,
+        out_diary_uid
+    );
+
+    if (!insert_result) {
+        response["RESP"] = "FAIL";
+        response["MESSAGE"] = out_error_msg;
+        return response;
+    }
     // 응답 구성
     response["RESP"] = "SUCCESS";
+    response["DIARY_UID"] = out_diary_uid;
     response["TITLE"] = diary_data.value("title", "");
     response["TEXT"] = diary_data.value("content", "");
-    response["EMOTIONS"] = diary_data.value("emotion", "");
+    response["EMOTIONS"] = nlohmann::json::array();
+    for (const auto& emo : diary_data["emotion"]) {
+        response["EMOTIONS"].push_back({ {"EMOTION", emo} });
+    }
     cout << u8"[handle_GenDiary() Done]" << endl;
 
     return response;
@@ -685,7 +780,6 @@ nlohmann::json ProtocolHandler::handle_GenDiary_SaveVoice(const nlohmann::json& 
     std::string filename;  // 나중에 날짜 기반으로 채울 예정
 
     cout << u8"[handle_GenDiary_SaveVoice] 필드 파싱 완료" << endl;
-
 
     if (child_uid < 0 || child_name.empty()) {
         response["RESP"] = "FAIL";
@@ -732,14 +826,6 @@ nlohmann::json ProtocolHandler::handle_GenDiary_SaveVoice(const nlohmann::json& 
     }
     cout << u8"[handle_GenDiary_SaveVoice-2] 음성 파일 저장" << endl;
 
-    // 7) DB에 voice_path 업데이트
-    string out_error_msg;
-    if (!db.updateVoicePath(child_uid, fullPath, out_error_msg)) {
-        response["RESP"] = "FAIL";
-        response["MESSAGE"] = out_error_msg;
-        return response;
-    }
-    cout << u8"[handle_GenDiary_SaveVoice-3] updateVoicePath" << endl;
 
     // **여기서 성공 리턴**
     response["RESP"] = "SUCCESS";
