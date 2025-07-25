@@ -23,8 +23,7 @@
 python 3.10이하
 pip  install -r requirements.txt  - 의존성 설치
 
-python main.py < nul - 서버구동 
-: faster-whisper  cdnn관련 에러발생시 cpu로 구동
+python main.py < nul - 서버구동  -  faster-whisper  cdnn관련 에러발생시 cpu로 구동
 
 
 2. c++ 서버 구동방법
