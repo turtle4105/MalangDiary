@@ -125,36 +125,57 @@ namespace MalangDiary.Models {
                         {
                             Console.WriteLine("[DiaryModel] GEN_DIARY_RESULT 수신");
 
-                                            // 값 추출
+                            // 값 추출
                             int diaryUid = json["DIARY_UID"]?.ToObject<int>() ?? 0;
                             string title = json["TITLE"]?.ToString() ?? "(제목 없음)";
+                            string date = json["DATE"]?.ToString() ?? string.Empty;
                             string text = json["TEXT"]?.ToString() ?? json["MESSAGE"]?.ToString() ?? "(내용 없음)";
-                            string[] emotions = json["EMOTIONS"]?
-                                .Select(e => e?["EMOTION"]?.ToString() ?? "")
-                                .ToArray() ?? Array.Empty<string>();
+                            string[] emotions;
 
-                                            // CurrentDiaryInfo 설정
+                            var emotionsToken = json["EMOTIONS"];
+                            if (emotionsToken != null && emotionsToken.Type == JTokenType.String)
+                            {
+                                // 서버에서 문자열로 온 경우
+                                emotions = emotionsToken.ToString()
+                                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                    .Select(e => e.Trim())
+                                    .ToArray();
+                            }
+                            else if (emotionsToken != null && emotionsToken.Type == JTokenType.Array)
+                            {
+                                // JSON 배열로 온 경우
+                                emotions = emotionsToken
+                                    .Select(e => e?["EMOTION"]?.ToString() ?? "")
+                                    .ToArray();
+                            }
+                            else
+                            {
+                                emotions = Array.Empty<string>();
+                            }
+
+
+                            // CurrentDiaryInfo 설정
                             CurrentDiaryInfo = new DiaryInfo
                             {
                                 Uid = diaryUid,
                                 Title = title,
                                 Text = text,
                                 Emotions = emotions.ToList(),
-                                Date = DateTime.Now.ToString("yyyy-MM-dd"),
+                                Date = date,
                                 IntWeather = 0,
                                 Weather = "알 수 없음",
                                 IsLiked = false,
                                 PhotoFileName = ""
                             };
 
-                                            // 결과 저장
+                            // 결과 저장
                             resultTitle = title;
                             resultText = text;
                             resultEmotions = emotions;
 
                             _session.SetCurrentDiaryUid(diaryUid);
 
-                                            // 페이지 전환
+                            // 페이지 전환
                             Application.Current.Dispatcher.Invoke(() =>
                             {
                                 Console.WriteLine("[DiaryModel] MdfDiary로 이동 메시지 전송");
@@ -171,7 +192,7 @@ namespace MalangDiary.Models {
 
                             if (resp == "SUCCESS")
                             {
-                                                 // 홈 화면으로 전환
+                                // 홈 화면으로 전환
                                 Application.Current.Dispatcher.Invoke(() =>
                                 {
                                     Console.WriteLine("[DiaryModel] 일기 수정 성공 → 홈 화면으로 이동");

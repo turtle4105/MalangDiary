@@ -101,7 +101,10 @@
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="377">
                         <Button Content="날짜" Width="60" Height="31" Background="White" Foreground="Black" BorderBrush="Gray"/>
-                        <Button Content="오늘 날짜" Width="156" Height="31" Background="White" Foreground="Black" BorderBrush="Gray"/>
+                        <Button Width="156" Height="31"
+                            Background="White" Foreground="Black" BorderBrush="Gray"
+                            Content="{Binding Date}"
+                            Command="{Binding UseDateCommand}" />  
                         <Button Content="날씨" Width="60" Height="31" Background="White" Foreground="Black" BorderBrush="Gray"/>
                         <Border CornerRadius="0" BorderBrush="Gray" BorderThickness="1">
                             <ComboBox Width="100" Height="30" FontSize="13"
@@ -128,23 +131,6 @@
 
                             <TextBlock Text="{Binding PhotoFileName}" FontSize="12" HorizontalAlignment="Center" Foreground="Gray"/>
 
-                            <!--<ItemsControl ItemsSource="{Binding EmotionList}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel HorizontalAlignment="Center" Width="374"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Style="{StaticResource EmotionDeleteStyle}" CornerRadius="13" Height="26">
-                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding}" Foreground="#FFACAC" FontWeight="Bold" Margin="5,0"/>
-                                                <TextBlock Text="✕" Foreground="#FFACAC" FontWeight="Bold" Margin="0,0,5,0" Cursor="Hand"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>-->
                             <ItemsControl ItemsSource="{Binding EmotionList}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -186,19 +172,21 @@
                     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="0" Margin="0" MinHeight="390">
                         <Grid>
                             <Canvas IsHitTestVisible="False">
-                                <Line Style="{StaticResource NoteLineStyle}" Y1="28" Y2="28"/>
+                                <Line Style="{StaticResource NoteLineStyle}" Y1="30" Y2="30"/>
                                 <Line Style="{StaticResource NoteLineStyle}" Y1="56" Y2="56"/>
-                                <Line Style="{StaticResource NoteLineStyle}" Y1="84" Y2="84"/>
-                                <Line Style="{StaticResource NoteLineStyle}" Y1="112" Y2="112"/>
-                                <Line Style="{StaticResource NoteLineStyle}" Y1="140" Y2="140"/>
-                                <Line Style="{StaticResource NoteLineStyle}" Y1="168" Y2="168"/>
-                                <Line Style="{StaticResource NoteLineStyle}" Y1="196" Y2="196"/>
+                                <Line Style="{StaticResource NoteLineStyle}" Y1="80" Y2="80"/>
+                                <Line Style="{StaticResource NoteLineStyle}" Y1="104" Y2="104"/>
+                                <Line Style="{StaticResource NoteLineStyle}" Y1="128" Y2="128"/>
+                                <Line Style="{StaticResource NoteLineStyle}" Y1="152" Y2="152"/>
+                                <Line Style="{StaticResource NoteLineStyle}" Y1="176" Y2="176"/>
+                                <Line Style="{StaticResource NoteLineStyle}" Y1="200" Y2="200"/>
                                 <Line Style="{StaticResource NoteLineStyle}" Y1="224" Y2="224"/>
-                                <Line Style="{StaticResource NoteLineStyle}" Y1="252" Y2="252"/>
-                                <Line Style="{StaticResource NoteLineStyle}" Y1="280" Y2="280"/>
-                                <Line Style="{StaticResource NoteLineStyle}" Y1="308" Y2="308"/>
-                                <Line Style="{StaticResource NoteLineStyle}" Y1="336" Y2="336"/>
-                                <Line Style="{StaticResource NoteLineStyle}" Y1="364" Y2="364"/>
+                                <Line Style="{StaticResource NoteLineStyle}" Y1="248" Y2="248"/>
+                                <Line Style="{StaticResource NoteLineStyle}" Y1="272" Y2="272"/>
+                                <Line Style="{StaticResource NoteLineStyle}" Y1="296" Y2="296"/>
+                                <Line Style="{StaticResource NoteLineStyle}" Y1="320" Y2="320"/>
+                                <Line Style="{StaticResource NoteLineStyle}" Y1="344" Y2="344"/>
+                                <Line Style="{StaticResource NoteLineStyle}" Y1="370" Y2="370"/>
                             </Canvas>
                             <TextBox Text="{Binding RefinedText, Mode=TwoWay}"
                                      AcceptsReturn="True"

@@ -27,5 +27,6 @@ namespace MalangDiary.Views
             InitializeComponent();
 
         }
+
     }
 }

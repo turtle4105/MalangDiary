@@ -29,15 +29,18 @@ namespace MalangDiary.ViewModels {
         [ObservableProperty] private string photoFileName = string.Empty;
         [ObservableProperty] private string selectedWeather = string.Empty;
         [ObservableProperty] private bool isImageAttached = true;
-        [ObservableProperty] private ImageSource? photoPreview; 
+        [ObservableProperty] private ImageSource? photoPreview;
+
 
         private readonly DiaryModel _diaryModel;
         private string? _selectedImagePath = null;
+        private readonly UserSession _session;
 
-
-        public MdfDiaryViewModel(DiaryModel diaryModel)
+        public MdfDiaryViewModel(DiaryModel diaryModel, UserSession? usersession)
         {
             _diaryModel = diaryModel;
+            _session = usersession ?? throw new ArgumentNullException(nameof(usersession)); 
+            EmotionList = new ObservableCollection<string>();
 
             for (int i = 1; i <= 8; i++)
             {
@@ -46,8 +49,20 @@ namespace MalangDiary.ViewModels {
 
             SelectedWeather = WeatherList.FirstOrDefault() ?? string.Empty;
 
+
             Console.WriteLine("[MdfDiaryViewModel] 생성자 실행됨");
             LoadDiaryInfo();
+
+            // 추가 부분 // (확인 필요)
+            //WeakReferenceMessenger.Default.Register<PageChangeMessage>(this, (r, msg) =>
+            //{
+            //    if (msg.Value == PageType.MdfDiary)
+            //    {
+            //        Console.WriteLine("[PageChangeMessage] LoadDiaryInfo 호출");
+            //        LoadDiaryInfo();
+            //    }
+            //});
+
         }
 
         public void LoadDiaryInfo()
@@ -99,17 +114,34 @@ namespace MalangDiary.ViewModels {
                 return;
             }
 
+            // 감정이 한 덩어리로 들어온 경우 분리 처리
+            if (EmotionList.Count == 1 && EmotionList[0].Contains(","))
+            {
+                var split = EmotionList[0].Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                          .Select(e => e.Trim())
+                                          .ToList();
+
+                EmotionList.Clear();
+                foreach (var em in split)
+                    EmotionList.Add(em);
+            }
+
+            // json 구성
             var jsonObj = new
             {
                 PROTOCOL = "MODIFY_DIARY",
                 TITLE = Title,
                 TEXT = RefinedText,
                 WEATHER = SelectedWeather,
-                IS_LIKED = false,
-                PHOTO_FILENAME = PhotoFileName,
+                DIARY_UID = _session.GetCurrentDiaryUid(),
+                CHILD_UID = _session.GetCurrentChildUid(),
+                IS_LIKED = 0,
+                PHOTO_FILENAME = PhotoFileName ?? "",
                 CREATE_AT = Date,
-                EMOTIONS = EmotionList.Select(e => new { EMOTION = e }).ToArray()
+                EMOTIONS = (EmotionList ?? new ObservableCollection<string>())
+                           .Select(e => new { EMOTION = e }).ToArray()
             };
+
 
             string jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj);
             byte[] imageBytes = Array.Empty<byte>();
@@ -127,6 +159,7 @@ namespace MalangDiary.ViewModels {
             };
 
             _diaryModel.SendModifyDiary(item);
+            //WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.Home));
         }
         
         [RelayCommand]
@@ -147,7 +180,7 @@ namespace MalangDiary.ViewModels {
 
                 Console.WriteLine($"[UploadImage] 선택된 이미지: {fileName}");
 
-                        // 이미지 임시 저장
+                // 이미지 임시 저장
                 string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
                 Directory.CreateDirectory(saveDir);
                 string savePath = Path.Combine(saveDir, fileName);
