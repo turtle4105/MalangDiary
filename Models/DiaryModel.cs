@@ -41,7 +41,6 @@ namespace MalangDiary.Models {
         private readonly UserModel _userModel;
         public string VoicePath { get; set; }
         public DiaryInfo? CurrentDiaryInfo;
-        //public DiaryInfo CurrentDiaryInfo;
 
         private string? resultTitle;
         private string? resultText;
@@ -84,7 +83,7 @@ namespace MalangDiary.Models {
 
             int childUid = _session.GetCurrentChildUid();
 
-            // UserModel에서 자녀 이름 찾기
+                    // UserModel에서 자녀 이름 찾기
             string childName = _userModel.GetAllChildInfo()
                 .FirstOrDefault(c => c.Uid == childUid).Name ?? "Unknown";
 
@@ -163,8 +162,7 @@ namespace MalangDiary.Models {
                                 Console.WriteLine("[DiaryModel] MdfDiary로 이동 메시지 전송");
                                 WeakReferenceMessenger.Default.Send(new PageChangeMessage(PageType.MdfDiary));
                             });
-
-                            break; // 수신 완료 후 루프 탈출
+                            break; 
                         }
                         else if (protocol == "MODIFY_DIARY")
                         {
@@ -185,12 +183,9 @@ namespace MalangDiary.Models {
                             else
                             {
                                 Console.WriteLine("[DiaryModel] 일기 수정 실패: " + message);
-                               
                             }
-
                             break; // 응답 처리 완료 후 루프 탈출
                         }
-
                         else
                         {
                             Console.WriteLine($"[DiaryModel] 예상하지 못한 프로토콜 수신: {protocol}");
@@ -204,7 +199,5 @@ namespace MalangDiary.Models {
                 }
             });
         }
-
-
     }
 }

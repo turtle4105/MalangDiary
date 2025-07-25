@@ -171,11 +171,8 @@ namespace MalangDiary.ViewModels {
 
                     IsImageAttached = false; 
                 }
-
             }
         }
-
-
         [RelayCommand]
         private void GoToHome()
         {

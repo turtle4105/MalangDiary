@@ -106,14 +106,14 @@
                     BorderThickness="1"
                     Margin="0,0,0,10">
                 <TextBox Text="{Binding Email}"
-                         Tag="이메일"
+                         Tag="아이디"
                          Style="{StaticResource GrayWatermarkTextBoxStyle}"
                          Foreground="#2A2A2A"
                          FontSize="12"
                          FontFamily="Noto Sans KR"
                          Padding="10"
                          VerticalContentAlignment="Center"
-                         Height="52" />
+                         Height="52" TextChanged="TextBox_TextChanged" />
             </Border>
 
             <!-- 비밀번호 -->
