@@ -104,5 +104,4 @@ public struct CalendarInfo {
     public int Date;
     public bool IsWrited;
     public bool IsLiked;
-
 }

@@ -187,9 +187,10 @@ namespace MalangDiary.Models {
                         }
                     }
                 }
-                
-                if( byteData.Length > 0 ) {
-                    /* Save Audio File  */
+
+
+                /* Save Audio File  */
+                if ( byteData.Length > 0 ) {
                     string FixedImgPath = "./Audio/DiaryAudio.wav";        // set file path
                     _base.WriteWavToFile(FixedImgPath, byteData);          // save wav file
                 }
@@ -197,12 +198,14 @@ namespace MalangDiary.Models {
                     Console.WriteLine("[ChkModel] No byteData(Audio)");
                 }
 
-                    /* Save Image File */
-                    bool ChkImg = true;
-                if( ChkImg is true ) {
+
+                /* Check Image File */
+                bool ChkImg = false;
+                if( ResultDiaryInfo.PhotoFileName.Length > 0 ) {
+                    ChkImg = true;
                     return (ResultDiaryInfo, ChkImg);
                 }
-                else if( ChkImg is false ) {
+                else if( ResultDiaryInfo.PhotoFileName.Length == 0 ) {
                     return (ResultDiaryInfo, ChkImg);
                 }
             }
@@ -221,6 +224,7 @@ namespace MalangDiary.Models {
         public bool GetDiaryImage() {
             WorkItem RecvItem = _socket.Receive();
 
+            JObject jsonData = JObject.Parse(RecvItem.json);
             byte[] byteData = RecvItem.payload;
 
             string FixedFilePath = "./Images/ChkDiaryImage.jpg";
@@ -323,7 +327,7 @@ namespace MalangDiary.Models {
             string protocol = jsonData["PROTOCOL"]?.ToString() ?? "";
             string result = jsonData["RESP"]?.ToString() ?? "";
 
-            if (protocol == "UPDATE_DIARY_LIKE " && result == "SUCCESS") {
+            if (protocol == "UPDATE_DIARY_LIKE" && result == "SUCCESS") {
                 return true;
             }
 

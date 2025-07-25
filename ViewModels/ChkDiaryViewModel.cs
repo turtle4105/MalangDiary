@@ -126,7 +126,7 @@ namespace MalangDiary.ViewModels {
             else if (ChkUpdate is false) {
                 Console.WriteLine("[ChkDIaryViewModel] UpdateDiaryLike Failed");
             }
-
+            Console.WriteLine("[ChkDIaryViewModel]IsLiked:" + IsLiked);
             return;
         }
 
@@ -157,7 +157,7 @@ namespace MalangDiary.ViewModels {
                 EmotionList.Add(diary);
             }
             
-            if( ImgExist ) {
+            if( ImgExist is true ) {
                 /* Recv Image From Server */
                 _chkModel.GetDiaryImage();
 
@@ -182,6 +182,5 @@ namespace MalangDiary.ViewModels {
                 return false;
             }
         }
-
     }
 }
