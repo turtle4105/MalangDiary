@@ -34,3 +34,8 @@ vcpkg integrate install  - visual studio와 연결
 1. 음성 파일 `.wav`를 업로드합니다, 아이의 목소리를 녹음합니다. 
 2. 자동으로 텍스트 + 감정 분석 → 일기 생성
 3. 일기 리스트를 보거나 삭제할수 있습니다.
+
+## 브랜치
+Client_dev - 클라이언트
+Server_dev - c++ 서버
+AI_dev_copy - python 서버
