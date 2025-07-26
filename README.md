@@ -36,6 +36,6 @@ vcpkg integrate install  - visual studio와 연결
 3. 일기 리스트를 보거나 삭제할수 있습니다.
 
 ## 브랜치
-Client_dev - 클라이언트
-Server_dev - c++ 서버
-AI_dev_copy - python 서버
+Client_dev - 클라이언트 \n
+Server_dev - c++ 서버 \n 
+AI_dev_copy - python 서버 \n
