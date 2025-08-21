@@ -76,8 +76,6 @@ public class MainViewModel {
             case PageType.GenDiary:
                 var diaryModel2 = App.Services!.GetService<DiaryModel>(); _mainFrame.Navigate(new GenerateDiaryView { DataContext = new GenerateDiaryViewModel(diaryModel2!)});
                 break;
-
-
         }
     }
 }

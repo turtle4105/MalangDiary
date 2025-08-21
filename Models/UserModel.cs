@@ -21,7 +21,7 @@ namespace MalangDiary.Models
 
         // 외부 서비스 및 세션 정보
         private readonly SocketManager _socket;
-        private readonly UserSession _session;
+        private readonly UserSession   _session;
 
         // 부모 및 자녀 정보
         private ParentInfo ParentInfo;                    // 부모 정보
